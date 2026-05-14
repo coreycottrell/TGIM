@@ -1,0 +1,1061 @@
+<!--
+  CONFIGURATION — Update these values for your environment:
+  1. https://tpjg-fleet.netlify.app — Your PureBrain portal base URL (e.g., https://your-civ.purebrain.ai)
+  2.  — Your portal authentication token
+  3. API endpoints will use https://tpjg-fleet.netlify.app as the base
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Priorities / TPJG</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0D1117;
+    color: #E6EDF3;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #161B22;
+    border-bottom: 1px solid #30363D;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .header h1 { font-size: 16px; font-weight: 600; color: #E6EDF3; white-space: nowrap; }
+  .header-accent { color: #C9A84C; }
+
+  /* CONTROLS */
+  .controls {
+    background: #0D1117;
+    border-bottom: 1px solid #30363D;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* CHIPS */
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; flex: 1; }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid #30363D;
+    background: #161B22;
+    color: #8B949E;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+    user-select: none;
+  }
+  .chip:hover { border-color: #8B949E; color: #E6EDF3; }
+  .chip.active { outline: 2px solid #fff; outline-offset: 2px; }
+  .chip-all { background: #21262D; color: #8B949E; border-color: #30363D; }
+  .chip-active { background: #1B3A2A; color: #3FB950; border-color: #1B3A2A; }
+  .chip-on_hold { background: #3A2E0A; color: #E3B341; border-color: #3A2E0A; }
+  .chip-completed { background: #21262D; color: #8B949E; border-color: #30363D; }
+  .chip-not_needed { background: #3A0D0D; color: #F85149; border-color: #3A0D0D; }
+  .chip .badge {
+    background: rgba(0,0,0,0.25); color: inherit; border-radius: 10px;
+    padding: 1px 6px; font-size: 11px; font-weight: 600;
+  }
+
+  /* ADD BUTTON */
+  .btn-add {
+    background: #C9A84C; color: #fff; border: none; border-radius: 6px;
+    padding: 7px 14px; font-size: 13px; font-weight: 600; cursor: pointer;
+    white-space: nowrap; transition: background 0.15s; flex-shrink: 0;
+  }
+  .btn-add:hover { background: #A8893D; }
+
+  /* ADD FORM */
+  .add-form {
+    display: none; background: #161B22; border-bottom: 1px solid #30363D;
+    padding: 16px 20px; gap: 12px; flex-wrap: wrap; align-items: flex-end;
+  }
+  .add-form.open { display: flex; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 160px; }
+  .form-group label {
+    font-size: 11px; font-weight: 600; color: #8B949E;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .form-group input, .form-group select {
+    background: #0D1117; border: 1px solid #30363D; border-radius: 6px;
+    color: #E6EDF3; font-size: 13px; padding: 7px 10px;
+    font-family: inherit; transition: border-color 0.15s;
+  }
+  .form-group input:focus, .form-group select:focus { outline: none; border-color: #C9A84C; }
+  .form-group select option { background: #161B22; }
+  .btn-submit {
+    background: #238636; color: #fff; border: none; border-radius: 6px;
+    padding: 7px 16px; font-size: 13px; font-weight: 600; cursor: pointer;
+    height: 34px; align-self: flex-end; flex-shrink: 0; transition: background 0.15s;
+  }
+  .btn-submit:hover { background: #2ea043; }
+
+  /* MAIN */
+  .main { padding: 16px 20px; max-width: 900px; margin: 0 auto; }
+
+  /* SECTION HEADERS */
+  .section-header {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8B949E;
+    padding: 10px 0 8px; border-bottom: 1px solid #21262D;
+    margin-bottom: 10px; margin-top: 16px;
+  }
+  .section-header:first-child { margin-top: 0; }
+
+  /* PROJECT CARDS */
+  .project-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+  .project-card {
+    background: #161B22; border: 1px solid #30363D; border-radius: 8px;
+    padding: 12px 14px;
+    display: grid; grid-template-columns: 24px 40px 1fr;
+    gap: 0 10px; align-items: start;
+    transition: border-color 0.15s;
+  }
+  .project-card:hover { border-color: #484F58; }
+  .project-card.dragging { opacity: 0.45; border-color: #C9A84C; }
+  .project-card.drag-over { border-color: #C9A84C; border-style: dashed; }
+
+  .drag-handle {
+    color: #484F58; font-size: 16px; cursor: grab;
+    user-select: none; touch-action: none; padding-top: 2px; line-height: 1;
+  }
+  .drag-handle:active { cursor: grabbing; color: #8B949E; }
+
+  .priority-num {
+    font-size: 20px; font-weight: 700; color: #C9A84C;
+    line-height: 1.2; text-align: center; cursor: pointer;
+    min-width: 30px;
+  }
+  .priority-num.archived { color: #484F58; font-size: 15px; padding-top: 2px; }
+
+  .last-status { font-size: 12px; color: #8B949E; margin: 4px 0; padding: 4px 8px; background: rgba(201,168,76,0.08); border-radius: 4px; border-left: 2px solid #C9A84C; }
+  .last-status-label { font-weight: 600; color: #C9A84C; }
+  .last-status-text { color: #C9D1D9; }
+  .last-status-date { color: #484F58; font-size: 11px; }
+
+  .card-body { grid-column: 3; }
+  .card-top {
+    display: flex; align-items: flex-start;
+    justify-content: space-between; gap: 8px; margin-bottom: 4px;
+  }
+  .project-name { font-size: 14px; font-weight: 600; color: #E6EDF3; line-height: 1.3; }
+  .card-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; flex-wrap: wrap; }
+  .project-desc { font-size: 12px; color: #8B949E; line-height: 1.4; margin-bottom: 8px; }
+  .card-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+
+  /* Company badges */
+  .badge-company {
+    font-size: 11px; font-weight: 600; padding: 2px 8px;
+    border-radius: 10px; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .co-residential { background: rgba(201,168,76,0.2);     color: #ff6b6b; border: 1px solid rgba(201,168,76,0.4); }
+  .co-commercial  { background: rgba(88,166,255,0.15);  color: #58a6ff; border: 1px solid rgba(88,166,255,0.3); }
+  .co-abodes      { background: rgba(46,160,67,0.15);   color: #3fb950; border: 1px solid rgba(46,160,67,0.3); }
+  .co-pm          { background: rgba(163,113,247,0.15); color: #a371f7; border: 1px solid rgba(163,113,247,0.3); }
+  .co-holdings    { background: rgba(210,153,34,0.15);  color: #d29922; border: 1px solid rgba(210,153,34,0.3); }
+  .co-cross       { background: rgba(139,148,158,0.15); color: #8b949e; border: 1px solid rgba(139,148,158,0.3); }
+  .co-brokerage   { background: rgba(88,166,255,0.15);  color: #58a6ff; border: 1px solid rgba(88,166,255,0.3); }
+
+  /* Status badges */
+  .badge-status { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 10px; }
+  .st-active     { background: rgba(46,160,67,0.15);   color: #3fb950; border: 1px solid rgba(46,160,67,0.3); }
+  .st-on_hold    { background: rgba(210,153,34,0.15);  color: #d29922; border: 1px solid rgba(210,153,34,0.3); }
+  .st-completed  { background: rgba(88,166,255,0.15);  color: #58a6ff; border: 1px solid rgba(88,166,255,0.3); }
+  .st-not_needed { background: rgba(139,148,158,0.15); color: #8b949e; border: 1px solid rgba(139,148,158,0.3); }
+
+  .card-date { font-size: 11px; color: #484F58; margin-left: auto; }
+
+  .status-select {
+    background: #21262D; border: 1px solid #30363D; border-radius: 5px;
+    color: #E6EDF3; font-size: 12px; padding: 3px 6px;
+    cursor: pointer; font-family: inherit;
+  }
+  .status-select:focus { outline: none; border-color: #C9A84C; }
+
+  .btn-not-needed {
+    background: #21262D; border: 1px solid #30363D; color: #8B949E;
+    border-radius: 5px; font-size: 11px; padding: 3px 8px;
+    cursor: pointer; font-family: inherit; white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .btn-not-needed:hover { color: #E6EDF3; border-color: #8B949E; }
+
+  .btn-delete {
+    background: transparent; border: 1px solid transparent; color: #484F58;
+    border-radius: 5px; font-size: 14px; padding: 2px 6px;
+    cursor: pointer; line-height: 1; transition: color 0.15s, border-color 0.15s;
+  }
+  .btn-delete:hover { color: #f85149; border-color: rgba(248,81,73,0.4); }
+
+  .notes-area {
+    width: 100%; background: #0D1117; border: 1px solid #21262D; border-radius: 5px;
+    color: #8B949E; font-size: 12px; padding: 7px 10px; font-family: inherit;
+    resize: vertical; min-height: 48px; line-height: 1.4;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .notes-area:focus { outline: none; border-color: #30363D; color: #E6EDF3; }
+  .notes-area::placeholder { color: #484F58; }
+
+  .empty-state { text-align: center; padding: 40px 20px; color: #484F58; font-size: 13px; }
+
+  /* SAVE INDICATOR */
+  #save-indicator {
+    position: fixed; bottom: 20px; right: 20px;
+    background: #238636; color: #fff; border-radius: 6px;
+    padding: 7px 14px; font-size: 12px; font-weight: 600;
+    opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 200;
+  }
+  #save-indicator.visible { opacity: 1; }
+
+  /* CONVERSATION PANEL */
+  .btn-chat {
+    position: relative;
+    background: transparent; border: 1px solid #30363D; color: #8B949E;
+    border-radius: 5px; font-size: 14px; padding: 2px 7px;
+    cursor: pointer; line-height: 1; transition: color 0.15s, border-color 0.15s;
+  }
+  .btn-chat:hover { color: #58a6ff; border-color: rgba(88,166,255,0.4); }
+  .btn-chat.has-unread { color: #58a6ff; border-color: rgba(88,166,255,0.6); }
+
+  .chat-unread-dot {
+    position: absolute; top: -4px; right: -4px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #C9A84C; border: 1px solid #161B22;
+  }
+
+  /* Conversation Bubble Modal */
+  .conv-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 500;
+  }
+  .conv-overlay.open { display: block; }
+
+  .conv-bubble {
+    position: fixed;
+    z-index: 501;
+    width: 380px;
+    max-width: calc(100vw - 24px);
+    max-height: 480px;
+    background: #161B22;
+    border: 1px solid #30363D;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .conv-bubble.open { display: flex; }
+
+  .conv-bubble-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid #21262D;
+    background: #0D1117;
+  }
+  .conv-bubble-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #E6EDF3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    margin-right: 8px;
+  }
+  .conv-bubble-close {
+    background: none;
+    border: none;
+    color: #8B949E;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+  }
+  .conv-bubble-close:hover { color: #E6EDF3; }
+
+  .conv-messages {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 14px;
+    min-height: 120px;
+    max-height: 320px;
+  }
+
+  .conv-msg {
+    max-width: 85%;
+    padding: 7px 11px;
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 1.45;
+    word-break: break-word;
+  }
+  .conv-msg.user {
+    align-self: flex-end;
+    background: rgba(88,166,255,0.15);
+    border: 1px solid rgba(88,166,255,0.25);
+    color: #C9D1D9;
+    border-bottom-right-radius: 3px;
+  }
+  .conv-msg.nexus {
+    align-self: flex-start;
+    background: #21262D;
+    border: 1px solid #30363D;
+    color: #C9D1D9;
+    border-bottom-left-radius: 3px;
+  }
+  .conv-msg-meta {
+    font-size: 10px;
+    color: #484F58;
+    margin-top: 3px;
+    text-align: right;
+  }
+  .conv-msg.nexus .conv-msg-meta { text-align: left; }
+
+  .conv-empty {
+    font-size: 12px; color: #484F58;
+    text-align: center; padding: 20px 0;
+  }
+
+  .conv-input-row {
+    display: flex;
+    gap: 8px;
+    padding: 10px 14px;
+    border-top: 1px solid #21262D;
+    background: #0D1117;
+  }
+  .conv-input {
+    flex: 1;
+    background: #161B22;
+    border: 1px solid #30363D;
+    border-radius: 6px;
+    color: #E6EDF3;
+    font-size: 12px;
+    padding: 7px 10px;
+    font-family: inherit;
+    resize: none;
+    line-height: 1.4;
+    min-height: 36px;
+    max-height: 100px;
+    transition: border-color 0.15s;
+  }
+  .conv-input:focus { outline: none; border-color: #58a6ff; }
+  .conv-input::placeholder { color: #484F58; }
+
+  .btn-conv-send {
+    background: #1A4B8C;
+    border: 1px solid rgba(88,166,255,0.3);
+    color: #58a6ff;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 0 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+  .btn-conv-send:hover { background: #1F5AA8; }
+  .btn-conv-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  @media (max-width: 600px) {
+    .conv-bubble {
+      top: 10% !important;
+      left: 12px !important;
+      right: 12px !important;
+      bottom: 10% !important;
+      width: auto !important;
+      max-height: none;
+    }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .header, .controls, .main { padding-left: 14px; padding-right: 14px; }
+    .chip { padding: 4px 10px; font-size: 11px; }
+    .project-card { grid-template-columns: 20px 30px 1fr; gap: 0 8px; }
+    .priority-num { font-size: 17px; }
+    .card-actions { flex-wrap: wrap; }
+    .conv-msg { max-width: 90%; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <h1>Project Priorities <span class="header-accent">/</span> TPJG</h1>
+</header>
+
+<div class="controls">
+  <div class="chips" id="chips-bar"></div>
+  <button class="btn-add" id="btn-toggle-form">+ Add Project</button>
+</div>
+
+<div class="add-form" id="add-form">
+  <div class="form-group" style="flex:2;min-width:200px;">
+    <label>Project Name</label>
+    <input type="text" id="f-name" placeholder="e.g. Custom CRM Build" autocomplete="off">
+  </div>
+  <div class="form-group" style="flex:3;min-width:240px;">
+    <label>Description</label>
+    <input type="text" id="f-desc" placeholder="Brief summary" autocomplete="off">
+  </div>
+  <div class="form-group">
+    <label>Company</label>
+    <select id="f-company">
+      <!-- Customize these company/team labels for your operation -->
+      <option value="residential">Residential</option>
+      <option value="commercial">Commercial</option>
+      <option value="abodes">Short-Term Rental</option>
+      <option value="pm">Property Management</option>
+      <option value="holdings">Holdings</option>
+      <option value="cross">Cross-vertical</option>
+      <option value="brokerage">Brokerage</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Status</label>
+    <select id="f-status">
+      <option value="active">Active</option>
+      <option value="on_hold">On Hold</option>
+      <option value="completed">Completed</option>
+      <option value="not_needed">Not Needed</option>
+    </select>
+  </div>
+  <button class="btn-submit" id="btn-submit-form">Add</button>
+</div>
+
+<main class="main" id="main-content"></main>
+
+<!-- Conversation Bubble Modal (shared, repositioned per project) -->
+<div class="conv-overlay" id="conv-overlay" onclick="closeConvBubble()"></div>
+<div class="conv-bubble" id="conv-bubble">
+  <div class="conv-bubble-header">
+    <div class="conv-bubble-title" id="conv-bubble-title">Conversation</div>
+    <button class="conv-bubble-close" onclick="closeConvBubble()" title="Close">&times;</button>
+  </div>
+  <div class="conv-messages" id="conv-msgs"></div>
+  <div class="conv-input-row">
+    <textarea class="conv-input" id="conv-input"
+      placeholder="Ask a question or leave feedback..." rows="1"
+      onkeydown="convBubbleKeydown(event)"></textarea>
+    <button class="btn-conv-send" id="conv-send" onclick="sendConvBubbleMessage()">Send</button>
+  </div>
+</div>
+
+<div id="save-indicator">Saved</div>
+
+<script>
+// Token from URL param, localStorage, or default
+const _urlToken = new URLSearchParams(window.location.search).get('token');
+const PORTAL_TOKEN = _urlToken || localStorage.getItem('portal_token') || '';
+if (_urlToken) localStorage.setItem('portal_token', _urlToken);
+const PORTAL_BASE  = 'https://tpjg-fleet.netlify.app';
+
+let projects     = [];
+let activeFilter = 'active';
+let saveTimer    = null;
+let dragSrcId    = null;
+let touchDragId  = null;
+let touchClone   = null;
+
+// Conversation bubble state
+// Cache loaded conversations per project id
+const convCache = {};
+
+const hdrs = () => ({
+  'Content-Type': 'application/json',
+  'Authorization': 'Bearer ' + PORTAL_TOKEN
+});
+
+async function apiGet() {
+  const r = await fetch(PORTAL_BASE + '/api/projects', { headers: hdrs() });
+  if (!r.ok) throw new Error('GET ' + r.status);
+  return r.json();
+}
+async function apiCreate(data) {
+  const r = await fetch(PORTAL_BASE + '/api/projects', {
+    method: 'POST', headers: hdrs(), body: JSON.stringify(data)
+  });
+  if (!r.ok) throw new Error('POST ' + r.status);
+  return r.json();
+}
+async function apiUpdate(id, data) {
+  const r = await fetch(PORTAL_BASE + '/api/projects/' + id, {
+    method: 'PUT', headers: hdrs(), body: JSON.stringify(data)
+  });
+  if (!r.ok) throw new Error('PUT ' + r.status);
+  return r.json();
+}
+async function apiDelete(id) {
+  const r = await fetch(PORTAL_BASE + '/api/projects/' + id, {
+    method: 'DELETE', headers: hdrs()
+  });
+  if (!r.ok) throw new Error('DELETE ' + r.status);
+}
+async function apiReorder(ids) {
+  const r = await fetch(PORTAL_BASE + '/api/projects/reorder', {
+    method: 'POST', headers: hdrs(), body: JSON.stringify({ ids })
+  });
+  if (!r.ok) throw new Error('REORDER ' + r.status);
+}
+
+// Conversation API helpers
+async function apiConvList(projectId) {
+  const r = await fetch(PORTAL_BASE + '/api/projects/' + projectId + '/conversations', { headers: hdrs() });
+  if (!r.ok) throw new Error('CONV GET ' + r.status);
+  return r.json();
+}
+async function apiConvSend(projectId, message) {
+  const r = await fetch(PORTAL_BASE + '/api/projects/' + projectId + '/conversations', {
+    method: 'POST', headers: hdrs(), body: JSON.stringify({ message, author: 'user' })
+  });
+  if (!r.ok) throw new Error('CONV POST ' + r.status);
+  return r.json();
+}
+async function apiConvMarkRead(projectId) {
+  await fetch(PORTAL_BASE + '/api/projects/' + projectId + '/conversations/mark-read', {
+    method: 'POST', headers: hdrs()
+  });
+}
+
+function flashSaved() {
+  const el = document.getElementById('save-indicator');
+  el.classList.add('visible');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => el.classList.remove('visible'), 1800);
+}
+
+function setFilter(filter) {
+  activeFilter = filter;
+  renderAll();
+}
+
+function getCounts() {
+  return {
+    total:      projects.length,
+    active:     projects.filter(p => p.status === 'active').length,
+    on_hold:    projects.filter(p => p.status === 'on_hold').length,
+    completed:  projects.filter(p => p.status === 'completed').length,
+    not_needed: projects.filter(p => p.status === 'not_needed').length
+  };
+}
+
+function companyLabel(c) {
+  return ({ residential:'Residential', commercial:'Commercial', abodes:'Short-Term Rental',
+            pm:'PM', holdings:'Holdings', cross:'Cross-vertical', brokerage:'Brokerage' })[c] || c || '';
+}
+function companyClass(c) {
+  return ({ residential:'co-residential', commercial:'co-commercial', abodes:'co-abodes',
+            pm:'co-pm', holdings:'co-holdings', cross:'co-cross', brokerage:'co-brokerage' })[c] || 'co-cross';
+}
+function statusLabel(s) {
+  return ({ active:'Active', on_hold:'On Hold', completed:'Completed', not_needed:'Not Needed' })[s] || s;
+}
+function formatDate(str) {
+  if (!str) return '';
+  try { return new Date(str).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }); }
+  catch(e) { return ''; }
+}
+function formatTime(str) {
+  if (!str) return '';
+  try {
+    const d = new Date(str + (str.includes('Z') || str.includes('+') ? '' : 'Z'));
+    return d.toLocaleDateString('en-US', { month:'short', day:'numeric' }) + ' ' +
+           d.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true });
+  } catch(e) { return str; }
+}
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function renderChips() {
+  const c = getCounts();
+  const sel = (f) => activeFilter === f ? 'outline:2px solid #fff;outline-offset:2px;' : '';
+  const defs = [
+    { f:'all',        label:'All',        count:c.total },
+    { f:'active',     label:'Active',     count:c.active },
+    { f:'on_hold',    label:'On Hold',    count:c.on_hold },
+    { f:'completed',  label:'Completed',  count:c.completed },
+    { f:'not_needed', label:'Not Needed', count:c.not_needed }
+  ];
+  document.getElementById('chips-bar').innerHTML = defs.map(ch =>
+    '<div class="chip chip-' + ch.f + (activeFilter===ch.f?' active':'') + '"' +
+    ' style="' + sel(ch.f) + '"' +
+    ' onclick="setFilter(\'' + ch.f + '\')">' +
+    ch.label + '<span class="badge">' + ch.count + '</span></div>'
+  ).join('');
+}
+
+function getPriority(p) {
+  const isArchive = p.status === 'completed' || p.status === 'not_needed';
+  if (isArchive) return '\u2013';
+  const activeProjects = projects.filter(x => x.status !== 'completed' && x.status !== 'not_needed');
+  const idx = activeProjects.indexOf(p);
+  return idx >= 0 ? (idx + 1) : '\u2013';
+}
+
+function cardHTML(p) {
+  const pos       = getPriority(p);
+  const isArchive = (pos === '\u2013');
+  const id        = p.id;
+  const unread    = p.unread_count || 0;
+  let actionsHTML =
+    '<select class="status-select" onchange="changeStatus(\'' + id + '\',this.value)">' +
+    '<option value="active"'     + (p.status==='active'    ?' selected':'') + '>Active</option>' +
+    '<option value="on_hold"'    + (p.status==='on_hold'   ?' selected':'') + '>On Hold</option>' +
+    '<option value="completed"'  + (p.status==='completed' ?' selected':'') + '>Completed</option>' +
+    '<option value="not_needed"' + (p.status==='not_needed'?' selected':'') + '>Not Needed</option>' +
+    '</select>';
+  // Chat button with optional unread badge
+  actionsHTML +=
+    '<button class="btn-chat' + (unread > 0 ? ' has-unread' : '') + '" ' +
+    'onclick="toggleConv(event,\'' + id + '\')" title="Feedback / Questions">' +
+    '&#x1F4AC;' +
+    (unread > 0 ? '<span class="chat-unread-dot"></span>' : '') +
+    '</button>';
+  actionsHTML += '<button class="btn-delete" onclick="deleteProject(\'' + id + '\')" title="Delete">&times;</button>';
+
+  let metaHTML = '';
+  if (p.company) metaHTML += '<span class="badge-company ' + companyClass(p.company) + '">' + companyLabel(p.company) + '</span>';
+  metaHTML += '<span class="badge-status st-' + p.status + '">' + statusLabel(p.status) + '</span>';
+  if (p.created_at) metaHTML += '<span class="card-date">' + formatDate(p.created_at) + '</span>';
+
+  // Conversation is now a shared floating bubble — no inline HTML per card
+
+  return '<div class="project-card" data-id="' + id + '"' +
+    ' draggable="true"' +
+    ' ondragstart="onDragStart(event,\'' + id + '\')"' +
+    ' ondragover="onDragOver(event)"' +
+    ' ondragleave="onDragLeave(event)"' +
+    ' ondrop="onDrop(event,\'' + id + '\')"' +
+    ' ondragend="onDragEnd()">' +
+
+    '<div class="drag-handle"' +
+    ' ontouchstart="onTouchStart(event,\'' + id + '\')">&#10815;</div>' +
+
+    '<div class="priority-num' + (isArchive?' archived':'') + '" onclick="editPriority(event,\'' + id + '\',' + pos + ')" title="Click to change position">' + pos + '</div>' +
+
+    '<div class="card-body">' +
+      '<div class="card-top">' +
+        '<div class="project-name">' + esc(p.name||'Untitled') + '</div>' +
+        '<div class="card-actions">' + actionsHTML + '</div>' +
+      '</div>' +
+      (p.description ? '<div class="project-desc">' + esc(p.description) + '</div>' : '') +
+      '<div class="last-status">' +
+        '<span class="last-status-label">Last Status:</span> ' +
+        '<span class="last-status-text" id="status-' + id + '">' + esc(p.last_status || 'No update yet') + '</span>' +
+        '<span class="last-status-date">' + (p.status_updated ? ' (' + p.status_updated + ')' : '') + '</span>' +
+      '</div>' +
+      '<div class="card-meta">' + metaHTML + '</div>' +
+      '<textarea class="notes-area" placeholder="Notes..." oninput="scheduleNotesSave(\'' + id + '\',this.value)">' +
+        esc(p.notes||'') +
+      '</textarea>' +
+    '</div>' +
+  '</div>';
+}
+
+function renderAll() {
+  renderChips();
+  const main = document.getElementById('main-content');
+
+  if (activeFilter === 'all') {
+    const live    = projects.filter(p => p.status==='active'||p.status==='on_hold');
+    const archive = projects.filter(p => p.status==='completed'||p.status==='not_needed');
+    main.innerHTML =
+      '<div class="section-header">Active &amp; On Hold</div>' +
+      (live.length===0
+        ? '<div class="empty-state">No active or on-hold projects.</div>'
+        : '<div class="project-list" id="list-live">' + live.map(cardHTML).join('') + '</div>') +
+      '<div class="section-header" style="margin-top:24px;">Archive</div>' +
+      (archive.length===0
+        ? '<div class="empty-state">No archived projects.</div>'
+        : '<div class="project-list" id="list-archive">' + archive.map(cardHTML).join('') + '</div>');
+  } else {
+    const filtered = projects.filter(p => {
+      if (activeFilter==='active')     return p.status==='active';
+      if (activeFilter==='on_hold')    return p.status==='on_hold';
+      if (activeFilter==='completed')  return p.status==='completed';
+      if (activeFilter==='not_needed') return p.status==='not_needed';
+      return true;
+    });
+
+    if (filtered.length===0) {
+      main.innerHTML = '<div class="empty-state">No projects match this filter.</div>';
+    } else {
+      main.innerHTML = '<div class="project-list" id="list-main">' + filtered.map(cardHTML).join('') + '</div>';
+    }
+  }
+
+}
+
+async function changeStatus(id, newStatus) {
+  const p = projects.find(x=>x.id===id);
+  if (!p) return;
+  p.status = newStatus;
+  renderAll();
+  try { await apiUpdate(id, {status:newStatus}); flashSaved(); }
+  catch(e) { console.error(e); }
+}
+function markNotNeeded(id) { changeStatus(id,'not_needed'); }
+
+const noteTimers = {};
+function scheduleNotesSave(id, value) {
+  const p = projects.find(x=>x.id===id);
+  if (p) p.notes = value;
+  clearTimeout(noteTimers[id]);
+  noteTimers[id] = setTimeout(async () => {
+    try { await apiUpdate(id, {notes:value}); flashSaved(); }
+    catch(e) { console.error(e); }
+  }, 800);
+}
+
+async function deleteProject(id) {
+  if (!confirm('Delete this project? This cannot be undone.')) return;
+  projects = projects.filter(x=>x.id!==id);
+  if (activeConvProjectId === id) closeConvBubble();
+  delete convCache[id];
+  renderAll();
+  try { await apiDelete(id); flashSaved(); }
+  catch(e) { console.error(e); }
+}
+
+document.getElementById('btn-toggle-form').addEventListener('click', () => {
+  document.getElementById('add-form').classList.toggle('open');
+});
+document.getElementById('btn-submit-form').addEventListener('click', async () => {
+  const name    = document.getElementById('f-name').value.trim();
+  const desc    = document.getElementById('f-desc').value.trim();
+  const company = document.getElementById('f-company').value;
+  const status  = document.getElementById('f-status').value;
+  if (!name) { document.getElementById('f-name').focus(); return; }
+  try {
+    const created = await apiCreate({name, description:desc, company, status, notes:''});
+    projects.unshift(created);
+    renderAll();
+    flashSaved();
+    document.getElementById('f-name').value = '';
+    document.getElementById('f-desc').value = '';
+    document.getElementById('add-form').classList.remove('open');
+  } catch(e) { console.error(e); alert('Failed to add project. See console.'); }
+});
+document.getElementById('f-name').addEventListener('keydown', e => {
+  if (e.key==='Enter') document.getElementById('btn-submit-form').click();
+});
+
+/* ── CONVERSATION PANEL ── */
+
+let activeConvProjectId = null;
+
+function renderConvMessages(conversations) {
+  const container = document.getElementById('conv-msgs');
+  if (!container) return;
+
+  if (!conversations || conversations.length === 0) {
+    container.innerHTML = '<div class="conv-empty">No messages yet. Ask a question or leave feedback.</div>';
+    return;
+  }
+
+  container.innerHTML = conversations.map(msg => {
+    const isUser = msg.author === 'user';
+    const cls = isUser ? 'user' : 'nexus';
+    const authorLabel = isUser ? 'You' : 'Nexus AI';
+    return '<div class="conv-msg ' + cls + '">' +
+      '<div>' + esc(msg.message) + '</div>' +
+      '<div class="conv-msg-meta">' + authorLabel + ' &middot; ' + formatTime(msg.created_at) + '</div>' +
+    '</div>';
+  }).join('');
+
+  container.scrollTop = container.scrollHeight;
+}
+
+async function toggleConv(e, projectId) {
+  e.stopPropagation();
+
+  // If already open for this project, close it
+  if (activeConvProjectId === projectId) {
+    closeConvBubble();
+    return;
+  }
+
+  activeConvProjectId = projectId;
+  const p = projects.find(x => x.id === projectId);
+  const titleEl = document.getElementById('conv-bubble-title');
+  if (titleEl) titleEl.textContent = p ? p.name : 'Conversation';
+
+  const overlay = document.getElementById('conv-overlay');
+  const bubble = document.getElementById('conv-bubble');
+  overlay.classList.add('open');
+  bubble.classList.add('open');
+
+  // Position bubble near the clicked button
+  const btn = e.target.closest('.btn-chat');
+  if (btn) {
+    const rect = btn.getBoundingClientRect();
+    const bw = 380;
+    let left = rect.right - bw;
+    let top = rect.bottom + 8;
+    // Keep on screen
+    if (left < 12) left = 12;
+    if (left + bw > window.innerWidth - 12) left = window.innerWidth - bw - 12;
+    if (top + 480 > window.innerHeight - 12) top = rect.top - 488;
+    if (top < 12) top = 12;
+    bubble.style.left = left + 'px';
+    bubble.style.top = top + 'px';
+  }
+
+  // Load conversations
+  const container = document.getElementById('conv-msgs');
+  container.innerHTML = '<div class="conv-empty">Loading...</div>';
+
+  if (convCache[projectId] !== undefined) {
+    renderConvMessages(convCache[projectId]);
+  } else {
+    try {
+      const data = await apiConvList(projectId);
+      convCache[projectId] = data.conversations || [];
+      renderConvMessages(convCache[projectId]);
+    } catch(err) {
+      console.error('Failed to load conversations:', err);
+      container.innerHTML = '<div class="conv-empty">Failed to load messages.</div>';
+    }
+  }
+
+  const input = document.getElementById('conv-input');
+  if (input) { input.value = ''; setTimeout(() => input.focus(), 50); }
+}
+
+function closeConvBubble() {
+  activeConvProjectId = null;
+  document.getElementById('conv-overlay').classList.remove('open');
+  document.getElementById('conv-bubble').classList.remove('open');
+}
+
+function convBubbleKeydown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendConvBubbleMessage();
+  }
+  if (e.key === 'Escape') {
+    closeConvBubble();
+  }
+}
+
+async function sendConvBubbleMessage() {
+  if (!activeConvProjectId) return;
+  const input = document.getElementById('conv-input');
+  const sendBtn = document.getElementById('conv-send');
+  if (!input) return;
+
+  const message = input.value.trim();
+  if (!message) return;
+
+  const projectId = activeConvProjectId;
+  input.value = '';
+  if (sendBtn) sendBtn.disabled = true;
+
+  try {
+    const result = await apiConvSend(projectId, message);
+    const newMsg = result.conversation;
+    if (newMsg) {
+      if (!convCache[projectId]) convCache[projectId] = [];
+      convCache[projectId].push(newMsg);
+      renderConvMessages(convCache[projectId]);
+    }
+  } catch(err) {
+    console.error('Failed to send message:', err);
+    alert('Failed to send. Please try again.');
+    input.value = message;
+  } finally {
+    if (sendBtn) sendBtn.disabled = false;
+    if (input) input.focus();
+  }
+}
+
+/* ── DRAG & DROP - desktop ── */
+function onDragStart(e, id) {
+  dragSrcId = id;
+  e.dataTransfer.effectAllowed = 'move';
+  setTimeout(() => {
+    const el = document.querySelector('.project-card[data-id="'+id+'"]');
+    if (el) el.classList.add('dragging');
+  }, 0);
+}
+function onDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  const card = e.target.closest('.project-card');
+  if (card && card.dataset.id !== dragSrcId) {
+    document.querySelectorAll('.project-card.drag-over').forEach(el=>el.classList.remove('drag-over'));
+    card.classList.add('drag-over');
+  }
+}
+function onDragLeave(e) {
+  const card = e.target.closest('.project-card');
+  if (card) card.classList.remove('drag-over');
+}
+function onDrop(e, targetId) {
+  e.preventDefault();
+  document.querySelectorAll('.project-card.drag-over').forEach(el=>el.classList.remove('drag-over'));
+  if (dragSrcId && dragSrcId !== targetId) reorderProjects(dragSrcId, targetId);
+}
+function onDragEnd() {
+  document.querySelectorAll('.project-card.dragging,.project-card.drag-over')
+    .forEach(el=>el.classList.remove('dragging','drag-over'));
+  dragSrcId = null;
+}
+
+/* Touch drag - mobile */
+function onTouchStart(e, id) {
+  e.preventDefault();
+  touchDragId = id;
+  const card = document.querySelector('.project-card[data-id="'+id+'"]');
+  if (!card) return;
+  const rect = card.getBoundingClientRect();
+  touchClone = card.cloneNode(true);
+  Object.assign(touchClone.style, {
+    position:'fixed', left:rect.left+'px', top:rect.top+'px',
+    width:rect.width+'px', opacity:'0.85', pointerEvents:'none',
+    zIndex:'1000', border:'1px solid #C9A84C', borderRadius:'8px',
+    background:'#161B22', transition:'none'
+  });
+  document.body.appendChild(touchClone);
+  card.style.opacity = '0.3';
+  document.addEventListener('touchmove', onTouchMove, {passive: false});
+  document.addEventListener('touchend', onTouchEnd);
+}
+function onTouchMove(e) {
+  if (!touchClone || !touchDragId) return;
+  e.preventDefault();
+  const t = e.touches[0];
+  const w = touchClone.offsetWidth;
+  const h = touchClone.offsetHeight;
+  touchClone.style.left = (t.clientX - w/2) + 'px';
+  touchClone.style.top  = (t.clientY - h/2) + 'px';
+  touchClone.style.display = 'none';
+  const under = document.elementFromPoint(t.clientX, t.clientY);
+  touchClone.style.display = '';
+  document.querySelectorAll('.project-card.drag-over').forEach(c=>c.classList.remove('drag-over'));
+  const targetCard = under && under.closest('.project-card');
+  if (targetCard && targetCard.dataset.id !== touchDragId) targetCard.classList.add('drag-over');
+}
+function onTouchEnd(e) {
+  document.removeEventListener('touchmove', onTouchMove);
+  document.removeEventListener('touchend', onTouchEnd);
+  if (!touchDragId) return;
+  document.querySelectorAll('.project-card.drag-over').forEach(c=>c.classList.remove('drag-over'));
+  const t = e.changedTouches[0];
+  if (touchClone) { touchClone.remove(); touchClone = null; }
+  const srcCard = document.querySelector('.project-card[data-id="'+touchDragId+'"]');
+  if (srcCard) srcCard.style.opacity = '';
+  const under = document.elementFromPoint(t.clientX, t.clientY);
+  const targetCard = under && under.closest('.project-card');
+  if (targetCard && targetCard.dataset.id !== touchDragId)
+    reorderProjects(touchDragId, targetCard.dataset.id);
+  touchDragId = null;
+}
+
+function editPriority(e, id, currentPos) {
+  e.stopPropagation();
+  var el = e.target;
+  var input = document.createElement('input');
+  input.type = 'number';
+  input.min = '1';
+  input.value = currentPos;
+  input.style.cssText = 'width:40px;text-align:center;font-size:inherit;font-weight:inherit;background:#1C2128;color:#E6EDF3;border:1px solid #C9A84C;border-radius:4px;padding:2px;';
+  el.textContent = '';
+  el.appendChild(input);
+  input.focus();
+  input.select();
+
+  function commit() {
+    var newPos = parseInt(input.value, 10);
+    if (isNaN(newPos) || newPos < 1 || newPos === currentPos) {
+      el.textContent = currentPos;
+      return;
+    }
+    // Move project to new position
+    var filtered = projects.filter(function(p) { return p.status === activeFilter; });
+    var srcIdx = projects.findIndex(function(p) { return p.id === id; });
+    if (srcIdx === -1) { el.textContent = currentPos; return; }
+    // Clamp to valid range
+    if (newPos > filtered.length) newPos = filtered.length;
+    // Remove from current position
+    var moved = projects.splice(srcIdx, 1)[0];
+    // Find the project currently at newPos in the filtered view
+    var targetFiltered = projects.filter(function(p) { return p.status === activeFilter; });
+    var insertIdx;
+    if (newPos - 1 < targetFiltered.length) {
+      var targetProject = targetFiltered[newPos - 1];
+      insertIdx = projects.indexOf(targetProject);
+    } else {
+      // Insert at end
+      insertIdx = projects.length;
+    }
+    projects.splice(insertIdx, 0, moved);
+    renderAll();
+    apiReorder(projects.map(function(p) { return p.id; })).then(flashSaved).catch(console.error);
+  }
+
+  input.addEventListener('keydown', function(ev) {
+    if (ev.key === 'Enter') { ev.preventDefault(); commit(); }
+    if (ev.key === 'Escape') { el.textContent = currentPos; }
+  });
+  input.addEventListener('blur', commit);
+}
+
+async function reorderProjects(srcId, targetId) {
+  const si = projects.findIndex(p=>p.id===srcId);
+  const ti = projects.findIndex(p=>p.id===targetId);
+  if (si===-1||ti===-1) return;
+  const [moved] = projects.splice(si, 1);
+  projects.splice(ti, 0, moved);
+  renderAll();
+  try { await apiReorder(projects.map(p=>p.id)); flashSaved(); }
+  catch(e) { console.error(e); }
+}
+
+async function init() {
+  try {
+    const data = await apiGet();
+    projects = Array.isArray(data) ? data : (data.projects || []);
+    renderAll();
+  } catch(e) {
+    console.error('Failed to load projects:', e);
+    document.getElementById('main-content').innerHTML =
+      '<div class="empty-state">Failed to load projects. Check console for details.</div>';
+    renderChips();
+  }
+}
+
+init();
+</script>
+</body>
+</html>

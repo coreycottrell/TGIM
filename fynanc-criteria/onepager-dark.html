@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grow Capital: Income Amplifier | Fynanc (One-Pager Dark)</title>
+<style>
+  
+  @import url('https://fonts.googleapis.com/css2?family=Alice&family=Karla:wght@400;500;600;700;800;900&display=swap');
+
+  :root {
+    
+    --navy: #1B2A4A;
+    --navy-dark: #0F1B33;
+    --cream: #C7C1BA;
+    --gold: #C9A84C;
+    --gold-dark: #B8943F;
+    --green: #4CAF50;
+    --green-light: #1B3B1F;
+    --blue: #42A5F5;
+    --blue-light: #1A2A3E;
+    --purple: #CE93D8;
+    --purple-light: #2A1A33;
+    --orange: #FF7043;
+    --orange-light: #2A1A10;
+    --red: #EF5350;
+    --teal: #4DB6AC;
+    --white: #FFFFFF;
+    --off-white: #1A2A3E;
+    --border: #2A3D5E;
+    --border-light: #2A3D5E;
+    --text: #E0E0E0;
+    --text-muted: #90A4AE;
+    --bg: #0F1B33;
+    --surface: #1B2A4A;
+    --card-bg: #1B2A4A;
+
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Karla', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+
+  
+  .fynanc-nav {
+    background: var(--navy);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .fynanc-nav .brand {
+    font-family: 'Alice', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    margin-right: 24px;
+  }
+  .fynanc-nav a {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--cream);
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .fynanc-nav a:hover { background: rgba(201,168,76,0.15); color: var(--gold); }
+  .fynanc-nav a.active { background: var(--gold); color: var(--navy); font-weight: 800; }
+  .fynanc-nav .toggle {
+    margin-left: auto;
+    font-size: 0.72rem;
+    padding: 5px 10px;
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    color: var(--gold);
+    cursor: pointer;
+  }
+  .fynanc-nav .toggle:hover { background: var(--gold); color: var(--navy); }
+
+
+  .title-area {
+    text-align: center;
+    padding: 48px 20px 36px;
+  }
+  .title-area h1 {
+    font-family: 'Alice', serif;
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+    line-height: 1.1;
+  }
+  .title-decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .title-decoration .line { width: 80px; height: 2px; background: var(--gold); }
+  .title-decoration .diamond { color: var(--gold); font-size: 1.2rem; }
+  .title-area .tagline {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--teal);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .title-area .subtitle {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+
+  .section-bar {
+    background: var(--gold);
+    color: var(--white);
+    text-align: center;
+    padding: 10px 20px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 28px;
+    margin-bottom: 0;
+    font-family: 'Alice', serif;
+  }
+  .section-bar.navy { background: var(--navy); }
+  .section-bar.green { background: var(--green); }
+  .section-bar.blue { background: var(--blue); }
+  .section-bar.gold { background: var(--gold); }
+  .section-bar.teal { background: var(--teal); }
+  .section-bar.purple { background: var(--purple); }
+
+  .content-box {
+    padding: 20px;
+    border: 1px solid var(--border-light);
+    border-top: none;
+    background: var(--card-bg);
+  }
+  .content-box h3 {
+    font-family: 'Alice', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .content-box p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .callout-box {
+    border-left: 4px solid var(--gold);
+    background: rgba(201,168,76,0.1);
+    padding: 14px 18px;
+    margin: 14px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .callout-box .cb-title {
+    font-weight: 800;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gold-dark);
+    margin-bottom: 4px;
+  }
+  .callout-box .cb-text {
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .criteria-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 14px;
+  }
+  @media (max-width: 600px) { .criteria-grid { grid-template-columns: 1fr; } }
+  .criteria-card {
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .criteria-card .cc-rank {
+    font-size: 0.68rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--gold-dark); margin-bottom: 4px;
+  }
+  .criteria-card .cc-name {
+    font-family: 'Alice', serif; font-size: 1rem; font-weight: 700;
+    color: var(--gold); margin-bottom: 6px;
+  }
+  .criteria-card .cc-desc {
+    font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;
+  }
+
+  
+  .glossary-section { margin-top: 8px; }
+  .glossary-term {
+    padding: 18px 20px;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    margin-bottom: 14px;
+    transition: border-color 0.2s;
+  }
+  .glossary-term:hover { border-color: var(--gold); }
+  .glossary-term h4 {
+    font-family: 'Alice', serif;
+    font-size: 1.05rem;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .glossary-term p {
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+  .glossary-term .source {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding-top: 6px;
+    border-top: 1px solid var(--border-light);
+  }
+  .glossary-term .source .source-label {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .glossary-term .source a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+  .glossary-term .source a:hover { text-decoration: underline; }
+  .glossary-term .source .timestamp {
+    color: var(--teal);
+    font-weight: 600;
+  }
+  .glossary-term .evolution-note {
+    font-size: 0.78rem;
+    color: var(--teal);
+    font-style: italic;
+    margin-top: 6px;
+    padding: 6px 10px;
+    background: rgba(46,125,123,0.06);
+    border-radius: 4px;
+  }
+  .knowledge-progression {
+    border-left: 4px solid var(--teal);
+    background: rgba(46,125,123,0.06);
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    border-radius: 0 8px 8px 0;
+  }
+  .knowledge-progression h4 {
+    font-family: 'Alice', serif;
+    font-size: 1rem;
+    color: var(--teal);
+    margin-bottom: 8px;
+  }
+  .knowledge-progression p {
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+  .knowledge-progression .emoji-key {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+
+  .cross-nav {
+    display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0;
+    padding: 16px; background: rgba(201,168,76,0.06);
+    border-radius: 8px; border: 1px solid rgba(201,168,76,0.2);
+  }
+  .cross-nav .nav-label {
+    width: 100%; font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--text-muted); font-weight: 700; margin-bottom: 4px;
+  }
+  .cross-nav a {
+    flex: 1; min-width: 140px; display: block; padding: 10px 14px;
+    border: 1px solid var(--gold); border-radius: 6px;
+    text-decoration: none; text-align: center;
+  }
+  .cross-nav a .nav-title { font-size: 0.82rem; color: var(--gold); font-weight: 700; }
+  .cross-nav a .nav-sub { font-size: 0.68rem; color: var(--text-muted); }
+
+  .footer-bar {
+    text-align: center;
+    padding: 28px 20px;
+    border-top: 2px solid var(--gold);
+    margin-top: 32px;
+  }
+  .footer-bar .footer-logo {
+    font-family: 'Alice', serif;
+    font-size: 1.8rem; font-weight: 900; color: var(--gold); margin-bottom: 4px;
+  }
+  .footer-bar .footer-tagline {
+    font-size: 0.82rem; font-weight: 700; color: var(--gold-dark);
+    text-transform: uppercase; letter-spacing: 2px;
+  }
+  .footer-bar .footer-sub {
+    font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;
+  }
+
+  @media print {
+    .fynanc-nav { display: none; }
+    body { font-size: 11pt; }
+    .page { max-width: 100%; padding: 0; }
+  }
+
+  
+</style>
+</head>
+<body>
+
+<nav class="fynanc-nav">
+  <a href="/fynanc/index.html" class="brand">Fynanc</a>
+  <a href="/fynanc/index.html">Fynanc Home</a>
+  <a href="/fynanc-criteria/index.html" class="active">Grow Capital</a>
+  <a href="/cash-etf/index.html">The Parking Spot</a>
+  <a href="/fynanc-criteria/index.html" class="toggle">Light Mode</a>
+</nav>
+
+
+<div class="page">
+
+  <div class="title-area">
+    <div class="title-decoration">
+      <span class="line"></span>
+      <span class="diamond">&#9650;</span>
+      <span class="line"></span>
+    </div>
+    <h1>Grow Capital</h1>
+    <p class="tagline">Income Amplifier</p>
+    <p class="subtitle">Year 1-2 of the Fynanc wealth journey. Build your war chest by cycling capital through credit facilities, earning the spread between yield and borrowing cost.</p>
+  </div>
+
+  <div class="section-bar green">What Is Grow Capital?</div>
+  <div class="content-box">
+    <h3>The First Phase: Capital Accumulation</h3>
+    <p>Grow Capital is Year 1-2 of the Fynanc framework. Before deploying into PLEX, you need capital. The Income Amplifier is the engine that builds it.</p>
+    <p>Core mechanism: borrow from a credit facility (HELOC or LOC) at one rate, invest at a higher rate, pocket the <strong>spread</strong>, repay the loan, and repeat.</p>
+    <div class="callout-box" style="border-left-color:var(--green); background:var(--green-light);">
+      <div class="cb-title" style="color:var(--green);">Key Insight</div>
+      <div class="cb-text">Income Amplifier is NOT PLEX. They are separate systems with separate criteria. IA builds capital (Year 1). PLEX deploys capital (Year 2+). The IA <em>feeds</em> the PLEX.</div>
+    </div>
+  </div>
+
+  <div class="section-bar">Income Amplifier Selection Criteria</div>
+  <div class="content-box">
+    <p style="font-size:0.82rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; font-weight:700; margin-bottom:14px;">Priority Order (most important first)</p>
+    <div class="criteria-grid">
+      <div class="criteria-card">
+        <div class="cc-rank">Priority #1</div>
+        <div class="cc-name">Spread</div>
+        <div class="cc-desc">Yield on investment MINUS borrowing rate on LOC. Must be positive. Example: earning 8%, borrowing at 6% = 2% spread.</div>
+      </div>
+      <div class="criteria-card">
+        <div class="cc-rank">Priority #2</div>
+        <div class="cc-name">Loan Constant</div>
+        <div class="cc-desc">75% loan constant determines the cash flow rate. Annual debt service as percentage of original loan amount.</div>
+      </div>
+      <div class="criteria-card">
+        <div class="cc-rank">Priority #3</div>
+        <div class="cc-name">Cash Flow Rate</div>
+        <div class="cc-desc">Calculated per amplifier flip cycle. Must exceed LOC interest cost to generate positive returns each cycle.</div>
+      </div>
+      <div class="criteria-card">
+        <div class="cc-rank">Priority #4</div>
+        <div class="cc-name">Dividend Reliability</div>
+        <div class="cc-desc">Assets must pay consistent dividends. Dividends service the LOC interest while capital cycles through the amplifier.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-bar gold">Strategy Types</div>
+  <div class="content-box">
+    <h3>Forgiveness Flips</h3>
+    <p>Capital cycling with a forgiveness component. Structured to maximize the compounding effect of each cycle by leveraging forgiveness mechanics in the credit structure.</p>
+    <h3 style="margin-top:16px;">Copycat Boosters</h3>
+    <p>Replicate proven flip patterns from the community. Follow established playbooks that have demonstrated consistent spread capture across multiple market conditions.</p>
+  </div>
+
+  
+
+  <div class="section-bar navy">Glossary: Grow Capital Terms</div>
+  <div class="content-box glossary-section">
+    
+    <div class="knowledge-progression">
+      <h4>Knowledge Progression</h4>
+      <p><em>Coined by <strong>Nexus</strong></em> &mdash; As concepts evolve through teaching, terms gain new distinctions. What you learn in Grow Capital may shift in meaning as you enter Invest Capital. Each evolution is marked so you can trace how understanding deepens over time.</p>
+      <div class="emoji-key">
+        <span>🔄 = changed once</span>
+        <span>🔄🔄 = changed twice</span>
+        <span>🔄🔄🔄 = changed 3+ times</span>
+      </div>
+    </div>
+
+    <div class="glossary-term" id="term-loan-constant">
+      <h4>Loan Constant</h4>
+      <p>The annual debt service (principal + interest) expressed as a percentage of the original loan amount. Used to quickly compare borrowing costs across different loan structures. In the Income Amplifier, the 75% loan constant determines the cash flow rate for each cycle.</p>
+      <div class="source">
+        <span class="source-label">Source:</span> George Antone -- Income Amplifier Blueprint, Ch. 6 (Smart Levers) <a href="https://fynancacademy.com" target="_blank" rel="noopener">[Video]</a> <span class="timestamp">@ Income Amplifier Course > Criteria Module</span>
+      </div>
+    </div>
+
+    <div class="glossary-term" id="term-cash-flow-rate">
+      <h4>Cash Flow Rate</h4>
+      <p>The net income generated per amplifier flip cycle after deducting borrowing costs. Must be positive for the amplifier to work.</p>
+      <div class="source">
+        <span class="source-label">Source:</span> Fynanc Academy -- Income Amplifier Course > Criteria Module <a href="https://fynancacademy.com" target="_blank" rel="noopener">[Video]</a> <span class="timestamp">@ Income Amplifier Course > Criteria Module</span>
+      </div>
+    </div>
+
+    <div class="glossary-term" id="term-income-amplifier">
+      <h4>Income Amplifier</h4>
+      <p>A capital-cycling strategy that uses a credit facility (HELOC/LOC) as a funding line. Borrow at one rate, invest at a higher rate, earn the spread, repay, and repeat.</p>
+      <div class="source">
+        <span class="source-label">Source:</span> George Antone -- The Income Amplifier Blueprint, Ch. 7 (Step-by-Step Blueprint) <a href="https://fynancacademy.com" target="_blank" rel="noopener">[Video]</a> <span class="timestamp">@ Income Amplifier Blueprint > Ch. 7</span>
+      </div>
+    </div>
+
+    <div class="glossary-term" id="term-spread">
+      <h4>Spread</h4>
+      <p>The difference between the yield earned on an investment and the cost of borrowing to fund it. Spread = Investment Yield - LOC Borrowing Rate.</p>
+      <div class="source">
+        <span class="source-label">Source:</span> Fynanc Academy -- Income Amplifier Course > Selection Criteria <a href="https://fynancacademy.com" target="_blank" rel="noopener">[Video]</a> <span class="timestamp">@ Income Amplifier Course > Criteria Module</span>
+      </div>
+    </div>
+
+    <div class="glossary-term" id="term-grow-capital-phase">
+      <h4>Grow Capital Phase 🔄</h4>
+      <p>Year 1-2 of the Fynanc wealth journey. The accumulation phase where the Income Amplifier builds capital. Focus all Thrust on growing capital size before moving to Invest phase. Scattered effort across phases delays wealth building by decades.</p>
+      <div class="source">
+        <span class="source-label">Source:</span> George Antone -- Fynanc Substack: Why the Order of Operations Changes Everything (May 2026) <a href="https://fynanc.substack.com/p/why-the-order-of-operations-changes" target="_blank" rel="noopener">[Video]</a> <span class="timestamp">(See full session)</span>
+      </div>
+    </div>
+
+    <div class="glossary-term" id="term-forgiveness-flip">
+      <h4>Forgiveness Flip</h4>
+      <p>A specific Income Amplifier strategy type that incorporates a forgiveness component in the credit structure.</p>
+      <div class="source">
+        <span class="source-label">Source:</span> Fynanc Academy -- Income Amplifier Course > Strategy Types <a href="https://fynancacademy.com" target="_blank" rel="noopener">[Video]</a> <span class="timestamp">@ Income Amplifier Course > Strategy Types</span>
+      </div>
+    </div>
+
+    <div class="glossary-term" id="term-copycat-booster">
+      <h4>Copycat Booster</h4>
+      <p>A proven Income Amplifier flip pattern shared within the Fynanc community. Members replicate established playbooks.</p>
+      <div class="source">
+        <span class="source-label">Source:</span> Fynanc Academy -- Income Amplifier Course > Copycat Booster Strategy <a href="https://fynancacademy.com" target="_blank" rel="noopener">[Video]</a> <span class="timestamp">@ Income Amplifier Course > Community Strategies</span>
+      </div>
+    </div>
+
+    <div class="glossary-term" id="term-iris-plan">
+      <h4>IRIS Plan</h4>
+      <p>The Fynanc financial planning tool that calculates optimal LOC sizes, contribution rates, and timelines for achieving passive income targets.</p>
+      <div class="source">
+        <span class="source-label">Source:</span> Fynanc Academy -- IRIS Academy > IRIS Plan Review Module <a href="https://fynancacademy.com" target="_blank" rel="noopener">[Video]</a> <span class="timestamp">@ IRIS Academy > Plan Review Module</span>
+      </div>
+    </div>
+
+    <div class="glossary-term" id="term-flow">
+      <h4>FLOW</h4>
+      <p>Fynanc's automated cash flow management system covering 4 stages: awareness, optimization, systemization, and mastery of money movement. Automates transfers between Income Hub, Sweep Account, and Bill Pay to maximize capital velocity.</p>
+      <div class="source">
+        <span class="source-label">Source:</span> George Antone -- FLOW Training Course > Introduction Module <a href="https://fynancacademy.com" target="_blank" rel="noopener">[Video]</a> <span class="timestamp">@ FLOW Training > Introduction > Lesson 05</span>
+      </div>
+    </div>
+
+    <div class="glossary-term" id="term-family-banking">
+      <h4>Family Banking</h4>
+      <p>A strategy to redirect income streams that normally flow to commercial banks back to yourself using a private banking structure. Based on the concept that your income is a source of income streams to banks, and you can capture that value instead.</p>
+      <div class="source">
+        <span class="source-label">Source:</span> Fynanc Academy -- Family Bank / Personal Banking Course <a href="https://fynancacademy.com" target="_blank" rel="noopener">[Video]</a> <span class="timestamp">@ Family Bank Course</span>
+      </div>
+    </div>
+
+    <div class="glossary-term" id="term-velocity-of-money">
+      <h4>Velocity of Money</h4>
+      <p>The concept of cycling capital through multiple uses quickly rather than letting it sit idle. Each dollar does multiple jobs in a short time frame, compounding returns without needing additional capital.</p>
+      <div class="source">
+        <span class="source-label">Source:</span> Fynanc Academy -- Income Sources > Senior Loans (How to Use with IA) <a href="https://fynancacademy.com" target="_blank" rel="noopener">[Video]</a> <span class="timestamp">@ Income Sources > Senior Loans Module</span>
+      </div>
+    </div>
+
+    <div class="glossary-term" id="term-capital-amplifier">
+      <h4>Capital Amplifier</h4>
+      <p>The overarching wealth operating system encompassing IRIS, Income Amplifier, and FLOW. It is the machine that cycles capital through the R-C Loop (Return-Capital Loop) repeatedly to accelerate wealth building.</p>
+      <div class="source">
+        <span class="source-label">Source:</span> George Antone -- FLOW Training > Worldview Module (6 Components) <a href="https://fynancacademy.com" target="_blank" rel="noopener">[Video]</a> <span class="timestamp">@ FLOW Training > Introduction > Worldview (Lesson 08)</span>
+      </div>
+    </div>
+
+    <div class="glossary-term" id="term-money-date">
+      <h4>Money Date</h4>
+      <p>A scheduled recurring review session where you implement action plans from each Fynanc strategy. Your Money Date Playbook contains all action plans organized for systematic execution.</p>
+      <div class="source">
+        <span class="source-label">Source:</span> Fynanc Academy -- FLOW Training > Money Date Action Plan <a href="https://fynancacademy.com" target="_blank" rel="noopener">[Video]</a> <span class="timestamp">@ FLOW Training > Introduction > Lesson 04</span>
+      </div>
+    </div>
+
+    <div class="glossary-term" id="term-income-stream">
+      <h4>Income Stream</h4>
+      <p>A regular series of payments from one party to another. Wealth building requires moving from the paying side to the receiving side of income streams. Banks profit from income streams generated by your labor.</p>
+      <div class="source">
+        <span class="source-label">Source:</span> George Antone -- FLOW Training > Tier 1 Awareness <a href="https://fynancacademy.com" target="_blank" rel="noopener">[Video]</a> <span class="timestamp">@ FLOW Training > Tier 1 Awareness (Lesson 02)</span>
+      </div>
+    </div>
+
+  </div>
+
+  
+  <div class="cross-nav">
+    <div class="nav-label">Fynanc Knowledge Base</div>
+    <a href="/fynanc/index.html">
+      <div class="nav-title">Fynanc Home</div>
+      <div class="nav-sub">Overview</div>
+    </a>
+    <a href="/fynanc-criteria/index.html">
+      <div class="nav-title">Grow Capital</div>
+      <div class="nav-sub">Income Amplifier</div>
+    </a>
+    <a href="/cash-etf/index.html">
+      <div class="nav-title">The Parking Spot</div>
+      <div class="nav-sub">Better Than Cash</div>
+    </a>
+  </div>
+
+  
+  <div class="footer-bar">
+    <div class="footer-logo">F</div>
+    <div class="footer-tagline">Grow Capital</div>
+    <div class="footer-sub">Income Amplifier &bull; Fynanc Knowledge Base</div>
+  </div>
+
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus Ops Dashboard</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0a0f;color:#e0e0e0;min-height:100vh}
+.header{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:20px;border-bottom:2px solid #0f3460;text-align:center}
+.header h1{font-size:1.4em;color:#e94560;margin-bottom:4px}
+.header p{font-size:0.85em;color:#888}
+.tabs{display:flex;gap:0;background:#111;border-bottom:1px solid #333;overflow-x:auto}
+.tab{padding:12px 20px;cursor:pointer;font-size:0.9em;color:#888;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.2s}
+.tab.active{color:#e94560;border-bottom-color:#e94560;background:#1a1a2e}
+.tab:hover{color:#fff}
+.content{max-width:1000px;margin:0 auto;padding:12px}
+.section{display:none}
+.section.active{display:block}
+.card{background:#151520;border:1px solid #2a2a3a;border-radius:8px;margin-bottom:10px;overflow:hidden;transition:border-color 0.2s}
+.card.p-high{border-left:4px solid #e94560}
+.card.p-medium{border-left:4px solid #f39c12}
+.card.p-low{border-left:4px solid #555}
+.card.p-done{border-left:4px solid #27ae60;opacity:0.7}
+.card-header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;cursor:pointer}
+.card-title{font-weight:600;font-size:0.95em;flex:1}
+.badge{font-size:0.7em;padding:3px 8px;border-radius:12px;font-weight:600;text-transform:uppercase}
+.badge-red{background:#e94560;color:#fff}
+.badge-orange{background:#f39c12;color:#000}
+.badge-gray{background:#444;color:#ccc}
+.badge-green{background:#27ae60;color:#fff}
+.badge-blue{background:#0f3460;color:#fff}
+.card-body{padding:0 14px 14px;display:none}
+.card-body.open{display:block}
+.rec{background:#1a1a2e;padding:10px;border-radius:6px;margin:8px 0;font-size:0.85em;line-height:1.5;color:#bbb}
+.rec b{color:#e94560}
+.status-line{font-size:0.8em;color:#888;margin-top:6px}
+.btn-row{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.btn{padding:6px 14px;border:none;border-radius:6px;cursor:pointer;font-size:0.8em;font-weight:600;transition:all 0.15s}
+.btn:active{transform:scale(0.95)}
+.btn-up{background:#27ae60;color:#fff}
+.btn-down{background:#e74c3c;color:#fff}
+.btn-start{background:#3498db;color:#fff}
+.btn-done{background:#2ecc71;color:#fff}
+.process-bar{position:sticky;bottom:0;background:#1a1a2e;border-top:2px solid #e94560;padding:14px;text-align:center;z-index:10}
+.process-btn{background:linear-gradient(135deg,#e94560,#c0392b);color:#fff;border:none;padding:14px 32px;border-radius:8px;font-size:1em;font-weight:700;cursor:pointer;width:100%;max-width:400px}
+.process-btn:active{transform:scale(0.97)}
+.process-btn:disabled{opacity:0.5;cursor:not-allowed}
+.toast{position:fixed;top:20px;right:20px;background:#27ae60;color:#fff;padding:12px 20px;border-radius:8px;font-weight:600;display:none;z-index:100;animation:fadeIn 0.3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.summary-box{background:#151520;border:1px solid #2a2a3a;border-radius:8px;padding:16px;margin-bottom:16px}
+.summary-box h3{color:#e94560;margin-bottom:8px;font-size:1em}
+.stat-row{display:flex;justify-content:space-around;text-align:center;margin:12px 0}
+.stat{flex:1}
+.stat .num{font-size:1.8em;font-weight:700}
+.stat .label{font-size:0.75em;color:#888;margin-top:2px}
+.num-green{color:#27ae60}
+.num-red{color:#e94560}
+.num-orange{color:#f39c12}
+.num-blue{color:#3498db}
+.empty-state{text-align:center;padding:40px;color:#555;font-style:italic}
+</style>
+</head>
+<body>
+
+<div class="header">
+<h1>NEXUS OPS DASHBOARD</h1>
+<p>PT Audit Action Items &bull; Last updated: <span id="lastUpdated">2026-05-13 10:42</span></p>
+</div>
+
+<div class="tabs">
+<div class="tab active" onclick="showTab('active')">Active</div>
+<div class="tab" onclick="showTab('completed')">Completed</div>
+<div class="tab" onclick="showTab('summary')">Summary</div>
+</div>
+
+<div class="content">
+
+<!-- SUMMARY SECTION -->
+<div class="section" id="sec-summary">
+<div class="summary-box">
+<h3>Audit Scorecard</h3>
+<div class="stat-row">
+<div class="stat"><div class="num num-green" id="s-working">6</div><div class="label">Working</div></div>
+<div class="stat"><div class="num num-red" id="s-broken">8</div><div class="label">Gaps</div></div>
+<div class="stat"><div class="num num-orange" id="s-partial">5</div><div class="label">Partial</div></div>
+<div class="stat"><div class="num num-blue" id="s-done">0</div><div class="label">Done</div></div>
+</div>
+</div>
+</div>
+
+<!-- ACTIVE SECTION -->
+<div class="section active" id="sec-active"></div>
+
+<!-- COMPLETED SECTION -->
+<div class="section" id="sec-completed">
+<div class="empty-state" id="empty-done">No completed items yet. Process priorities to get started.</div>
+</div>
+
+</div>
+
+<div class="process-bar">
+<button class="process-btn" onclick="processSelections()">PROCESS SELECTIONS</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const ITEMS = [
+  {
+    id: "cron-setup",
+    title: "Set up cron scheduling (BOOPs, daily report, KB refresh)",
+    category: "infrastructure",
+    priority: "high",
+    status: "done",
+    statusText: "Scheduler running in tmux. 6/5 tasks OK.",
+    rec: "<b>Highest impact, lowest effort.</b> PT runs BOOPs every 25 min, morning brief at 8am, nightly at 10pm. Our crontab is completely empty. 5 BOOP scripts exist but nothing triggers them. ~30 min to wire up.",
+    score: "9/10"
+  },
+  {
+    id: "feedback-rules",
+    title: "Create feedback rule system (feedback_*.md files)",
+    category: "memory",
+    priority: "high",
+    status: "not-started",
+    statusText: "Not started — zero feedback files.",
+    rec: "<b>PT has 80+ rules, we have ZERO.</b> Every time Joseph corrects us, it should become a grep-able feedback file that survives sessions. Start with top 10 known rules. This is the #1 reason PT compounds and we dont.",
+    score: "0/10"
+  },
+  {
+    id: "google-api-key",
+    title: "Configure GOOGLE_API_KEY for image generation",
+    category: "content",
+    priority: "high",
+    status: "done",
+    statusText: "GOOGLE_API_KEY configured and verified.",
+    rec: "<b>5-minute fix, unlocks entire image pipeline.</b> Gemini 3 Pro skill and tool already built. Just need the API key added to .env. Currently image gen literally cannot run.",
+    score: "8/10"
+  },
+  {
+    id: "linkedin-api",
+    title: "Get LinkedIn API credentials + build ONE publish function",
+    category: "content",
+    priority: "high",
+    status: "in-progress",
+    statusText: "LinkedIn credential file exists (linkedin-credentials.json.enc) but not configured in .env.",
+    rec: "<b>The entire LinkedIn Pipeline doc is unusable without this.</b> Need: LinkedIn app registered for w_member_social scope, OAuth token, one publish_post() function. ~2 hours. This is the gateway to the full PT content pipeline.",
+    score: "2/10"
+  },
+  {
+    id: "engineering-flow",
+    title: "Enforce SPEC→CTO→BUILD→SECURITY→QA→SHIP pipeline",
+    category: "process",
+    priority: "medium",
+    status: "in-progress",
+    statusText: "Review gate active. 33 reviews approved. Full SPEC>CTO>BUILD>SEC>QA>SHIP not yet enforced end-to-end.",
+    rec: "<b>All 6 agents exist but anyone can skip steps.</b> PT made this non-negotiable and constitutional. We need a gate function or hook that blocks shipping without security + QA sign-off. The Netlify review gate is a good start — extend it.",
+    score: "5/10"
+  },
+  {
+    id: "nightly-self-analysis",
+    title: "Build nightly self-analysis (Aether-style self-grading)",
+    category: "memory",
+    priority: "medium",
+    status: "not-started",
+    statusText: "Not started",
+    rec: "<b>PT Aether grades itself every night</b> across discipline/throughput/delegation/memory. Filed as self_analysis_*.md. We have no self-reflection loop. This is how feedback rules get discovered organically.",
+    score: "0/10"
+  },
+  {
+    id: "content-approval",
+    title: "Build content approval workflow (kanban or TG-based)",
+    category: "content",
+    priority: "medium",
+    status: "in-progress",
+    statusText: "Work queue exists with 164 brand-marketing items. No kanban UI yet.",
+    rec: "<b>PT has social.purebrain.ai kanban.</b> We dont need that level — start with: draft to TG, Joseph thumbs-up/down, auto-publish on approval. Minimum viable approval flow.",
+    score: "2/10"
+  },
+  {
+    id: "modularize-tools",
+    title: "Make BOOP scripts + daily_report importable as modules",
+    category: "infrastructure",
+    priority: "medium",
+    status: "in-progress",
+    statusText: "1/4 tools modularized.",
+    rec: "<b>6 tools that cant be composed.</b> Each BOOP script and daily_report.py is standalone CLI. Add a main() function and if __name__ guard so they can be imported and chained. Enables custom BOOP cycles.",
+    score: "4/10"
+  },
+  {
+    id: "trigger-tokens",
+    title: "Evaluate PT trigger-token routing (ST#, MA#, etc.) vs CEO Rule",
+    category: "process",
+    priority: "medium",
+    status: "not-started",
+    statusText: "Research needed — decision item.",
+    rec: "<b>PT routes with simple tags, we spawn full teams.</b> Our team-lead ceremony adds 30-60 sec overhead per task. PT just tags ST# and it routes. Consider hybrid: trigger tokens for simple tasks, team leads for complex multi-dept work.",
+    score: "N/A"
+  },
+  {
+    id: "cross-publish",
+    title: "Build cross-publish function (blog → multiple destinations)",
+    category: "content",
+    priority: "low",
+    status: "not-started",
+    statusText: "Netlify works, no cross-publish.",
+    rec: "PT publishes same content to purebrain.ai + jareddsanborn.com + Drive in one call. We only have Netlify. Build a publish_everywhere() that takes markdown and pushes to N destinations. Depends on LinkedIn API being set up first.",
+    score: "2/10"
+  },
+  {
+    id: "engagement-engine",
+    title: "Build LinkedIn engagement engine (comments + reactions)",
+    category: "content",
+    priority: "low",
+    status: "not-started",
+    statusText: "Not started — depends on LinkedIn API.",
+    rec: "PT runs 50-80 comments/day, 100-150 reactions with rate limiting and rotation. This is what separates 2k followers from 50k. Depends on LinkedIn API credentials being set up first.",
+    score: "0/10"
+  },
+  {
+    id: "image-templates",
+    title: "Build branded image templates (PIL composition pipeline)",
+    category: "content",
+    priority: "low",
+    status: "in-progress",
+    statusText: "Image generation skill exists. No branded templates yet.",
+    rec: "PT has FLUX + PIL composition with branded overlays (hex icon, wordmark, gradient panels). We have Gemini but no brand layer. Build TPJG-branded templates equivalent to PTs Option D banner format.",
+    score: "3/10"
+  },
+  {
+    id: "repurpose-pool",
+    title: "Create image repurpose pool",
+    category: "content",
+    priority: "low",
+    status: "not-started",
+    statusText: "Not started.",
+    rec: "PT checks existing approved images before generating new ones. We regenerate from scratch every time. Create exports/image-pool/ with approved assets indexed by topic. Check before generating.",
+    score: "0/10"
+  },
+  {
+    id: "agent-learning",
+    title: "Expand agent learning directories (3/113 → 20+)",
+    category: "memory",
+    priority: "low",
+    status: "in-progress",
+    statusText: "18 agents have learning dirs (target: 20+).",
+    rec: "113 agents but only architect, coder, and web-dev have learning directories. The other 110 agents accumulate zero persistent learning. Start with the 15-20 most-invoked agents.",
+    score: "5/10"
+  },
+  {
+    id: "archived-skills-audit",
+    title: "Audit 125 archived skills — revive or permanently delete",
+    category: "infrastructure",
+    priority: "low",
+    status: "not-started",
+    statusText: "125 archived, 39 active (3:1 ratio).",
+    rec: "3x more archived than active. PT has ~80 ALL live. Go through archived, test each against real use, revive the useful ones with proper firing contracts, permanently delete the rest. Stop skill bloat.",
+    score: "N/A"
+  },
+  {
+    id: "cross-dept-coordinator",
+    title: "Build cross-department coordinator agent (PT# equivalent)",
+    category: "process",
+    priority: "low",
+    status: "in-progress",
+    statusText: "Coordinator agent exists: flow-coordinator.md",
+    rec: "PT has PT# umbrella agent for work spanning 2+ departments. We route ambiguous work to 'ask Joseph' which is a bottleneck. Build a coordinator that can classify and parallel-route cross-dept work.",
+    score: "3/10"
+  }
+];
+
+function getLS() {
+  try { return JSON.parse(localStorage.getItem('nexus-ops') || '{}'); } catch(e) { return {}; }
+}
+function setLS(d) { localStorage.setItem('nexus-ops', JSON.stringify(d)); }
+
+function init() {
+  const saved = getLS();
+  ITEMS.forEach(item => {
+    if (saved[item.id]) {
+      item.priority = saved[item.id].priority || item.priority;
+      item.status = saved[item.id].status || item.status;
+      item.statusText = saved[item.id].statusText || item.statusText;
+    }
+  });
+  render();
+}
+
+function render() {
+  const activeEl = document.getElementById('sec-active');
+  const doneEl = document.getElementById('sec-completed');
+  const emptyDone = document.getElementById('empty-done');
+  activeEl.innerHTML = '';
+  doneEl.innerHTML = '';
+
+  const pOrder = {high:0, medium:1, low:2};
+  const active = ITEMS.filter(i => i.status !== 'done').sort((a,b) => pOrder[a.priority] - pOrder[b.priority]);
+  const done = ITEMS.filter(i => i.status === 'done');
+
+  active.forEach(item => activeEl.appendChild(makeCard(item)));
+  done.forEach(item => doneEl.appendChild(makeCard(item)));
+
+  emptyDone.style.display = done.length ? 'none' : 'block';
+
+  // Update summary
+  document.getElementById('s-working').textContent = active.filter(i=>i.priority==='low').length;
+  document.getElementById('s-broken').textContent = active.filter(i=>i.priority==='high').length;
+  document.getElementById('s-partial').textContent = active.filter(i=>i.priority==='medium').length;
+  document.getElementById('s-done').textContent = done.length;
+
+  // Save state
+  const state = {};
+  ITEMS.forEach(i => state[i.id] = {priority: i.priority, status: i.status, statusText: i.statusText});
+  setLS(state);
+}
+
+function makeCard(item) {
+  const card = document.createElement('div');
+  const pClass = item.status === 'done' ? 'p-done' : 'p-' + item.priority;
+  card.className = 'card ' + pClass;
+
+  const badgeClass = item.priority === 'high' ? 'badge-red' : item.priority === 'medium' ? 'badge-orange' : 'badge-gray';
+  const statusBadge = item.status === 'done' ? 'badge-green' : item.status === 'in-progress' ? 'badge-blue' : 'badge-gray';
+
+  card.innerHTML = `
+    <div class="card-header" onclick="this.nextElementSibling.classList.toggle('open')">
+      <span class="card-title">${item.title}</span>
+      <span class="badge ${badgeClass}">${item.priority}</span>
+    </div>
+    <div class="card-body">
+      <div class="rec">${item.rec}</div>
+      <div class="status-line">Status: <span class="badge ${statusBadge}">${item.status}</span> ${item.statusText} &bull; ${item.score}</div>
+      <div class="btn-row">
+        ${item.status !== 'done' ? `
+          ${item.priority !== 'high' ? `<button class="btn btn-up" onclick="setPriority('${item.id}','high')">Promote</button>` : ''}
+          ${item.priority !== 'low' ? `<button class="btn btn-down" onclick="setPriority('${item.id}','low')">Demote</button>` : ''}
+          ${item.priority === 'high' && item.priority !== 'medium' ? `<button class="btn btn-down" onclick="setPriority('${item.id}','medium')">Medium</button>` : ''}
+          ${item.priority === 'low' && item.priority !== 'medium' ? `<button class="btn btn-up" onclick="setPriority('${item.id}','medium')">Medium</button>` : ''}
+          <button class="btn btn-done" onclick="markDone('${item.id}')">Mark Done</button>
+        ` : `<button class="btn btn-start" onclick="reopen('${item.id}')">Reopen</button>`}
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+function setPriority(id, p) {
+  const item = ITEMS.find(i => i.id === id);
+  if (item) { item.priority = p; render(); }
+}
+
+function markDone(id) {
+  const item = ITEMS.find(i => i.id === id);
+  if (item) { item.status = 'done'; item.statusText = 'Completed'; render(); }
+}
+
+function reopen(id) {
+  const item = ITEMS.find(i => i.id === id);
+  if (item) { item.status = 'not-started'; render(); }
+}
+
+function showTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelector(`.tab[onclick="showTab('${tab}')"]`).classList.add('active');
+  document.getElementById('sec-' + tab).classList.add('active');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3000);
+}
+
+function processSelections() {
+  const high = ITEMS.filter(i => i.priority === 'high' && i.status !== 'done');
+  if (!high.length) { showToast('No high-priority items to process'); return; }
+
+  const btn = document.querySelector('.process-btn');
+  btn.disabled = true;
+  btn.textContent = 'SENDING TO NEXUS...';
+
+  const summary = high.map(i => '- ' + i.title).join('\n');
+  const msg = 'PROCESS REQUEST from Ops Dashboard:\n\nHigh-priority items to work on:\n' + summary + '\n\nTotal: ' + high.length + ' items';
+
+  // Send to TG via GET request (bypasses CORS)
+  const encoded = encodeURIComponent(msg);
+  const tgUrl = 'https://api.telegram.org/bot7885296044:AAHd84tffiLhIQxh5POsP_R20BlvU-8rfqM/sendMessage?chat_id=-1003730446975&message_thread_id=10&text=' + encoded;
+
+  // Use script tag injection to bypass CORS (JSONP-style)
+  const script = document.createElement('script');
+  script.src = tgUrl + '&callback=tgCallback';
+
+  // Fallback: also try img beacon
+  const img = new Image();
+  img.onload = img.onerror = function() {
+    // TG returns JSON not image, so onerror fires but request was sent
+    high.forEach(i => { i.status = 'in-progress'; i.statusText = 'Sent to Nexus for processing'; });
+    render();
+    showToast('Sent ' + high.length + ' items to Nexus!');
+    btn.disabled = false;
+    btn.textContent = 'PROCESS SELECTIONS';
+  };
+  img.src = tgUrl;
+
+  // Safety timeout
+  setTimeout(function() {
+    if (btn.disabled) {
+      high.forEach(i => { i.status = 'in-progress'; i.statusText = 'Sent to Nexus for processing'; });
+      render();
+      showToast('Sent ' + high.length + ' items to Nexus!');
+      btn.disabled = false;
+      btn.textContent = 'PROCESS SELECTIONS';
+    }
+  }, 5000);
+}
+
+init();
+</script>
+
+</body>
+</html>

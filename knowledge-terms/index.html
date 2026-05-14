@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knowledge Terms | TPJG Fynanc Glossary</title>
+<meta name="description" content="Complete glossary of Fynanc wealth-building terminology. Grow Capital, Invest Capital, and general financial concepts from Fynanc Academy.">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Alice&family=Karla:wght@400;500;600;700;800;900&display=swap');
+
+  :root {
+    --navy: #1B2A4A;
+    --navy-dark: #0F1B33;
+    --cream: #C7C1BA;
+    --gold: #C9A84C;
+    --gold-dark: #B8943F;
+    --green: #4CAF50;
+    --green-light: #1B3B1F;
+    --blue: #42A5F5;
+    --blue-light: #1A2A3E;
+    --white: #FFFFFF;
+    --border: #2A3D5E;
+    --text: #E0E0E0;
+    --text-muted: #90A4AE;
+    --bg: #0F1B33;
+    --surface: #1B2A4A;
+    --card-bg: #1B2A4A;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Karla', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Nav */
+  .fynanc-nav {
+    background: var(--navy);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+  .fynanc-nav .brand {
+    font-family: 'Alice', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    margin-right: 24px;
+  }
+  .fynanc-nav a {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--cream);
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .fynanc-nav a:hover { background: rgba(201,168,76,0.15); color: var(--gold); }
+  .fynanc-nav a.active { background: var(--gold); color: var(--navy); font-weight: 800; }
+
+  /* Page */
+  .page { max-width: 1000px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* Title */
+  .title-area {
+    text-align: center;
+    padding: 48px 20px 24px;
+  }
+  .title-area h1 {
+    font-family: 'Alice', serif;
+    font-size: 2.4rem;
+    color: var(--gold);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  .title-area .subtitle {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .term-count {
+    display: inline-block;
+    background: var(--surface);
+    color: var(--gold);
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-top: 12px;
+    border: 1px solid var(--border);
+  }
+
+  /* Search */
+  .search-bar {
+    max-width: 600px;
+    margin: 24px auto 32px;
+    position: relative;
+  }
+  .search-bar input {
+    width: 100%;
+    padding: 14px 20px 14px 48px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--text);
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-bar input::placeholder { color: var(--text-muted); }
+  .search-bar input:focus { border-color: var(--gold); }
+  .search-bar .icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 1.1rem;
+  }
+
+  /* Filter pills */
+  .filter-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .pill {
+    padding: 7px 18px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--cream);
+    font-family: 'Karla', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .pill:hover { border-color: var(--gold); color: var(--gold); }
+  .pill.active { background: var(--gold); color: var(--navy); border-color: var(--gold); font-weight: 800; }
+  .pill .count {
+    font-size: 0.72rem;
+    opacity: 0.7;
+    margin-left: 4px;
+  }
+
+  /* Phase section */
+  .phase-section {
+    margin-bottom: 40px;
+  }
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+  }
+  .phase-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border-radius: 6px;
+    font-family: 'Karla', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .phase-badge.grow { background: rgba(76,175,80,0.15); color: var(--green); border: 1px solid rgba(76,175,80,0.3); }
+  .phase-badge.invest { background: rgba(66,165,245,0.15); color: var(--blue); border: 1px solid rgba(66,165,245,0.3); }
+  .phase-badge.general { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+  .phase-badge.preserve { background: rgba(206,147,216,0.15); color: #CE93D8; border: 1px solid rgba(206,147,216,0.3); }
+  .phase-title {
+    font-family: 'Alice', serif;
+    font-size: 1.4rem;
+    color: var(--cream);
+  }
+
+  /* Term cards */
+  .term-grid {
+    display: grid;
+    gap: 14px;
+  }
+  .term-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+  .term-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  }
+  .term-name {
+    font-family: 'Alice', serif;
+    font-size: 1.15rem;
+    color: var(--gold);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .term-name .phase-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .phase-dot.grow { background: var(--green); }
+  .phase-dot.invest { background: var(--blue); }
+  .phase-dot.general { background: var(--gold); }
+  .phase-dot.preserve { background: #CE93D8; }
+  .term-def {
+    font-size: 0.92rem;
+    color: var(--text);
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+  .term-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+  }
+  .term-source {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .term-link a {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 3px 10px;
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+  .term-link a:hover {
+    background: var(--gold);
+    color: var(--navy);
+  }
+  .term-date {
+    opacity: 0.6;
+  }
+
+  /* No results */
+  .no-results {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    display: none;
+  }
+  .no-results.visible { display: block; }
+  .no-results h3 {
+    font-family: 'Alice', serif;
+    font-size: 1.3rem;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+
+  /* Footer */
+  .page-footer {
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+  .page-footer a {
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .page-footer a:hover { text-decoration: underline; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .title-area h1 { font-size: 1.7rem; }
+    .term-card { padding: 16px; }
+    .term-name { font-size: 1.05rem; }
+    .term-meta { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .fynanc-nav { padding: 10px 12px; gap: 4px; }
+    .fynanc-nav .brand { font-size: 0.95rem; margin-right: 12px; }
+    .fynanc-nav a { font-size: 0.7rem; padding: 5px 8px; }
+    .phase-header { flex-direction: column; align-items: flex-start; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="fynanc-nav">
+  <a href="/fynanc/" class="brand">Fynanc</a>
+  <a href="/fynanc/grow-capital/">Grow Capital</a>
+  <a href="/fynanc/invest-capital/">Invest Capital</a>
+  <a href="/fynanc-criteria/">Criteria</a>
+  <a href="/freedom-engine/">Freedom Engine</a>
+  <a href="/knowledge-terms/" class="active">Glossary</a>
+</nav>
+
+<div class="page">
+  <div class="title-area">
+    <h1>Knowledge Terms</h1>
+    <p class="subtitle">Complete glossary of Fynanc wealth-building terminology, sourced from Fynanc Academy courses, George Antone's books, and the Fynanc Substack.</p>
+    <span class="term-count" id="termCount">32 terms</span>
+  </div>
+
+  <div class="search-bar">
+    <span class="icon">&#128269;</span>
+    <input type="text" id="searchInput" placeholder="Search terms, definitions, or sources..." autocomplete="off">
+  </div>
+
+  <div class="filter-row" id="filterRow">
+    <button class="pill active" data-filter="all">All <span class="count" id="countAll"></span></button>
+    <button class="pill" data-filter="grow">Grow Capital <span class="count" id="countGrow"></span></button>
+    <button class="pill" data-filter="invest">Invest Capital <span class="count" id="countInvest"></span></button>
+    <button class="pill" data-filter="general">General <span class="count" id="countGeneral"></span></button>
+    <button class="pill" data-filter="preserve">Preserve <span class="count" id="countPreserve"></span></button>
+  </div>
+
+  <div id="termsContainer"></div>
+
+  <div class="no-results" id="noResults">
+    <h3>No matching terms</h3>
+    <p>Try a different search or clear the filter.</p>
+  </div>
+
+  <footer class="page-footer">
+    <p>Sourced from <a href="https://fynancacademy.com" target="_blank" rel="noopener">Fynanc Academy</a> &middot; Curated for <a href="https://thepropertyjoesgroup.com" target="_blank" rel="noopener">The Property Joes Group</a></p>
+    <p style="margin-top:6px; opacity:0.6;">Last updated: May 2026</p>
+  </footer>
+</div>
+
+<script>
+const TERMS = [
+  {
+    "name": "Loan Constant",
+    "definition": "The annual debt service (principal + interest) expressed as a percentage of the original loan amount. Used to quickly compare borrowing costs across different loan structures. In the Income Amplifier, the 75% loan constant determines the cash flow rate for each cycle.",
+    "source": "George Antone \u2014 Income Amplifier Blueprint, Ch. 6",
+    "source_url": "https://fynancacademy.com",
+    "phase": "grow",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Cash Flow Rate",
+    "definition": "The net income generated per amplifier flip cycle after deducting borrowing costs. Must be positive for the amplifier to work.",
+    "source": "Fynanc Academy \u2014 Income Amplifier Course",
+    "source_url": "https://fynancacademy.com",
+    "phase": "grow",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Income Amplifier",
+    "definition": "A capital-cycling strategy that uses a credit facility (HELOC/LOC) as a funding line. Borrow at one rate, invest at a higher rate, earn the spread, repay, and repeat.",
+    "source": "George Antone \u2014 The Income Amplifier Blueprint, Ch. 7",
+    "source_url": "https://fynancacademy.com",
+    "phase": "grow",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Spread",
+    "definition": "The difference between the yield earned on an investment and the cost of borrowing to fund it. Spread = Investment Yield \u2212 LOC Borrowing Rate.",
+    "source": "Fynanc Academy \u2014 Income Amplifier Course",
+    "source_url": "https://fynancacademy.com",
+    "phase": "grow",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Grow Capital Phase",
+    "definition": "Year 1\u20132 of the Fynanc wealth journey. The accumulation phase where the Income Amplifier builds capital. Focus all Thrust on growing capital size before moving to Invest phase. Scattered effort across phases delays wealth building by decades.",
+    "source": "George Antone \u2014 Fynanc Substack (May 2026)",
+    "source_url": "https://fynanc.substack.com/p/why-the-order-of-operations-changes",
+    "phase": "grow",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Forgiveness Flip",
+    "definition": "A specific Income Amplifier strategy type that incorporates a forgiveness component in the credit structure.",
+    "source": "Fynanc Academy \u2014 Income Amplifier Course",
+    "source_url": "https://fynancacademy.com",
+    "phase": "grow",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Copycat Booster",
+    "definition": "A proven Income Amplifier flip pattern shared within the Fynanc community. Members replicate established playbooks.",
+    "source": "Fynanc Academy \u2014 Income Amplifier Course",
+    "source_url": "https://fynancacademy.com",
+    "phase": "grow",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "IRIS Plan",
+    "definition": "The Fynanc financial planning tool that calculates optimal LOC sizes, contribution rates, and timelines for achieving passive income targets.",
+    "source": "Fynanc Academy \u2014 IRIS Academy",
+    "source_url": "https://fynancacademy.com",
+    "phase": "grow",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "FLOW",
+    "definition": "Fynanc\u2019s automated cash flow management system covering 4 stages: awareness, optimization, systemization, and mastery of money movement. Automates transfers between Income Hub, Sweep Account, and Bill Pay to maximize capital velocity.",
+    "source": "George Antone \u2014 FLOW Training Course",
+    "source_url": "https://fynancacademy.com",
+    "phase": "grow",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Family Banking",
+    "definition": "A strategy to redirect income streams that normally flow to commercial banks back to yourself using a private banking structure. Based on the concept that your income is a source of income streams to banks, and you can capture that value instead.",
+    "source": "Fynanc Academy \u2014 Family Bank Course",
+    "source_url": "https://fynancacademy.com",
+    "phase": "grow",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Velocity of Money",
+    "definition": "The concept of cycling capital through multiple uses quickly rather than letting it sit idle. Each dollar does multiple jobs in a short time frame, compounding returns without needing additional capital.",
+    "source": "Fynanc Academy \u2014 Income Sources: Senior Loans",
+    "source_url": "https://fynancacademy.com",
+    "phase": "grow",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Capital Amplifier",
+    "definition": "The overarching wealth operating system encompassing IRIS, Income Amplifier, and FLOW. It is the machine that cycles capital through the R\u2013C Loop (Return-Capital Loop) repeatedly to accelerate wealth building.",
+    "source": "George Antone \u2014 FLOW Training: Worldview Module",
+    "source_url": "https://fynancacademy.com",
+    "phase": "grow",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Money Date",
+    "definition": "A scheduled recurring review session where you implement action plans from each Fynanc strategy. Your Money Date Playbook contains all action plans organized for systematic execution.",
+    "source": "Fynanc Academy \u2014 FLOW Training",
+    "source_url": "https://fynancacademy.com",
+    "phase": "grow",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Income Stream",
+    "definition": "A regular series of payments from one party to another. Wealth building requires moving from the paying side to the receiving side of income streams. Banks profit from income streams generated by your labor.",
+    "source": "George Antone \u2014 FLOW Training: Tier 1 Awareness",
+    "source_url": "https://fynancacademy.com",
+    "phase": "grow",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "PLEX Portfolio",
+    "definition": "A margin-based investment portfolio structured into three allocation tiers (Bedrock 65%, Cash Flow 34%, Hedge 1%).",
+    "source": "George Antone \u2014 PLEX Immersion Course, Call 1",
+    "source_url": "https://fynancacademy.com",
+    "phase": "invest",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Bedrock (Tier)",
+    "definition": "The foundation tier of PLEX, comprising minimum 65% of portfolio value. Selected for price stability, low max drawdown, low market correlation.",
+    "source": "George Antone \u2014 PLEX Course Call 1, Workbook p.66",
+    "source_url": "https://fynancacademy.com",
+    "phase": "invest",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Cash Flow (Tier)",
+    "definition": "The income-generating tier of PLEX, comprising 34% of portfolio value. High yield, accepts NAV erosion and higher volatility.",
+    "source": "George Antone \u2014 PLEX Course Call 1",
+    "source_url": "https://fynancacademy.com",
+    "phase": "invest",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Hedge (Tier)",
+    "definition": "The protection tier of PLEX, 1% of portfolio. Moves opposite direction. Asymmetric payoff potential.",
+    "source": "George Antone \u2014 PLEX Course Call 1",
+    "source_url": "https://fynancacademy.com",
+    "phase": "invest",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Price Stability",
+    "definition": "The #1 priority criterion for Bedrock tier selection. Low standard deviation of price over time.",
+    "source": "George Antone \u2014 PLEX Course Call 1, Workbook p.66",
+    "source_url": "https://fynancacademy.com",
+    "phase": "invest",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Max Drawdown",
+    "definition": "Maximum peak-to-trough decline in a ticker\u2019s price. Check 5\u201310 year chart for crash survival.",
+    "source": "George Antone \u2014 PLEX Course Call 2",
+    "source_url": "https://fynancacademy.com",
+    "phase": "invest",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Market Correlation",
+    "definition": "How closely a ticker\u2019s price movements track the overall stock market. Seek non-correlated for Bedrock.",
+    "source": "George Antone \u2014 PLEX Course Call 1",
+    "source_url": "https://fynancacademy.com",
+    "phase": "invest",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Maintenance Requirement (IMR)",
+    "definition": "Minimum equity a brokerage requires when using margin. Lower IMR = more margin available. M1: 45%, Schwab: 100%, IB: 25%.",
+    "source": "George Antone \u2014 PLEX Course Call 3",
+    "source_url": "https://fynancacademy.com",
+    "phase": "invest",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Sub-Pie Allocation",
+    "definition": "The percentage weight of an individual ticker within its tier. Each tier sums to 100% internally.",
+    "source": "Fynanc Academy \u2014 PLEX M1 Sub-Pie Setup",
+    "source_url": "https://fynancacademy.com",
+    "phase": "invest",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "DSCR",
+    "definition": "Debt Service Coverage Ratio. Safety metric measuring whether portfolio income covers debt obligations. Non-negotiable.",
+    "source": "George Antone \u2014 PLEX Safety & Guardrails Module",
+    "source_url": "https://fynancacademy.com",
+    "phase": "invest",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "DTA",
+    "definition": "Debt-to-Asset Ratio. Must remain below 40%. Exceeding puts portfolio in margin call danger territory.",
+    "source": "George Antone \u2014 PLEX Safety & Guardrails Module",
+    "source_url": "https://fynancacademy.com",
+    "phase": "invest",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "NAV Erosion",
+    "definition": "Gradual decline in Net Asset Value in high-yield funds legally required to distribute earnings. Accepted in Cash Flow tier.",
+    "source": "George Antone \u2014 PLEX Course Call 1",
+    "source_url": "https://fynancacademy.com",
+    "phase": "invest",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Super Vault",
+    "definition": "A capital structure component in the Fynanc Toolbox for secure capital parking and leverage management within the PLEX system.",
+    "source": "Fynanc Academy \u2014 PLEX Tools",
+    "source_url": "https://fynancacademy.com",
+    "phase": "invest",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Yield Stacking",
+    "definition": "An advanced PLEX strategy that layers multiple yield sources on the same capital base \u2014 dividends, margin interest arbitrage, appreciation \u2014 to maximize total return per dollar deployed.",
+    "source": "Fynanc Academy \u2014 PLEX Advanced Strategies",
+    "source_url": "https://fynancacademy.com",
+    "phase": "invest",
+    "added": "2026-05-07"
+  },
+  {
+    "name": "Invest Capital Phase",
+    "definition": "The second phase of the Fynanc wealth journey. Moving grown capital into structures that produce passive cash flow (PLEX, FLOW, etc.).",
+    "source": "George Antone \u2014 Fynanc Substack (May 2026)",
+    "source_url": "https://fynanc.substack.com/p/why-the-order-of-operations-changes",
+    "phase": "invest",
+    "added": "2026-05-08"
+  },
+  {
+    "name": "Order of Operations",
+    "definition": "The sequential framework for building wealth: Grow Capital (increase pile size) \u2192 Invest Capital (move capital into passive-flow structures) \u2192 Preserve Capital (protect from taxes and inflation). Mixing phases slows progress; focusing all thrust on one phase at a time creates unstoppable momentum.",
+    "source": "George Antone \u2014 Fynanc Substack (May 2026)",
+    "source_url": "https://fynanc.substack.com/p/why-the-order-of-operations-changes",
+    "phase": "general",
+    "added": "2026-05-08"
+  },
+  {
+    "name": "Thrust",
+    "definition": "The concentrated financial effort applied to a single phase of the Order of Operations. Wealth Creators focus all their Thrust on one objective at a time rather than scattering effort across multiple goals.",
+    "source": "George Antone \u2014 Fynanc Substack (May 2026)",
+    "source_url": "https://fynanc.substack.com/p/why-the-order-of-operations-changes",
+    "phase": "general",
+    "added": "2026-05-08"
+  },
+  {
+    "name": "Preserve Capital Phase",
+    "definition": "The third phase of the Fynanc wealth journey. Protecting the wealth system from taxes and inflation. Should only be focused on AFTER Grow and Invest phases are established.",
+    "source": "George Antone \u2014 Fynanc Substack (May 2026)",
+    "source_url": "https://fynanc.substack.com/p/why-the-order-of-operations-changes",
+    "phase": "preserve",
+    "added": "2026-05-08"
+  }
+];
+
+// Phase config
+const PHASE_CONFIG = {
+  grow: { label: 'Grow Capital', icon: '\u25B2', desc: 'Phase 1: Build your capital base with the Income Amplifier', academyLink: '/fynanc/grow-capital/' },
+  invest: { label: 'Invest Capital', icon: '\u25C6', desc: 'Phase 2: Deploy capital into PLEX for passive cash flow', academyLink: '/fynanc/invest-capital/' },
+  general: { label: 'General Framework', icon: '\u25CF', desc: 'Overarching wealth-building principles', academyLink: '/fynanc/' },
+  preserve: { label: 'Preserve Capital', icon: '\u25A0', desc: 'Phase 3: Protect wealth from taxes and inflation', academyLink: '/fynanc/' }
+};
+
+const PHASE_ORDER = ['grow', 'invest', 'general', 'preserve'];
+
+let activeFilter = 'all';
+let searchQuery = '';
+
+function getPhase(term) {
+  return term.phase || term.category || 'general';
+}
+
+function renderTerms() {
+  const container = document.getElementById('termsContainer');
+  const noResults = document.getElementById('noResults');
+  const q = searchQuery.toLowerCase().trim();
+
+  // Filter terms
+  let filtered = TERMS.filter(t => {
+    const phase = getPhase(t);
+    const matchPhase = activeFilter === 'all' || phase === activeFilter;
+    if (!matchPhase) return false;
+    if (!q) return true;
+    return t.name.toLowerCase().includes(q) ||
+           t.definition.toLowerCase().includes(q) ||
+           t.source.toLowerCase().includes(q);
+  });
+
+  // Group by phase
+  const grouped = {};
+  filtered.forEach(t => {
+    const p = getPhase(t);
+    if (!grouped[p]) grouped[p] = [];
+    grouped[p].push(t);
+  });
+
+  // Sort within groups
+  Object.values(grouped).forEach(arr => arr.sort((a, b) => a.name.localeCompare(b.name)));
+
+  // Render
+  if (filtered.length === 0) {
+    container.innerHTML = '';
+    noResults.classList.add('visible');
+    document.getElementById('termCount').textContent = '0 terms';
+    return;
+  }
+
+  noResults.classList.remove('visible');
+  document.getElementById('termCount').textContent = filtered.length + ' term' + (filtered.length !== 1 ? 's' : '');
+
+  let html = '';
+  PHASE_ORDER.forEach(phase => {
+    if (!grouped[phase] || grouped[phase].length === 0) return;
+    const cfg = PHASE_CONFIG[phase];
+    html += `<div class="phase-section" data-phase="${phase}">
+      <div class="phase-header">
+        <span class="phase-badge ${phase}">${cfg.icon} ${cfg.label}</span>
+        <span class="phase-title">${cfg.desc}</span>
+      </div>
+      <div class="term-grid">`;
+
+    grouped[phase].forEach(t => {
+      const p = getPhase(t);
+      html += `<div class="term-card">
+        <div class="term-name">
+          <span class="phase-dot ${p}"></span>
+          ${esc(t.name)}
+        </div>
+        <div class="term-def">${esc(t.definition)}</div>
+        <div class="term-meta">
+          <span class="term-source">${esc(t.source)}</span>
+          <span class="term-date">Added ${t.added}</span>
+          <span class="term-link"><a href="${esc(t.source_url)}" target="_blank" rel="noopener">Learn more &rarr;</a></span>
+        </div>
+      </div>`;
+    });
+
+    html += '</div></div>';
+  });
+
+  container.innerHTML = html;
+}
+
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function updateCounts() {
+  const counts = { all: TERMS.length, grow: 0, invest: 0, general: 0, preserve: 0 };
+  TERMS.forEach(t => {
+    const p = getPhase(t);
+    if (counts[p] !== undefined) counts[p]++;
+  });
+  document.getElementById('countAll').textContent = '(' + counts.all + ')';
+  document.getElementById('countGrow').textContent = '(' + counts.grow + ')';
+  document.getElementById('countInvest').textContent = '(' + counts.invest + ')';
+  document.getElementById('countGeneral').textContent = '(' + counts.general + ')';
+  document.getElementById('countPreserve').textContent = '(' + counts.preserve + ')';
+
+  // Hide pills with 0 count
+  document.querySelectorAll('.pill').forEach(pill => {
+    const f = pill.dataset.filter;
+    if (f !== 'all' && counts[f] === 0) pill.style.display = 'none';
+  });
+}
+
+// Event listeners
+document.getElementById('searchInput').addEventListener('input', function() {
+  searchQuery = this.value;
+  renderTerms();
+});
+
+document.querySelectorAll('.pill').forEach(pill => {
+  pill.addEventListener('click', function() {
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    this.classList.add('active');
+    activeFilter = this.dataset.filter;
+    renderTerms();
+  });
+});
+
+// Init
+updateCounts();
+renderTerms();
+</script>
+</body>
+</html>

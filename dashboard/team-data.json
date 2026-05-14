@@ -1,0 +1,1477 @@
+[
+  {
+    "name": "Kelly Doyle",
+    "rank": "B",
+    "texts": 1376,
+    "meetings": 0,
+    "touchpoints": 1376,
+    "email": "kellyd@rubensteinsonline.com",
+    "groups": [
+      "Agents"
+    ]
+  },
+  {
+    "name": "Bincy Jacob",
+    "rank": "C",
+    "texts": 1016,
+    "meetings": 0,
+    "touchpoints": 1016,
+    "email": "bincjacob@gmail.com",
+    "groups": [
+      "Agents"
+    ]
+  },
+  {
+    "name": "Sydney Le",
+    "rank": "C",
+    "texts": 3,
+    "meetings": 0,
+    "touchpoints": 879,
+    "email": "sydneythuyle@hotmail.com",
+    "groups": [
+      "Agents",
+      "Coop"
+    ]
+  },
+  {
+    "name": "David Schneider",
+    "rank": "A+",
+    "texts": 833,
+    "meetings": 1,
+    "touchpoints": 837,
+    "email": "david.schneider@exprealty.com",
+    "groups": [
+      "Agents",
+      "Advocates",
+      "Client",
+      "Estate"
+    ]
+  },
+  {
+    "name": "Kate Johnston",
+    "rank": "A",
+    "texts": 755,
+    "meetings": 0,
+    "touchpoints": 756,
+    "email": "kate@keyrealtywa.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "James Sharp",
+    "rank": "A",
+    "texts": 751,
+    "meetings": 0,
+    "touchpoints": 754,
+    "email": "james@thesharprealestategroup.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Lee Percenti",
+    "rank": "A",
+    "texts": 606,
+    "meetings": 0,
+    "touchpoints": 606,
+    "email": "lee@percentihospitality.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Todd Nordstrom",
+    "rank": "A",
+    "texts": 431,
+    "meetings": 0,
+    "touchpoints": 431,
+    "email": "todd@nordstromnetwork.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "David Taylor",
+    "rank": "A",
+    "texts": 409,
+    "meetings": 3,
+    "touchpoints": 412,
+    "email": "dtaylor@kw.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Zane Hoppes",
+    "rank": "A+",
+    "texts": 391,
+    "meetings": 0,
+    "touchpoints": 392,
+    "email": "zane.hoppes@networthhouston.com",
+    "groups": [
+      "Agents",
+      "Client",
+      "Coop",
+      "Prospect-Investor",
+      "Client CY"
+    ]
+  },
+  {
+    "name": "Trent Boarnet",
+    "rank": "A",
+    "texts": 291,
+    "meetings": 0,
+    "touchpoints": 291,
+    "email": "trent@trentboarnet.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Nicholas Tomich",
+    "rank": "A",
+    "texts": 288,
+    "meetings": 0,
+    "touchpoints": 288,
+    "email": "ntomich@oxfordcres.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "NEW VIP IOV"
+    ]
+  },
+  {
+    "name": "A Keith Herbert",
+    "rank": "B",
+    "texts": 225,
+    "meetings": 0,
+    "touchpoints": 225,
+    "email": "akeithhebert@gmail.com",
+    "groups": [
+      "Agents",
+      "Coop"
+    ]
+  },
+  {
+    "name": "Russell Hansen",
+    "rank": "B",
+    "texts": 181,
+    "meetings": 0,
+    "touchpoints": 184,
+    "email": "rewithruss@yahoo.com",
+    "groups": [
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Wendy Hulkowich",
+    "rank": "A",
+    "texts": 174,
+    "meetings": 0,
+    "touchpoints": 174,
+    "email": "wendy@hulkowichgroup.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Aaron West",
+    "rank": "B",
+    "texts": 54,
+    "meetings": 0,
+    "touchpoints": 165,
+    "email": "aaron@thewestexperience.com",
+    "groups": [
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Thomas Mason",
+    "rank": "A",
+    "texts": 162,
+    "meetings": 0,
+    "touchpoints": 162,
+    "email": "thomas@marylandrealtygroup.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Carla Winter",
+    "rank": "A",
+    "texts": 148,
+    "meetings": 0,
+    "touchpoints": 148,
+    "email": "carla@carlawinter.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Cathy Hypes",
+    "rank": "A",
+    "texts": 142,
+    "meetings": 0,
+    "touchpoints": 142,
+    "email": "chypes@kw.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Joseph Cortez",
+    "rank": "A",
+    "texts": 138,
+    "meetings": 0,
+    "touchpoints": 138,
+    "email": "josephmcortez@gmail.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Jerrett Morris",
+    "rank": "A",
+    "texts": 125,
+    "meetings": 0,
+    "touchpoints": 125,
+    "email": "jerrett.morris@teamjmo.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Chad Goldwasser",
+    "rank": "A",
+    "texts": 124,
+    "meetings": 0,
+    "touchpoints": 124,
+    "email": "chad@chadgoldwasserrealty.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Delinda Crampton",
+    "rank": "A",
+    "texts": 115,
+    "meetings": 0,
+    "touchpoints": 115,
+    "email": "delinda@vegashomesavailable.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Jennifer Bowlin",
+    "rank": "C",
+    "texts": 111,
+    "meetings": 0,
+    "touchpoints": 111,
+    "email": "soldbyjenniferbowlin@gmail.com",
+    "groups": [
+      "Agents",
+      "Coop"
+    ]
+  },
+  {
+    "name": "Lizbeth Salmeron",
+    "rank": "B",
+    "texts": 107,
+    "meetings": 0,
+    "touchpoints": 107,
+    "email": "lizsalmeron613@gmail.com",
+    "groups": [
+      "Agents",
+      "Agent Geo-Local"
+    ]
+  },
+  {
+    "name": "Shawn Ackerman",
+    "rank": "A",
+    "texts": 93,
+    "meetings": 0,
+    "touchpoints": 93,
+    "email": "shawnackerman@henrysmiller.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Maria O'Dell",
+    "rank": "A",
+    "texts": 92,
+    "meetings": 0,
+    "touchpoints": 92,
+    "email": "maria@groupodell.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Matthew Tully",
+    "rank": "B",
+    "texts": 90,
+    "meetings": 0,
+    "touchpoints": 90,
+    "email": "mtully@kw.com",
+    "groups": [
+      "Agents"
+    ]
+  },
+  {
+    "name": "Alex Gonzalez",
+    "rank": "A",
+    "texts": 82,
+    "meetings": 0,
+    "touchpoints": 88,
+    "email": "alex@thenickleygroup.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Valesa Linnean",
+    "rank": "A",
+    "texts": 83,
+    "meetings": 0,
+    "touchpoints": 83,
+    "email": "valesa@valesa.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Beau Benjamin",
+    "rank": "A",
+    "texts": 82,
+    "meetings": 0,
+    "touchpoints": 82,
+    "email": "beau@bbrg.realestate",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Tyler Potter",
+    "rank": "A",
+    "texts": 76,
+    "meetings": 0,
+    "touchpoints": 76,
+    "email": "tyler.potter@coldwellbanker.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Tanya Lang",
+    "rank": "A",
+    "texts": 74,
+    "meetings": 0,
+    "touchpoints": 75,
+    "email": "tanyasellsdfw@gmail.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Lana Rodriguez",
+    "rank": "A",
+    "texts": 72,
+    "meetings": 0,
+    "touchpoints": 72,
+    "email": "lana.rodriguez@wesellmore.net",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Rene Lara",
+    "rank": "C",
+    "texts": 65,
+    "meetings": 0,
+    "touchpoints": 68,
+    "email": "renelaraexp@gmail.com",
+    "groups": [
+      "Agents",
+      "Coop"
+    ]
+  },
+  {
+    "name": "Kimberly McLaughlin",
+    "rank": "A",
+    "texts": 66,
+    "meetings": 0,
+    "touchpoints": 67,
+    "email": "kimberly@redinaustin.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Janet Baier",
+    "rank": "A",
+    "texts": 66,
+    "meetings": 0,
+    "touchpoints": 66,
+    "email": "jebaier@gmail.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Sophia Sanchez",
+    "rank": "A",
+    "texts": 66,
+    "meetings": 0,
+    "touchpoints": 66,
+    "email": "sophia@smithandassociates.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Tanya Uribes",
+    "rank": "A",
+    "texts": 61,
+    "meetings": 0,
+    "touchpoints": 61,
+    "email": "tanyauribes@hotmail.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Kate Christiansen",
+    "rank": "B",
+    "texts": 49,
+    "meetings": 0,
+    "touchpoints": 49,
+    "email": "kate@katechristiansen.com",
+    "groups": [
+      "Agents"
+    ]
+  },
+  {
+    "name": "Carol Woodward",
+    "rank": "A",
+    "texts": 46,
+    "meetings": 0,
+    "touchpoints": 46,
+    "email": "carol@texashomesduo.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Richard Childress",
+    "rank": "B",
+    "texts": 42,
+    "meetings": 0,
+    "touchpoints": 45,
+    "email": "richard@bhhs-united.com",
+    "groups": [
+      "Agents"
+    ]
+  },
+  {
+    "name": "Andy Scott",
+    "rank": "A",
+    "texts": 45,
+    "meetings": 0,
+    "touchpoints": 45,
+    "email": "andyscott@dpmre.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Paula Rose",
+    "rank": "B",
+    "texts": 22,
+    "meetings": 0,
+    "touchpoints": 44,
+    "email": "paula4homes@gmail.com",
+    "groups": [
+      "Agents"
+    ]
+  },
+  {
+    "name": "Chris Wallace",
+    "rank": "A",
+    "texts": 42,
+    "meetings": 0,
+    "touchpoints": 42,
+    "email": "chris@williamsportpahomes.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Clay Byrne",
+    "rank": "A",
+    "texts": 41,
+    "meetings": 0,
+    "touchpoints": 41,
+    "email": "clay@byrne-austin.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Bryan Arakelian",
+    "rank": "A",
+    "texts": 40,
+    "meetings": 0,
+    "touchpoints": 40,
+    "email": "ba@bapdx.com",
+    "groups": [
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Charlie Pitkin",
+    "rank": "A",
+    "texts": 39,
+    "meetings": 0,
+    "touchpoints": 39,
+    "email": "charlie@outlawrealty.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Yusuf Johnson",
+    "rank": "A",
+    "texts": 36,
+    "meetings": 0,
+    "touchpoints": 37,
+    "email": "yjohnson@revelpg.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Shannon Poppleton",
+    "rank": "A",
+    "texts": 37,
+    "meetings": 0,
+    "touchpoints": 37,
+    "email": "myloganrealtor@gmail.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Mack Linan",
+    "rank": "A",
+    "texts": 36,
+    "meetings": 0,
+    "touchpoints": 36,
+    "email": "mack@realestatemack.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Josh Forster",
+    "rank": "B",
+    "texts": 35,
+    "meetings": 0,
+    "touchpoints": 35,
+    "email": "josh@joshforster.com",
+    "groups": [
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Trey Willard",
+    "rank": "A",
+    "texts": 34,
+    "meetings": 0,
+    "touchpoints": 34,
+    "email": "trey@bhhs-united.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Joe Potosnak",
+    "rank": "B",
+    "texts": 33,
+    "meetings": 0,
+    "touchpoints": 33,
+    "email": "potosnak@gmail.com",
+    "groups": [
+      "Sort B",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Steven Geiger",
+    "rank": "A",
+    "texts": 32,
+    "meetings": 0,
+    "touchpoints": 32,
+    "email": "steven.geiger@raveis.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Philip Myers",
+    "rank": "A",
+    "texts": 32,
+    "meetings": 0,
+    "touchpoints": 32,
+    "email": "philip@bramlettresidential.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Andrea Brooks",
+    "rank": "A",
+    "texts": 22,
+    "meetings": 0,
+    "touchpoints": 30,
+    "email": "andrea.brooks@kw.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Kandi Malphrus",
+    "rank": "A",
+    "texts": 30,
+    "meetings": 0,
+    "touchpoints": 30,
+    "email": "kandi@providencerealtyok.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Shaughnessy Harrison",
+    "rank": "A",
+    "texts": 28,
+    "meetings": 0,
+    "touchpoints": 28,
+    "email": "shaughnessysells@gmail.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Mark Jauregui",
+    "rank": "A",
+    "texts": 28,
+    "meetings": 0,
+    "touchpoints": 28,
+    "email": "mark@northmax.com",
+    "groups": [
+      "Agents",
+      "Agent Geo-Remote"
+    ]
+  },
+  {
+    "name": "Julie Woods",
+    "rank": "A",
+    "texts": 13,
+    "meetings": 0,
+    "touchpoints": 23,
+    "email": "juliewoods@ia-000.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Dan Faulkner, Jr.",
+    "rank": "A",
+    "texts": 22,
+    "meetings": 0,
+    "touchpoints": 22,
+    "email": "danjr@danfaulkner.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Kia Potter",
+    "rank": "A",
+    "texts": 22,
+    "meetings": 0,
+    "touchpoints": 22,
+    "email": "kia.potter@wattersinternational.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Tim Houk",
+    "rank": "A",
+    "texts": 21,
+    "meetings": 0,
+    "touchpoints": 21,
+    "email": "tim@timhouk.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Joyce Lawson",
+    "rank": "C",
+    "texts": 21,
+    "meetings": 0,
+    "touchpoints": 21,
+    "email": "jylawson36@gmail.com",
+    "groups": [
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Damien Wilson",
+    "rank": "A",
+    "texts": 21,
+    "meetings": 0,
+    "touchpoints": 21,
+    "email": null,
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent Geo-Remote"
+    ]
+  },
+  {
+    "name": "Roz Byrne",
+    "rank": "C",
+    "texts": 19,
+    "meetings": 0,
+    "touchpoints": 19,
+    "email": "roz@rozrealestate.com",
+    "groups": [
+      "Agents"
+    ]
+  },
+  {
+    "name": "Mila Yakhnis",
+    "rank": "A",
+    "texts": 18,
+    "meetings": 0,
+    "touchpoints": 18,
+    "email": "myakhnis@kw.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Aimee Williams",
+    "rank": "A",
+    "texts": 1,
+    "meetings": 0,
+    "touchpoints": 17,
+    "email": "aimeewilliams512@gmail.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Seth Dailey",
+    "rank": "A",
+    "texts": 16,
+    "meetings": 0,
+    "touchpoints": 16,
+    "email": "seth@daileygroup.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Ryan Llanes",
+    "rank": "A",
+    "texts": 16,
+    "meetings": 0,
+    "touchpoints": 16,
+    "email": "ryanllanesrealtor@gmail.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Hollie Williams",
+    "rank": "A",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 16,
+    "email": "hollie@texashomesduo.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Lindsay Herrell",
+    "rank": "A",
+    "texts": 15,
+    "meetings": 0,
+    "touchpoints": 15,
+    "email": "lindsayherrell@brushrealty.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Samuel Ramos",
+    "rank": "B",
+    "texts": 15,
+    "meetings": 0,
+    "touchpoints": 15,
+    "email": "samuel_erm@kw.com",
+    "groups": [
+      "Agents"
+    ]
+  },
+  {
+    "name": "Jeff Wickum",
+    "rank": "A",
+    "texts": 15,
+    "meetings": 0,
+    "touchpoints": 15,
+    "email": "jeff@wickum.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent Geo-Remote"
+    ]
+  },
+  {
+    "name": "Carolyn Phillips",
+    "rank": "B",
+    "texts": 12,
+    "meetings": 0,
+    "touchpoints": 14,
+    "email": "carolynphillips@ebby.com",
+    "groups": [
+      "Agents"
+    ]
+  },
+  {
+    "name": "Pat Flynn",
+    "rank": "B",
+    "texts": 13,
+    "meetings": 0,
+    "touchpoints": 13,
+    "email": "patflynn@kw.com",
+    "groups": [
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Christina Potosnak",
+    "rank": "A",
+    "texts": 13,
+    "meetings": 0,
+    "touchpoints": 13,
+    "email": "christinapotosnak@gmail.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "John Rengers",
+    "rank": "A",
+    "texts": 13,
+    "meetings": 0,
+    "touchpoints": 13,
+    "email": "john.cindy.rengers@gmail.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Adam Wilhelm",
+    "rank": "B",
+    "texts": 13,
+    "meetings": 0,
+    "touchpoints": 13,
+    "email": "adam@thenickleygroup.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent Geo-Remote"
+    ]
+  },
+  {
+    "name": "Bill Brunkhardt",
+    "rank": "A",
+    "texts": 10,
+    "meetings": 0,
+    "touchpoints": 10,
+    "email": "bill@eliterealtyar.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Janet Darrow",
+    "rank": "B",
+    "texts": 10,
+    "meetings": 0,
+    "touchpoints": 10,
+    "email": "janetldarrow@gmail.com",
+    "groups": [
+      "Agents"
+    ]
+  },
+  {
+    "name": "Dan O'Dell",
+    "rank": "B",
+    "texts": 10,
+    "meetings": 0,
+    "touchpoints": 10,
+    "email": "dan@groupodell.com",
+    "groups": [
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Andrew Paul",
+    "rank": "C",
+    "texts": 4,
+    "meetings": 0,
+    "touchpoints": 10,
+    "email": "andrew.paul@benchmark.us",
+    "groups": [
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Leon Yu",
+    "rank": "A",
+    "texts": 4,
+    "meetings": 0,
+    "touchpoints": 10,
+    "email": "leonyu@gmail.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Cassie Harris",
+    "rank": "B",
+    "texts": 9,
+    "meetings": 0,
+    "touchpoints": 9,
+    "email": "cassie@charrishomes.com",
+    "groups": [
+      "Agents"
+    ]
+  },
+  {
+    "name": "Johnny Henion",
+    "rank": "A",
+    "texts": 9,
+    "meetings": 0,
+    "touchpoints": 9,
+    "email": "johnny@outlawrealty.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Omar Issa",
+    "rank": "B",
+    "texts": 9,
+    "meetings": 0,
+    "touchpoints": 9,
+    "email": "omarissarealtor@gmail.com",
+    "groups": [
+      "Agents"
+    ]
+  },
+  {
+    "name": "Marcy Whitney",
+    "rank": "A",
+    "texts": 3,
+    "meetings": 0,
+    "touchpoints": 9,
+    "email": "marcywhitney@kw.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Sharon Hairgrove",
+    "rank": "A",
+    "texts": 8,
+    "meetings": 0,
+    "touchpoints": 8,
+    "email": "sharon@sharonhairgrove.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Scott Robarts",
+    "rank": "B",
+    "texts": 8,
+    "meetings": 0,
+    "touchpoints": 8,
+    "email": "scottrobarts@yahoo.com",
+    "groups": [
+      "Agents"
+    ]
+  },
+  {
+    "name": "Catherine Van Zutphen",
+    "rank": "B",
+    "texts": 8,
+    "meetings": 0,
+    "touchpoints": 8,
+    "email": "cath@cathvz.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent Geo-Remote"
+    ]
+  },
+  {
+    "name": "Janett Gutierrez",
+    "rank": "B",
+    "texts": 7,
+    "meetings": 0,
+    "touchpoints": 7,
+    "email": null,
+    "groups": [
+      "Agents"
+    ]
+  },
+  {
+    "name": "Levon Steele",
+    "rank": "B",
+    "texts": 3,
+    "meetings": 0,
+    "touchpoints": 5,
+    "email": "levonsteele@gmail.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent Geo-Remote"
+    ]
+  },
+  {
+    "name": "Walter Taylor",
+    "rank": "A",
+    "texts": 5,
+    "meetings": 0,
+    "touchpoints": 5,
+    "email": "walter@agentknowshomes.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Ronald Shore",
+    "rank": "A",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 4,
+    "email": "ronald@ronanddavid.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Bob Seymour",
+    "rank": "A",
+    "texts": 3,
+    "meetings": 0,
+    "touchpoints": 3,
+    "email": "bob@cathylamon.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Roger Hayer",
+    "rank": "A",
+    "texts": 2,
+    "meetings": 0,
+    "touchpoints": 2,
+    "email": "rogerhayer@gmail.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Stephanie Javor",
+    "rank": "C",
+    "texts": 2,
+    "meetings": 0,
+    "touchpoints": 2,
+    "email": "stephaniej@kirbytitle.com",
+    "groups": [
+      "Agents",
+      "Coop"
+    ]
+  },
+  {
+    "name": "Natalie Cornejo",
+    "rank": "A",
+    "texts": 1,
+    "meetings": 0,
+    "touchpoints": 1,
+    "email": "natalie@vegasjustlisted.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Sara Davis",
+    "rank": "B",
+    "texts": 1,
+    "meetings": 0,
+    "touchpoints": 1,
+    "email": "saramdavis2@gmail.com",
+    "groups": [
+      "Agents"
+    ]
+  },
+  {
+    "name": "Cortney Gill",
+    "rank": "A",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 1,
+    "email": "cortney@gsgpropertymanagement.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Kari Wilner",
+    "rank": "B",
+    "texts": 1,
+    "meetings": 0,
+    "touchpoints": 1,
+    "email": "kari.wilner@wfp.com",
+    "groups": [
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Scott Wurtzbacher",
+    "rank": "A",
+    "texts": 1,
+    "meetings": 0,
+    "touchpoints": 1,
+    "email": "scott@wrealtygroup.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Colleen Dutmers",
+    "rank": "B",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 0,
+    "email": "colleen@thedutmersteam.com",
+    "groups": [
+      "Agents"
+    ]
+  },
+  {
+    "name": "Chelsea Ferguson",
+    "rank": "A",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 0,
+    "email": "chelsea_ferguson@comcast.net",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Melinda Flynn",
+    "rank": "A",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 0,
+    "email": "homes@melindaflynn.com",
+    "groups": [
+      "Sort A",
+      "Agents",
+      "Agent/Buffini"
+    ]
+  },
+  {
+    "name": "Linda Goldman",
+    "rank": "A",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 0,
+    "email": "linda.goldman@cbexchange.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Ray Javaherian",
+    "rank": "C",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 0,
+    "email": "ray@heritagetexas.com",
+    "groups": [
+      "Agents",
+      "Coop"
+    ]
+  },
+  {
+    "name": "Tory Ketter",
+    "rank": "A",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 0,
+    "email": "toryk@kw.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Adrienne Dawn Newman",
+    "rank": "A",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 0,
+    "email": "adrienne.newman@me.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Cindy Rengers",
+    "rank": "B",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 0,
+    "email": "john.cindy.rengers@gmail.com",
+    "groups": [
+      "Agents"
+    ]
+  },
+  {
+    "name": "Mark Sasser",
+    "rank": "A",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 0,
+    "email": "markandbecci@kw.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Trevor Smith",
+    "rank": "A",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 0,
+    "email": "trevor@rareproperties.biz",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "James Stoker",
+    "rank": "A",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 0,
+    "email": "jstokerjr@gmail.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Carrie Surich",
+    "rank": "A",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 0,
+    "email": "casells1@gmail.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Philip Triem",
+    "rank": "A",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 0,
+    "email": "philip@philiptriem.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Melvin Upchurch",
+    "rank": "A",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 0,
+    "email": "melvin@listbirmingham.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Kelli Vanevenhoven",
+    "rank": "A",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 0,
+    "email": "kelli@vteamhomes.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  },
+  {
+    "name": "Mike Willis",
+    "rank": "C",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 0,
+    "email": "mwill21@gmail.com",
+    "groups": [
+      "Agents"
+    ]
+  },
+  {
+    "name": "Troy Wilson",
+    "rank": "A",
+    "texts": 0,
+    "meetings": 0,
+    "touchpoints": 0,
+    "email": "twilson1076@gmail.com",
+    "groups": [
+      "Sort A",
+      "Agents"
+    ]
+  }
+]

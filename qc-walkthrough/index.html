@@ -1,0 +1,2053 @@
+<!--
+  CONFIGURATION — Update these values for your environment:
+  1. https://tpjg-fleet.netlify.app — Your PureBrain portal base URL (e.g., https://your-civ.purebrain.ai)
+  2.  — Your portal authentication token
+  3. API endpoints will use https://tpjg-fleet.netlify.app as the base
+  4. Configure your walkthrough email endpoint (search "Configure your walkthrough email endpoint")
+  5. Update property IDs and TaskMaster project ID mappings (search "propertyToProjectId")
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Property Walkthrough</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F2F3F3; color: #1B2A4A; -webkit-tap-highlight-color: transparent; }
+
+/* TPJG Brand Colors: Navy #1B2A4A, Gold #C9A84C, Cream #C7C1BA, Dark Navy #0E273C */
+
+.header { background: #1B2A4A; color: #fff; padding: 10px 16px; position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; min-height: 54px; gap: 8px; }
+.header-left { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
+.header-center { flex: 1; min-width: 0; }
+.header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.header h1 { font-size: 15px; font-weight: 600; color: #C9A84C; white-space: nowrap; }
+.header .property-name { font-size: 11px; opacity: 0.8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.header .progress { font-size: 13px; font-weight: 500; color: #C7C1BA; white-space: nowrap; }
+.back-btn { background: none; border: none; color: #C9A84C; font-size: 22px; cursor: pointer; padding: 4px; min-width: 36px; min-height: 36px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.help-btn { background: none; border: 1px solid #C9A84C; color: #C9A84C; font-size: 13px; font-weight: 600; cursor: pointer; padding: 4px 8px; border-radius: 6px; min-height: 32px; white-space: nowrap; }
+
+/* Sync indicator */
+.sync-pill { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.12); border-radius: 12px; padding: 4px 8px; cursor: pointer; border: none; color: #fff; font-size: 11px; white-space: nowrap; }
+.sync-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.sync-dot.synced { background: #C7C1BA; }
+.sync-dot.pending { background: #E8A735; animation: syncPulse 1.5s infinite; }
+.sync-dot.syncing { background: #C9A84C; animation: syncPulse 0.6s infinite; }
+@keyframes syncPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.screen { display: none; padding-top: 54px; min-height: 100vh; }
+.screen.active { display: block; }
+
+/* Property selector */
+.property-list { padding: 16px; }
+.screen-title { font-size: 13px; color: #888; padding: 12px 16px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+.property-card { background: #fff; border-radius: 12px; padding: 18px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
+.property-card:active { background: #F0EDE5; }
+.property-card h3 { font-size: 16px; margin-bottom: 3px; color: #1B2A4A; }
+.property-card p { font-size: 13px; color: #888; }
+.property-card .arrow { font-size: 22px; color: #C9A84C; }
+
+/* Resume banner */
+.resume-banner { background: #C9A84C; color: #fff; margin: 12px 16px 0; border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.resume-banner .resume-info { flex: 1; min-width: 0; }
+.resume-banner .resume-info strong { font-size: 14px; display: block; }
+.resume-banner .resume-info span { font-size: 12px; opacity: 0.9; }
+.resume-banner .resume-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.resume-btn { background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.6); color: #fff; border-radius: 7px; padding: 8px 12px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.discard-btn { background: none; border: 1px solid rgba(255,255,255,0.4); color: rgba(255,255,255,0.8); border-radius: 7px; padding: 8px 10px; font-size: 13px; cursor: pointer; }
+
+/* Room list */
+.room-list { padding: 16px; padding-bottom: 100px; }
+.room-card { background: #fff; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 4px rgba(0,0,0,0.06); cursor: pointer; }
+.room-card:active { background: #f8f8f8; }
+.room-card .room-info h3 { font-size: 15px; margin-bottom: 2px; }
+.room-card .room-info p { font-size: 12px; color: #888; }
+.room-card .room-status { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.room-badge { font-size: 11px; padding: 3px 8px; border-radius: 12px; font-weight: 600; }
+.badge-pending { background: #F0EDE5; color: #C9A84C; }
+.badge-done { background: #F5F0E5; color: #1B2A4A; }
+.badge-issues { background: #FFF3E0; color: #C47A1A; }
+
+/* Items */
+.item-list { padding: 16px; padding-bottom: 100px; }
+.room-header-bar { background: #fff; padding: 12px 16px; margin: -16px -16px 16px -16px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.room-header-bar h2 { font-size: 16px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.room-nav { display: flex; gap: 8px; flex-shrink: 0; }
+.room-nav button { background: #F0EDE5; border: none; border-radius: 8px; padding: 6px 12px; font-size: 13px; cursor: pointer; color: #1B2A4A; min-height: 36px; }
+.room-nav button:active { background: #C9A84C; color: #fff; }
+.btn-add-item { background: #C9A84C; color: #fff; border: none; border-radius: 8px; padding: 6px 12px; font-size: 13px; cursor: pointer; min-height: 36px; white-space: nowrap; }
+.btn-add-item:active { background: #A8893D; }
+
+.item-card { background: #fff; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.item-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.item-name { font-size: 14px; flex: 1; line-height: 1.4; }
+.item-actions { display: flex; gap: 5px; flex-shrink: 0; }
+.btn-pass, .btn-flag, .btn-photo, .btn-mic { border: none; border-radius: 8px; font-size: 18px; cursor: pointer; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+.btn-pass { background: #F5F0E5; color: #1B2A4A; }
+.btn-pass.active { background: #C7C1BA; color: #fff; }
+.btn-flag { background: #FFF3E0; color: #1B2A4A; }
+.btn-flag.active { background: #E8A735; color: #fff; }
+.btn-photo { background: #F0EDE5; font-size: 16px; color: #1B2A4A; }
+.btn-photo.has-photo { background: #C9A84C; color: #fff; }
+.btn-mic { background: #F3E5F5; font-size: 16px; color: #1B2A4A; }
+.btn-mic.recording { background: #E91E63; color: #fff; animation: pulse 1s infinite; }
+.btn-mic.has-audio { background: #7B5EA7; color: #fff; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+.live-transcript { font-size: 12px; color: #7B5EA7; font-style: italic; margin-top: 4px; padding: 4px 8px; background: #F3E5F5; border-radius: 6px; display: none; }
+.live-transcript.active { display: block; }
+
+.photo-preview { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.media-wrapper { position: relative; display: inline-block; }
+.photo-thumb { width: 56px; height: 56px; object-fit: cover; border-radius: 6px; border: 1px solid #C7C1BA; }
+.delete-media { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; background: #1B2A4A; color: #fff; border: none; border-radius: 50%; font-size: 12px; line-height: 20px; text-align: center; cursor: pointer; padding: 0; z-index: 2; }
+.delete-media:active { background: #E91E63; }
+
+.audio-preview { margin-top: 6px; }
+.audio-wrapper { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; flex-wrap: wrap; }
+.audio-wrapper audio { flex: 1; height: 36px; min-width: 140px; }
+.audio-delete { background: #1B2A4A; color: #fff; border: none; border-radius: 6px; padding: 4px 8px; font-size: 12px; cursor: pointer; flex-shrink: 0; }
+.audio-delete:active { background: #E91E63; }
+.audio-transcript { font-size: 12px; color: #7B5EA7; font-style: italic; padding: 4px 8px; background: #F3E5F5; border-radius: 6px; width: 100%; }
+
+input[type="file"] { display: none; }
+
+.flag-detail { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee; }
+.flag-detail.visible { display: block; }
+.flag-detail select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 8px; background: #fff; color: #1B2A4A; }
+.flag-detail textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; min-height: 60px; resize: vertical; font-family: inherit; color: #1B2A4A; }
+.assign-row { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.assign-btn { flex: 1; min-width: calc(50% - 4px); padding: 10px 6px; border: 1px solid #ddd; border-radius: 8px; background: #fff; font-size: 13px; cursor: pointer; text-align: center; color: #1B2A4A; }
+.assign-btn.selected { background: #C9A84C; color: #fff; border-color: #C9A84C; }
+.assign-btn:active { background: #F0EDE5; }
+
+.new-item-badge { display: inline-block; background: #C9A84C; color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 8px; margin-left: 5px; vertical-align: middle; }
+
+.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 10px 14px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; z-index: 100; gap: 8px; }
+.bottom-bar .stats { font-size: 13px; color: #666; flex-shrink: 0; }
+.bottom-bar .stats span { font-weight: 600; }
+.btn-group { display: flex; gap: 8px; }
+.btn-submit { background: #C9A84C; color: #fff; border: none; border-radius: 10px; padding: 11px 16px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.btn-submit:disabled { background: #C7C1BA; cursor: not-allowed; }
+.btn-submit.sage { background: #C7C1BA; }
+.btn-submit.sage:active { background: #A8893D; }
+.btn-submit:not(:disabled):not(.sage):active { background: #A8893D; }
+
+/* Summary */
+.summary-section { padding: 16px; padding-bottom: 110px; }
+.summary-group { margin-bottom: 20px; }
+.summary-group h3 { font-size: 14px; color: #666; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.summary-item { background: #fff; border-left: 4px solid #E8A735; border-radius: 0 8px 8px 0; padding: 12px 14px; margin-bottom: 6px; }
+.summary-item .si-room { font-size: 11px; color: #888; text-transform: uppercase; }
+.summary-item .si-name { font-size: 14px; font-weight: 500; margin: 2px 0; }
+.summary-item .si-note { font-size: 13px; color: #555; }
+.summary-item .si-assign { font-size: 12px; color: #C9A84C; font-weight: 600; margin-top: 4px; }
+.all-clear { text-align: center; padding: 40px 20px; }
+.all-clear .check { font-size: 48px; margin-bottom: 12px; }
+.all-clear p { font-size: 16px; color: #666; }
+
+/* Toast */
+.toast { position: fixed; bottom: 78px; left: 50%; transform: translateX(-50%); background: #1B2A4A; color: #fff; padding: 10px 20px; border-radius: 20px; font-size: 14px; z-index: 500; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; max-width: calc(100vw - 32px); text-align: center; }
+.toast.show { opacity: 1; }
+
+/* Help overlay */
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; align-items: center; justify-content: center; padding: 16px; }
+.overlay.open { display: flex; }
+.overlay-box { background: #fff; border-radius: 12px; max-width: 500px; width: 100%; max-height: 88vh; overflow-y: auto; padding: 24px; }
+.overlay-box h2 { font-size: 18px; color: #1B2A4A; margin-bottom: 4px; }
+.overlay-box h3 { font-size: 14px; color: #C9A84C; margin: 14px 0 6px; }
+.overlay-box p, .overlay-box li { font-size: 13px; line-height: 1.6; }
+.overlay-box ul { padding-left: 18px; }
+.overlay-close { background: none; border: none; font-size: 24px; cursor: pointer; color: #1B2A4A; padding: 0 4px; float: right; }
+
+/* Submit result */
+.submit-result { margin: 12px 16px; padding: 14px; border-radius: 10px; font-size: 14px; line-height: 1.5; }
+.submit-result.success { background: #F5F0E5; color: #1B2A4A; border-left: 4px solid #C7C1BA; }
+.submit-result.error { background: #FFF3E0; color: #C47A1A; border-left: 4px solid #E8A735; }
+
+/* Previous walkthrough loading */
+.loading-banner { background: #F0EDE5; border-radius: 10px; margin: 12px 16px 0; padding: 14px 16px; font-size: 14px; color: #1B2A4A; display: flex; align-items: center; gap: 10px; }
+.loading-spinner { width: 18px; height: 18px; border: 2px solid rgba(201,168,76,0.3); border-top-color: #C9A84C; border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.offline-notice { background: #F5F5F5; border-radius: 10px; margin: 8px 16px 0; padding: 10px 14px; font-size: 13px; color: #888; border-left: 3px solid #C7C1BA; }
+.item-card.prev-attention { border: 2px solid #E8A735; }
+
+/* Sync panel overlay */
+.sync-panel { display: none; position: fixed; bottom: 70px; right: 16px; background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); z-index: 300; min-width: 220px; max-width: calc(100vw - 32px); }
+.sync-panel.open { display: block; }
+.sync-panel h4 { font-size: 14px; margin-bottom: 8px; }
+.sync-panel p { font-size: 13px; color: #666; line-height: 1.5; }
+.sync-panel-close { position: absolute; top: 8px; right: 10px; background: none; border: none; font-size: 18px; cursor: pointer; color: #888; }
+
+/* Prior Issues filter toggle */
+.filter-toggle { display: flex; background: rgba(0,0,0,0.06); border-radius: 20px; overflow: hidden; font-size: 12px; flex-shrink: 0; }
+.filter-btn { padding: 6px 14px; border: none; background: transparent; color: #888; cursor: pointer; font-family: inherit; }
+.filter-btn.active { background: #E8A735; color: #fff; font-weight: 600; }
+.filter-count { font-size: 11px; color: #E8A735; font-weight: 600; margin-left: 4px; white-space: nowrap; }
+.item-card.prior-repair { border-left: 4px solid #E8A735; }
+.item-card.prior-critical { border-left: 4px solid #E91E63; }
+.prev-comment { font-size: 12px; color: #888; font-style: italic; margin-top: 4px; padding: 4px 8px; background: rgba(0,0,0,0.03); border-radius: 4px; border-left: 2px solid #ddd; }
+</style>
+</head>
+<body>
+
+<div id="toast" class="toast"></div>
+
+<!-- SYNC PANEL -->
+<div id="sync-panel" class="sync-panel">
+  <button class="sync-panel-close" onclick="closeSyncPanel()">&times;</button>
+  <h4>Sync Status</h4>
+  <p id="sync-panel-text">Checking...</p>
+  <div style="margin-top:10px;display:flex;gap:8px;">
+    <button onclick="triggerSync();closeSyncPanel();" style="background:#C9A84C;color:#fff;border:none;border-radius:7px;padding:8px 12px;font-size:13px;cursor:pointer;flex:1;">Sync Now</button>
+  </div>
+</div>
+
+<!-- HELP OVERLAY -->
+<div id="help-overlay" class="overlay">
+  <div class="overlay-box">
+    <button class="overlay-close" onclick="closeHelp()">&times;</button>
+    <h2>Property Walkthrough Help</h2>
+    <h3>Getting Started</h3>
+    <p>Select a property to begin. Add items to each room as you walk through, then mark each item Pass or Flagged.</p>
+    <h3>Item Actions</h3>
+    <ul>
+      <li><strong>&#10003; Pass</strong> — Acceptable condition, no action.</li>
+      <li><strong>&#9888; Flag</strong> — Needs attention. Opens detail panel for condition, notes, and assignment.</li>
+      <li><strong>&#128247; Photo</strong> — Camera opens. Photo stored immediately to device storage.</li>
+      <li><strong>&#127908; Voice</strong> — Tap to record, tap again to stop. Transcribed live if browser supports it.</li>
+    </ul>
+    <h3>Condition Types</h3>
+    <ul>
+      <li><strong>Needs Repair</strong> — Damaged or broken.</li>
+      <li><strong>Replace</strong> — Full replacement needed.</li>
+      <li><strong>Missing</strong> — Not present at property.</li>
+      <li><strong>Dirty/Needs Cleaning</strong> — Needs cleaning.</li>
+      <li><strong>Need to Order</strong> — Out of stock, needs restocking.</li>
+      <li><strong>Other</strong> — Add details in notes.</li>
+    </ul>
+    <h3>Assignments</h3>
+    <ul>
+      <li><strong>Manager</strong> — Operations manager handles it.</li>
+      <li><strong>Cleaner</strong> — Cleaning team on next turnover.</li>
+      <li><strong>Contractor</strong> — Skilled trade required.</li>
+      <li><strong>Landscaper</strong> — Outdoor/yard maintenance.</li>
+    </ul>
+    <h3>Adding Items</h3>
+    <p>Tap <strong>+ Add Item</strong> in any room. Rooms start empty — you add items as you walk through.</p>
+    <h3>Storage &amp; Sync</h3>
+    <p>All data (photos, audio, notes) is stored on your device using IndexedDB — survives browser restarts, crashes, and battery loss. The sync indicator shows upload status. Use <strong>Export Package</strong> on the summary screen as a fallback if server sync doesn't work.</p>
+    <div style="margin-top:20px;text-align:center;">
+      <button onclick="closeHelp()" style="background:#C9A84C;color:#fff;border:none;border-radius:8px;padding:10px 32px;font-size:14px;cursor:pointer;">Got It</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: Properties -->
+<div id="screen-properties" class="screen active">
+  <div class="header">
+    <div class="header-left">
+      <div><h1>Property Walkthrough</h1><div class="property-name">The Property Joes Group</div></div>
+    </div>
+    <div class="header-right">
+      <button id="sync-pill-props" class="sync-pill" onclick="toggleSyncPanel()">
+        <div class="sync-dot synced" id="sync-dot-props"></div>
+        <span id="sync-label-props">Synced</span>
+      </button>
+      <button class="help-btn" onclick="openHelp()">?</button>
+    </div>
+  </div>
+  <p class="screen-title">Select Property</p>
+  <div class="property-list" id="property-list"></div>
+</div>
+
+<!-- SCREEN: Rooms -->
+<div id="screen-rooms" class="screen">
+  <div class="header">
+    <div class="header-left">
+      <button class="back-btn" onclick="showScreen('properties')">&larr;</button>
+      <div><h1 id="rooms-title">Rooms</h1><div class="property-name" id="rooms-subtitle"></div></div>
+    </div>
+    <div class="header-right">
+      <div class="progress" id="rooms-progress">0/0</div>
+      <button class="sync-pill" onclick="toggleSyncPanel()">
+        <div class="sync-dot synced" id="sync-dot-rooms"></div>
+        <span id="sync-label-rooms">Synced</span>
+      </button>
+    </div>
+  </div>
+  <div class="room-list" id="room-list"></div>
+  <div class="bottom-bar">
+    <div class="stats"><span id="rooms-passed">0</span> passed &middot; <span id="rooms-flagged">0</span> flagged</div>
+    <div class="btn-group">
+      <button class="btn-submit sage" onclick="saveForLater()">Save</button>
+      <button class="btn-submit" onclick="showSummary()">Summary</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: Items -->
+<div id="screen-items" class="screen">
+  <div class="header">
+    <div class="header-left">
+      <button class="back-btn" onclick="showScreen('rooms')">&larr;</button>
+      <div><h1 id="items-title">Room</h1><div class="property-name" id="items-subtitle"></div></div>
+    </div>
+    <div class="header-right">
+      <div class="progress" id="items-progress">0/0</div>
+    </div>
+  </div>
+  <div class="item-list" id="item-list">
+    <div class="room-header-bar" style="flex-wrap:wrap;gap:8px;">
+      <h2 id="item-room-name" style="flex-basis:100%;margin-bottom:0;"></h2>
+      <div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:8px;">
+        <div class="filter-toggle">
+          <button class="filter-btn active" id="filter-btn-all" onclick="setFilter('all')">All Items</button>
+          <button class="filter-btn" id="filter-btn-issues" onclick="setFilter('issues')">Prior Issues Only</button>
+        </div>
+        <div class="room-nav">
+          <button onclick="prevRoom()">&larr;</button>
+          <button class="btn-add-item" onclick="addNewItem()">+ Add Item</button>
+          <button onclick="nextRoom()">&rarr;</button>
+        </div>
+      </div>
+    </div>
+    <div id="filter-count-bar" style="display:none;padding:6px 16px 0;font-size:12px;color:#E8A735;font-weight:600;"></div>
+    <div id="items-container"></div>
+  </div>
+  <div class="bottom-bar">
+    <div class="stats"><span id="items-done">0</span>/<span id="items-total">0</span> done</div>
+    <button class="btn-submit" onclick="passAllRemaining()">Pass All Remaining</button>
+  </div>
+</div>
+
+<!-- SCREEN: Summary -->
+<div id="screen-summary" class="screen">
+  <div class="header">
+    <div class="header-left">
+      <button class="back-btn" onclick="showScreen('rooms')">&larr;</button>
+      <div><h1>Summary</h1><div class="property-name" id="summary-property"></div></div>
+    </div>
+  </div>
+  <div id="submit-result-container"></div>
+  <div class="summary-section" id="summary-content"></div>
+  <div class="bottom-bar">
+    <div class="stats" id="summary-stats"></div>
+    <div class="btn-group">
+      <button class="btn-submit sage" onclick="exportPackage()" id="btn-export">Export</button>
+      <button class="btn-submit sage" onclick="emailQcSummary()" id="btn-email-qc" style="background:#1a6b1a;">&#9993; Email</button>
+      <button class="btn-submit" id="btn-save" onclick="submitWalkthrough()">Submit</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// PROPERTIES (hardcoded)
+// ============================================================
+// Configure your own properties here. Each property needs an id, name, address, and rooms list.
+// The id must match the keys in TM_PROJECT_MAP below.
+var PROPERTIES = [
+  {
+    id: 'property-1',
+    name: 'Property 1',
+    address: '123 Main St, Your City, ST 00000',
+    rooms: ['Exterior','Foyer','Living Room','Kitchen','Dining Room','Primary Bedroom','Primary Bath','Bedroom 2','Bathroom 2','Laundry','Garage','Deck','Yard']
+  },
+  {
+    id: 'property-2',
+    name: 'Property 2',
+    address: '456 Oak Ave, Your City, ST 00000',
+    rooms: ['Exterior','Foyer','Living Room','Kitchen','Dining Room','Primary Bedroom','Primary Bath','Bedroom 2','Bedroom 3','Bathroom 2','Half Bath','Laundry','Garage','Deck','Yard']
+  }
+];
+
+// ============================================================
+// INDEXEDDB WRAPPER
+// ============================================================
+var DB_NAME = 'qc_db';
+var DB_VERSION = 1;
+var db = null;
+
+function dbOpen() {
+  return new Promise(function(resolve, reject) {
+    if (db) { resolve(db); return; }
+    var req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = function(e) {
+      var database = e.target.result;
+      if (!database.objectStoreNames.contains('sessions')) {
+        database.createObjectStore('sessions', { keyPath: 'id' });
+      }
+      if (!database.objectStoreNames.contains('photos')) {
+        var ps = database.createObjectStore('photos', { keyPath: 'id' });
+        ps.createIndex('sessionId', 'sessionId', { unique: false });
+      }
+      if (!database.objectStoreNames.contains('audio')) {
+        var as = database.createObjectStore('audio', { keyPath: 'id' });
+        as.createIndex('sessionId', 'sessionId', { unique: false });
+      }
+    };
+    req.onsuccess = function(e) { db = e.target.result; resolve(db); };
+    req.onerror = function(e) { reject(e.target.error); };
+  });
+}
+
+function dbSave(storeName, value) {
+  return dbOpen().then(function(database) {
+    return new Promise(function(resolve, reject) {
+      var tx = database.transaction(storeName, 'readwrite');
+      tx.objectStore(storeName).put(value);
+      tx.oncomplete = function() { resolve(); };
+      tx.onerror = function(e) { reject(e.target.error); };
+    });
+  });
+}
+
+function dbGet(storeName, key) {
+  return dbOpen().then(function(database) {
+    return new Promise(function(resolve, reject) {
+      var tx = database.transaction(storeName, 'readonly');
+      var req = tx.objectStore(storeName).get(key);
+      req.onsuccess = function() { resolve(req.result); };
+      req.onerror = function(e) { reject(e.target.error); };
+    });
+  });
+}
+
+function dbGetAll(storeName) {
+  return dbOpen().then(function(database) {
+    return new Promise(function(resolve, reject) {
+      var tx = database.transaction(storeName, 'readonly');
+      var req = tx.objectStore(storeName).getAll();
+      req.onsuccess = function() { resolve(req.result || []); };
+      req.onerror = function(e) { reject(e.target.error); };
+    });
+  });
+}
+
+function dbGetByIndex(storeName, indexName, value) {
+  return dbOpen().then(function(database) {
+    return new Promise(function(resolve, reject) {
+      var tx = database.transaction(storeName, 'readonly');
+      var req = tx.objectStore(storeName).index(indexName).getAll(value);
+      req.onsuccess = function() { resolve(req.result || []); };
+      req.onerror = function(e) { reject(e.target.error); };
+    });
+  });
+}
+
+function dbDelete(storeName, key) {
+  return dbOpen().then(function(database) {
+    return new Promise(function(resolve, reject) {
+      var tx = database.transaction(storeName, 'readwrite');
+      tx.objectStore(storeName).delete(key);
+      tx.oncomplete = function() { resolve(); };
+      tx.onerror = function(e) { reject(e.target.error); };
+    });
+  });
+}
+
+function dbDeleteByIndex(storeName, indexName, value) {
+  return dbGetByIndex(storeName, indexName, value).then(function(items) {
+    var promises = items.map(function(item) { return dbDelete(storeName, item.id); });
+    return Promise.all(promises);
+  });
+}
+
+// ============================================================
+// STATE
+// ============================================================
+var SESSION_ID = null; // e.g. "property-1-20260422"
+var currentProperty = null;
+var rooms = [];       // [{name, items:[{name,isNew}]}]
+var currentRoomIdx = 0;
+var walkData = {};    // {roomName:{itemName:{status,condition,comments,assignedTo,transcripts:[]}}}
+// photos and audio stored separately in IndexedDB by sessionId+room+item+idx
+var activeRecorder = null;
+var activeRecorderTarget = null;
+var activeRecognition = null;
+var autoSaveInterval = null;
+var pendingSync = false;
+var syncInProgress = false;
+var filterMode = 'all'; // 'all' or 'issues'
+
+var SUBMIT_URL = 'https://tpjg-fleet.netlify.app/api/qc/submit';
+
+// ============================================================
+// HELPERS
+// ============================================================
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showToast(msg, duration) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, duration || 2500);
+}
+
+function makePhotoKey(sessionId, roomName, itemName, idx) {
+  return sessionId + '|' + roomName + '|' + itemName + '|photo|' + idx;
+}
+
+function makeAudioKey(sessionId, roomName, itemName, idx) {
+  return sessionId + '|' + roomName + '|' + itemName + '|audio|' + idx;
+}
+
+// ============================================================
+// SYNC STATUS UI
+// ============================================================
+function updateSyncUI(state, labelText) {
+  // state: 'synced', 'pending', 'syncing'
+  var dots = document.querySelectorAll('.sync-dot');
+  var labels = ['sync-label-props', 'sync-label-rooms'].map(function(id) {
+    return document.getElementById(id);
+  });
+  dots.forEach(function(dot) {
+    dot.className = 'sync-dot ' + state;
+  });
+  labels.forEach(function(el) { if (el) el.textContent = labelText; });
+}
+
+function toggleSyncPanel() {
+  var panel = document.getElementById('sync-panel');
+  var textEl = document.getElementById('sync-panel-text');
+  if (panel.classList.contains('open')) { panel.classList.remove('open'); return; }
+
+  if (!currentProperty) {
+    textEl.textContent = 'No active walkthrough.';
+  } else if (syncInProgress) {
+    textEl.textContent = 'Sync in progress...';
+  } else if (pendingSync) {
+    textEl.textContent = 'Data is pending upload to server. Tap "Sync Now" to retry, or use Export Package from the Summary screen as a fallback.';
+  } else {
+    textEl.textContent = 'All data synced to server.';
+  }
+  panel.classList.add('open');
+}
+
+function closeSyncPanel() {
+  document.getElementById('sync-panel').classList.remove('open');
+}
+
+function openHelp() { document.getElementById('help-overlay').classList.add('open'); }
+function closeHelp() { document.getElementById('help-overlay').classList.remove('open'); }
+
+// ============================================================
+// SCREENS
+// ============================================================
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById('screen-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+  document.getElementById('sync-panel').classList.remove('open');
+  if (name === 'rooms') updateRoomList();
+}
+
+// ============================================================
+// SAVE / RESTORE SESSION
+// ============================================================
+function buildSessionId(propId) {
+  var d = new Date();
+  var dateStr = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  return propId + '-' + dateStr;
+}
+
+function saveSession() {
+  if (!currentProperty || !SESSION_ID) return;
+  var sessionData = {
+    id: SESSION_ID,
+    propertyId: currentProperty.id,
+    currentRoomIdx: currentRoomIdx,
+    rooms: rooms.map(function(r) { return { name: r.name, items: r.items.slice() }; }),
+    walkData: walkData,
+    savedAt: Date.now(),
+    synced: false
+  };
+  dbSave('sessions', sessionData).catch(function(e) {
+    console.warn('Session save failed:', e);
+  });
+}
+
+function loadSessionFromDB(sessionId) {
+  return dbGet('sessions', sessionId);
+}
+
+function deleteSession(sessionId) {
+  return Promise.all([
+    dbDelete('sessions', sessionId),
+    dbDeleteByIndex('photos', 'sessionId', sessionId),
+    dbDeleteByIndex('audio', 'sessionId', sessionId)
+  ]);
+}
+
+// ============================================================
+// PROPERTY SELECTION
+// ============================================================
+function initProperties() {
+  var container = document.getElementById('property-list');
+  container.innerHTML = '';
+
+  // Check for any incomplete sessions in IndexedDB
+  dbGetAll('sessions').then(function(sessions) {
+    // Filter sessions < 7 days old
+    var now = Date.now();
+    var activeSessions = sessions.filter(function(s) {
+      return now - (s.savedAt || 0) < 7 * 24 * 60 * 60 * 1000 && !s.synced;
+    });
+
+    // Group sessions by property — keep most recent per property
+    var sessionsByProperty = {};
+    activeSessions.sort(function(a,b) { return b.savedAt - a.savedAt; }).forEach(function(s) {
+      if (!sessionsByProperty[s.propertyId]) sessionsByProperty[s.propertyId] = s;
+    });
+
+    PROPERTIES.forEach(function(p) {
+      var session = sessionsByProperty[p.id];
+      if (session) {
+        // Show resume banner for this property
+        var total = 0, checked = 0;
+        for (var rn in session.walkData) {
+          for (var it in session.walkData[rn]) {
+            total++;
+            if (session.walkData[rn][it] && session.walkData[rn][it].status) checked++;
+          }
+        }
+        var pct = total > 0 ? Math.round(checked / total * 100) : 0;
+        var savedAt = new Date(session.savedAt);
+        var timeStr = savedAt.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ' ' + savedAt.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+
+        var banner = document.createElement('div');
+        banner.className = 'resume-banner';
+        banner.innerHTML =
+          '<div class="resume-info">' +
+            '<strong>' + escHtml(p.name) + '</strong>' +
+            '<span>' + checked + '/' + total + ' items (' + pct + '%) &middot; ' + timeStr + '</span>' +
+          '</div>' +
+          '<div class="resume-actions">' +
+            '<button class="resume-btn" onclick="resumeSession(\'' + escHtml(session.id) + '\')">Resume</button>' +
+            '<button class="discard-btn" onclick="discardSession(\'' + escHtml(session.id) + '\')">Discard</button>' +
+          '</div>';
+        container.appendChild(banner);
+      } else {
+        // No saved session — show regular property card
+        var card = document.createElement('div');
+        card.className = 'property-card';
+        card.innerHTML = '<div><h3>' + escHtml(p.name) + '</h3><p>' + escHtml(p.address) + '</p></div><div class="arrow">&#8250;</div>';
+        card.onclick = (function(prop) { return function() { startFreshWalkthrough(prop); }; })(p);
+        container.appendChild(card);
+      }
+    });
+
+    // Update sync indicator for properties screen
+    updateSyncFromDB();
+  }).catch(function() {
+    // IndexedDB not available — fall through
+    PROPERTIES.forEach(function(p) {
+      var card = document.createElement('div');
+      card.className = 'property-card';
+      card.innerHTML = '<div><h3>' + escHtml(p.name) + '</h3><p>' + escHtml(p.address) + '</p></div><div class="arrow">&#8250;</div>';
+      card.onclick = (function(prop) { return function() { startFreshWalkthrough(prop); }; })(p);
+      container.appendChild(card);
+    });
+  });
+}
+
+function startFreshWalkthrough(prop) {
+  currentProperty = prop;
+  SESSION_ID = buildSessionId(prop.id);
+  currentRoomIdx = 0;
+  walkData = {};
+  filterMode = 'all';
+  rooms = prop.rooms.map(function(n) { return { name: n, items: [] }; });
+  rooms.forEach(function(r) { walkData[r.name] = {}; });
+
+  document.getElementById('rooms-title').textContent = prop.name;
+  document.getElementById('rooms-subtitle').textContent = prop.address;
+  showScreen('rooms');
+  startAutoSave();
+
+  // Load previous walkthrough data from API
+  loadPreviousWalkthrough(prop);
+}
+
+var QC_ROOMS_API = 'https://tpjg-fleet.netlify.app/api/qc/rooms';
+
+// TaskMaster integration — map QC property IDs to TaskMaster project IDs
+// Update these IDs to match your TaskMaster project IDs for each property
+var TM_PROJECT_MAP = {
+  'property-1': 1, // Replace with your TaskMaster project ID for Property 1
+  'property-2': 2  // Replace with your TaskMaster project ID for Property 2
+};
+var TM_API_BASE = 'https://tpjg-fleet.netlify.app/api/taskmaster';
+
+function _syncTaskMasterStatuses(propertyId, walkthroughDate, callback) {
+  var projectId = TM_PROJECT_MAP[propertyId];
+  if (!projectId) { if (callback) callback(); return; }
+
+  var token = new URLSearchParams(location.search).get('token') || localStorage.getItem('portal_token') || '';
+  fetch(TM_API_BASE + '/projects/' + projectId, {
+    headers: { 'Authorization': 'Bearer ' + token }
+  })
+  .then(function(r) { return r.ok ? r.json() : null; })
+  .then(function(project) {
+    if (!project || !project.tasks) { if (callback) callback(); return; }
+
+    var completedTasks = project.tasks.filter(function(t) {
+      if (t.status !== 'done') return false;
+      // Only count if completed AFTER the last walkthrough date
+      if (walkthroughDate && t.completed_at) {
+        var completedDate = t.completed_at.substring(0, 10); // YYYY-MM-DD
+        if (completedDate <= walkthroughDate) return false; // completed before or on walkthrough — skip
+      }
+      return true;
+    });
+    var updatedCount = 0;
+
+    completedTasks.forEach(function(task) {
+      // Task titles are formatted as "Room — Item" (e.g., "1 Bath - Full — Exhaust Fan")
+      // Match against walkData[room][item]
+      var titleParts = task.title.split(' — ');
+      if (titleParts.length < 2) return;
+
+      var taskRoom = titleParts[0].trim();
+      var taskItem = titleParts.slice(1).join(' — ').trim();
+
+      // Try exact match first
+      if (walkData[taskRoom] && walkData[taskRoom][taskItem]) {
+        if (walkData[taskRoom][taskItem].prevCondition !== 'Acceptable') {
+          walkData[taskRoom][taskItem].prevCondition = 'Acceptable';
+          walkData[taskRoom][taskItem].prevComments = '';
+          walkData[taskRoom][taskItem].comments = '';
+          walkData[taskRoom][taskItem].tmCompleted = true;
+          updatedCount++;
+        }
+      } else {
+        // Fuzzy match — try matching room by prefix and item case-insensitively
+        Object.keys(walkData).forEach(function(room) {
+          if (room.toLowerCase() === taskRoom.toLowerCase() ||
+              taskRoom.toLowerCase().indexOf(room.toLowerCase()) === 0 ||
+              room.toLowerCase().indexOf(taskRoom.toLowerCase()) === 0) {
+            Object.keys(walkData[room]).forEach(function(item) {
+              if (item.toLowerCase() === taskItem.toLowerCase() ||
+                  taskItem.toLowerCase().indexOf(item.toLowerCase()) === 0 ||
+                  item.toLowerCase().indexOf(taskItem.toLowerCase()) === 0) {
+                if (walkData[room][item].prevCondition !== 'Acceptable') {
+                  walkData[room][item].prevCondition = 'Acceptable';
+                  walkData[room][item].prevComments = '';
+                  walkData[room][item].comments = '';
+                  walkData[room][item].tmCompleted = true;
+                  updatedCount++;
+                }
+              }
+            });
+          }
+        });
+      }
+    });
+
+    if (updatedCount > 0) {
+      showToast(updatedCount + ' item' + (updatedCount !== 1 ? 's' : '') + ' updated from TaskMaster', 3000);
+    }
+    if (callback) callback();
+  })
+  .catch(function(e) {
+    console.warn('TaskMaster sync failed:', e);
+    if (callback) callback();
+  });
+}
+
+function loadPreviousWalkthrough(prop) {
+  var roomList = document.getElementById('room-list');
+
+  // Show loading banner
+  var banner = document.createElement('div');
+  banner.id = 'prev-walkthrough-banner';
+  banner.className = 'loading-banner';
+  banner.innerHTML = '<div class="loading-spinner"></div><span>Loading last walkthrough data...</span>';
+  roomList.innerHTML = '';
+  roomList.appendChild(banner);
+
+  fetch(QC_ROOMS_API + '?property=' + encodeURIComponent(prop.id))
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(data) {
+      // Remove loading banner
+      var b = document.getElementById('prev-walkthrough-banner');
+      if (b) b.parentNode.removeChild(b);
+
+      var apiRooms = data.rooms || {};
+      var hasData = Object.keys(apiRooms).length > 0;
+
+      if (hasData) {
+        // Replace hardcoded rooms with actual rooms from the spreadsheet
+        rooms = Object.keys(apiRooms).map(function(roomName) {
+          var prevItems = apiRooms[roomName];
+          var items = prevItems.filter(function(p) { return p.item; }).map(function(p) {
+            return { name: p.item, isNew: false, prevCondition: p.condition || '' };
+          });
+          return { name: roomName, items: items };
+        });
+        currentRoomIdx = 0;
+
+        // Pre-fill walkData with previous conditions and comments
+        rooms.forEach(function(room) {
+          if (!walkData[room.name]) walkData[room.name] = {};
+          var prevItems = apiRooms[room.name] || [];
+          prevItems.forEach(function(prevItem) {
+            if (!prevItem.item) return;
+            if (!walkData[room.name][prevItem.item]) {
+              walkData[room.name][prevItem.item] = {
+                status: null,
+                condition: '',
+                comments: '',
+                prevComments: prevItem.comments || '',
+                assignedTo: '',
+                transcripts: [],
+                prevCondition: prevItem.condition || ''
+              };
+            }
+          });
+        });
+
+        // Cross-reference TaskMaster for completed items → mark as Acceptable
+        // Only update if task was completed AFTER the last walkthrough date
+        var walkthroughDate = data.walkthroughDate || null;
+        _syncTaskMasterStatuses(prop.id, walkthroughDate, function() {
+          saveSession();
+          updateRoomList();
+        });
+
+        var tabLabel = data.walkthroughTab ? ' (' + data.walkthroughTab + ')' : '';
+        showToast('Previous walkthrough loaded' + tabLabel, 3000);
+      } else {
+        updateRoomList();
+        if (data.sheetId === null) {
+          // Property has no sheet — silent, just show empty rooms
+        } else {
+          showToast('No previous walkthrough found', 2500);
+        }
+      }
+    })
+    .catch(function(err) {
+      // Offline or server down — graceful fallback
+      var b = document.getElementById('prev-walkthrough-banner');
+      if (b) b.parentNode.removeChild(b);
+
+      // Show offline notice above room list
+      var notice = document.createElement('div');
+      notice.className = 'offline-notice';
+      notice.textContent = 'Offline — previous walkthrough data not loaded. Items can be added manually.';
+      var roomList2 = document.getElementById('room-list');
+      roomList2.insertBefore(notice, roomList2.firstChild);
+
+      updateRoomList();
+      console.warn('QC rooms API error:', err.message);
+    });
+}
+
+function resumeSession(sessionId) {
+  dbGet('sessions', sessionId).then(function(session) {
+    if (!session) { showToast('Session not found'); initProperties(); return; }
+    var prop = PROPERTIES.find(function(p) { return p.id === session.propertyId; });
+    if (!prop) { showToast('Property not found'); initProperties(); return; }
+
+    currentProperty = prop;
+    SESSION_ID = sessionId;
+    currentRoomIdx = session.currentRoomIdx || 0;
+    walkData = session.walkData || {};
+    filterMode = 'all';
+    rooms = prop.rooms.map(function(n) { return { name: n, items: [] }; });
+    if (session.rooms) {
+      session.rooms.forEach(function(sr) {
+        var room = rooms.find(function(r) { return r.name === sr.name; });
+        if (room) room.items = sr.items || [];
+      });
+    }
+    // Ensure walkData initialized for all rooms
+    rooms.forEach(function(room) {
+      if (!walkData[room.name]) walkData[room.name] = {};
+      room.items.forEach(function(item) {
+        if (!walkData[room.name][item.name]) {
+          walkData[room.name][item.name] = { status: null, condition: '', comments: '', assignedTo: '', transcripts: [] };
+        }
+      });
+    });
+
+    document.getElementById('rooms-title').textContent = prop.name;
+    document.getElementById('rooms-subtitle').textContent = prop.address;
+    showScreen('rooms');
+    startAutoSave();
+
+    // Fetch latest spreadsheet data and merge with saved session
+    fetch(QC_ROOMS_API + '?property=' + encodeURIComponent(prop.id))
+      .then(function(r) { return r.ok ? r.json() : null; })
+      .then(function(data) {
+        if (!data || !data.rooms || Object.keys(data.rooms).length === 0) {
+          updateRoomList();
+          showToast('Walkthrough resumed');
+          return;
+        }
+        var apiRooms = data.rooms;
+        // Merge spreadsheet rooms/items with saved session data
+        var mergedRooms = Object.keys(apiRooms).map(function(roomName) {
+          var sheetItems = apiRooms[roomName];
+          var items = sheetItems.filter(function(p) { return p.item; }).map(function(p) {
+            return { name: p.item, isNew: false, prevCondition: p.condition || '' };
+          });
+          // Add any items from saved session that aren't in the spreadsheet (manually added)
+          var savedRoom = (session.rooms || []).find(function(sr) { return sr.name === roomName; });
+          if (savedRoom) {
+            savedRoom.items.forEach(function(si) {
+              if (!items.find(function(i) { return i.name === si.name; })) {
+                items.push(si);
+              }
+            });
+          }
+          return { name: roomName, items: items };
+        });
+        // Add any saved rooms not in the spreadsheet
+        (session.rooms || []).forEach(function(sr) {
+          if (!mergedRooms.find(function(r) { return r.name === sr.name; })) {
+            mergedRooms.push(sr);
+          }
+        });
+        rooms = mergedRooms;
+        // Merge walkData — keep saved statuses, add spreadsheet prev data
+        rooms.forEach(function(room) {
+          if (!walkData[room.name]) walkData[room.name] = {};
+          var prevItems = apiRooms[room.name] || [];
+          prevItems.forEach(function(prevItem) {
+            if (!prevItem.item) return;
+            if (!walkData[room.name][prevItem.item]) {
+              walkData[room.name][prevItem.item] = {
+                status: null, condition: '', comments: '',
+                prevComments: prevItem.comments || '', assignedTo: '',
+                transcripts: [], prevCondition: prevItem.condition || ''
+              };
+            } else {
+              // Preserve saved status but add prev data from spreadsheet
+              walkData[room.name][prevItem.item].prevCondition = prevItem.condition || '';
+              walkData[room.name][prevItem.item].prevComments = prevItem.comments || '';
+            }
+          });
+        });
+        saveSession();
+        updateRoomList();
+        showToast('Walkthrough resumed with latest data');
+      })
+      .catch(function() {
+        updateRoomList();
+        showToast('Walkthrough resumed (offline)');
+      });
+  });
+}
+
+function discardSession(sessionId) {
+  if (confirm('Discard saved walkthrough and start fresh?')) {
+    deleteSession(sessionId).then(function() { initProperties(); });
+  }
+}
+
+// ============================================================
+// ROOM LIST
+// ============================================================
+function updateRoomList() {
+  if (!currentProperty) return;
+  var container = document.getElementById('room-list');
+  container.innerHTML = '';
+  var totalPassed = 0, totalFlagged = 0, totalRoomsDone = 0;
+
+  rooms.forEach(function(room, idx) {
+    var passed = 0, flagged = 0, total = room.items.length;
+    room.items.forEach(function(item) {
+      var d = walkData[room.name] && walkData[room.name][item.name];
+      if (d && d.status === 'pass') passed++;
+      if (d && d.status === 'flag') flagged++;
+    });
+    totalPassed += passed;
+    totalFlagged += flagged;
+    var checked = passed + flagged;
+    var isDone = total > 0 && checked === total;
+    if (isDone) totalRoomsDone++;
+
+    var badgeClass, badgeText;
+    if (total === 0) { badgeClass = 'badge-pending'; badgeText = 'No items'; }
+    else if (!isDone) { badgeClass = 'badge-pending'; badgeText = checked + '/' + total; }
+    else if (flagged > 0) { badgeClass = 'badge-issues'; badgeText = flagged + ' issue' + (flagged !== 1 ? 's' : ''); }
+    else { badgeClass = 'badge-done'; badgeText = 'Clear'; }
+
+    var card = document.createElement('div');
+    card.className = 'room-card';
+    card.innerHTML =
+      '<div class="room-info"><h3>' + escHtml(room.name) + '</h3><p>' + total + ' item' + (total !== 1 ? 's' : '') + '</p></div>' +
+      '<div class="room-status"><span class="room-badge ' + badgeClass + '">' + badgeText + '</span><span style="font-size:20px;color:#C9A84C;">&#8250;</span></div>';
+    card.onclick = (function(i) { return function() { openRoom(i); }; })(idx);
+    container.appendChild(card);
+  });
+
+  document.getElementById('rooms-progress').textContent = totalRoomsDone + '/' + rooms.length;
+  document.getElementById('rooms-passed').textContent = totalPassed;
+  document.getElementById('rooms-flagged').textContent = totalFlagged;
+}
+
+// ============================================================
+// FILTER TOGGLE
+// ============================================================
+function isPriorIssue(item, walkDataEntry) {
+  var prevCond = (walkDataEntry && walkDataEntry.prevCondition) || item.prevCondition || '';
+  var prevComments = (walkDataEntry && walkDataEntry.comments) || '';
+  var problemConditions = ['Repair', 'Replace', 'Dangerous'];
+  if (problemConditions.indexOf(prevCond) !== -1) return true;
+  if (prevComments && prevComments.trim().length > 0) return true;
+  return false;
+}
+
+function setFilter(mode) {
+  filterMode = mode;
+  var btnAll = document.getElementById('filter-btn-all');
+  var btnIssues = document.getElementById('filter-btn-issues');
+  if (btnAll && btnIssues) {
+    btnAll.className = 'filter-btn' + (mode === 'all' ? ' active' : '');
+    btnIssues.className = 'filter-btn' + (mode === 'issues' ? ' active' : '');
+  }
+  renderItems();
+}
+
+// ============================================================
+// ITEMS
+// ============================================================
+function openRoom(idx) {
+  currentRoomIdx = idx;
+  renderItems();
+  showScreen('items');
+}
+
+function renderItems() {
+  if (!rooms[currentRoomIdx]) return;
+  var room = rooms[currentRoomIdx];
+  document.getElementById('items-title').textContent = room.name;
+  document.getElementById('items-subtitle').textContent = currentProperty ? currentProperty.name : '';
+  document.getElementById('item-room-name').textContent = room.name;
+
+  // Sync filter button states (in case renderItems called directly)
+  var btnAll = document.getElementById('filter-btn-all');
+  var btnIssues = document.getElementById('filter-btn-issues');
+  if (btnAll && btnIssues) {
+    btnAll.className = 'filter-btn' + (filterMode === 'all' ? ' active' : '');
+    btnIssues.className = 'filter-btn' + (filterMode === 'issues' ? ' active' : '');
+  }
+
+  var container = document.getElementById('items-container');
+  container.innerHTML = '';
+  var done = 0;
+  if (!walkData[room.name]) walkData[room.name] = {};
+
+  // Determine which items pass the filter
+  var ri = currentRoomIdx;
+  var allItems = room.items;
+  var filteredItems = allItems;
+  if (filterMode === 'issues') {
+    filteredItems = allItems.filter(function(item) {
+      var d = walkData[room.name] && walkData[room.name][item.name];
+      return isPriorIssue(item, d);
+    });
+  }
+
+  // Show/hide count bar
+  var countBar = document.getElementById('filter-count-bar');
+  if (countBar) {
+    if (filterMode === 'issues') {
+      countBar.style.display = 'block';
+      countBar.textContent = 'Showing ' + filteredItems.length + ' of ' + allItems.length + ' items';
+    } else {
+      countBar.style.display = 'none';
+    }
+  }
+
+  if (filteredItems.length === 0 && filterMode === 'issues') {
+    var noIssues = document.createElement('div');
+    noIssues.style.cssText = 'text-align:center;padding:40px 20px;color:#888;font-size:14px;';
+    noIssues.innerHTML = '<div style="font-size:36px;color:#C7C1BA;margin-bottom:8px;">&#10003;</div><p>No prior issues for this room.</p>';
+    container.appendChild(noIssues);
+  } else if (filteredItems.length === 0 && filterMode === 'all') {
+    var emptyMsg = document.createElement('div');
+    emptyMsg.style.cssText = 'text-align:center;padding:40px 20px;color:#888;font-size:14px;';
+    emptyMsg.innerHTML = '<div style="font-size:36px;color:#C7C1BA;margin-bottom:8px;">&#43;</div><p>No items yet.</p><p style="margin-top:6px;">Tap <strong>+ Add Item</strong> to add checklist items as you inspect this room.</p>';
+    container.appendChild(emptyMsg);
+  }
+
+  // Count done across ALL items (not just filtered), for progress tracking
+  allItems.forEach(function(item) {
+    var d = walkData[room.name] && walkData[room.name][item.name];
+    if (d && d.status) done++;
+  });
+
+  filteredItems.forEach(function(item) {
+    // Find original index in allItems for pass/flag callbacks
+    var itemIdx = allItems.indexOf(item);
+    if (!walkData[room.name][item.name]) {
+      walkData[room.name][item.name] = { status: null, condition: '', comments: '', assignedTo: '', transcripts: [] };
+    }
+    var d = walkData[room.name][item.name];
+
+    var passClass = d.status === 'pass' ? ' active' : '';
+    var flagClass = d.status === 'flag' ? ' active' : '';
+    var photoClass = d._hasPhotos ? ' has-photo' : '';
+    var audioClass = d._hasAudio ? ' has-audio' : '';
+
+    var card = document.createElement('div');
+    var prevCond = d.prevCondition || item.prevCondition || '';
+    var needsAttention = prevCond === 'Repair' || prevCond === 'Replace';
+    // Border coloring: Replace/Dangerous = red left border, Repair = amber left border
+    var borderClass = '';
+    if (prevCond === 'Replace' || prevCond === 'Dangerous') borderClass = ' prior-critical';
+    else if (prevCond === 'Repair') borderClass = ' prior-repair';
+    else if (needsAttention) borderClass = ' prev-attention'; // fallback for any other attention case
+    card.className = 'item-card' + borderClass;
+    card.id = 'item-' + ri + '-' + itemIdx;
+
+    // Build previous condition + comment as a single merged line
+    var prevComments = d.prevComments || '';
+    var showPrevCond = prevCond && prevCond !== 'New' && prevCond !== 'Acceptable' && prevCond !== '';
+    var prevCondNote = '';
+    if (showPrevCond || prevComments) {
+      var statusColor = needsAttention ? '#C47A1A' : '#888';
+      var statusWeight = needsAttention ? 'font-weight:600;' : '';
+      var statusPart = showPrevCond
+        ? '<span style="color:' + statusColor + ';' + statusWeight + '">Previously: ' + escHtml(prevCond) + '</span>'
+        : '<span style="color:#888;">Previously:</span>';
+      var commentPart = prevComments
+        ? (showPrevCond ? ' \u2014 <span style="color:#888;">' + escHtml(prevComments) + '</span>' : ' <span style="color:#888;">' + escHtml(prevComments) + '</span>')
+        : '';
+      prevCondNote = '<div style="font-size:11px;margin-top:2px;">' + statusPart + commentPart + '</div>';
+    }
+    var prevCommentNote = '';
+
+    // Pre-fill textarea: show prevComments if no new comments entered yet
+    var textareaVal = d.comments || prevComments;
+
+    card.innerHTML =
+      '<div class="item-top">' +
+        '<div style="flex:1;"><div class="item-name">' + escHtml(item.name) + (item.isNew ? '<span class="new-item-badge">NEW</span>' : '') + '</div>' + prevCondNote + prevCommentNote + '</div>' +
+        '<div class="item-actions">' +
+          '<button class="btn-pass' + passClass + '" onclick="markPass(' + ri + ',' + itemIdx + ')">&#10003;</button>' +
+          '<button class="btn-flag' + flagClass + '" onclick="markFlag(' + ri + ',' + itemIdx + ')">&#9888;</button>' +
+          '<button class="btn-photo' + photoClass + '" id="pbtn-' + ri + '-' + itemIdx + '" onclick="takePhoto(' + ri + ',' + itemIdx + ')">&#128247;</button>' +
+          '<button class="btn-mic' + audioClass + '" id="mic-' + ri + '-' + itemIdx + '" onclick="toggleRecord(' + ri + ',' + itemIdx + ')">&#127908;</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="live-transcript" id="transcript-' + ri + '-' + itemIdx + '"></div>' +
+      '<div class="flag-detail' + (d.status === 'flag' ? ' visible' : '') + '" id="flag-' + ri + '-' + itemIdx + '">' +
+        '<select onchange="updateCondition(' + ri + ',' + itemIdx + ',this.value)">' +
+          '<option value="">Condition...</option>' +
+          '<option value="Repair"' + (d.condition === 'Repair' ? ' selected' : '') + '>Needs Repair</option>' +
+          '<option value="Replace"' + (d.condition === 'Replace' ? ' selected' : '') + '>Replace</option>' +
+          '<option value="Missing"' + (d.condition === 'Missing' ? ' selected' : '') + '>Missing</option>' +
+          '<option value="Dirty"' + (d.condition === 'Dirty' ? ' selected' : '') + '>Dirty/Needs Cleaning</option>' +
+          '<option value="Order"' + (d.condition === 'Order' ? ' selected' : '') + '>Need to Order</option>' +
+          '<option value="Other"' + (d.condition === 'Other' ? ' selected' : '') + '>Other</option>' +
+        '</select>' +
+        '<textarea placeholder="Notes..." onchange="updateComments(' + ri + ',' + itemIdx + ',this.value)" oninput="updateComments(' + ri + ',' + itemIdx + ',this.value)">' + escHtml(textareaVal) + '</textarea>' +
+        '<div class="assign-row">' +
+          mkAssign('Manager', d.assignedTo, ri, itemIdx) +
+          mkAssign('Cleaner', d.assignedTo, ri, itemIdx) +
+          mkAssign('Contractor', d.assignedTo, ri, itemIdx) +
+          mkAssign('Landscaper', d.assignedTo, ri, itemIdx) +
+        '</div>' +
+      '</div>' +
+      '<div class="photo-preview" id="photos-' + ri + '-' + itemIdx + '"></div>' +
+      '<div class="audio-preview" id="audios-' + ri + '-' + itemIdx + '"></div>';
+
+    container.appendChild(card);
+
+    // Load media from IndexedDB
+    loadMediaForItem(ri, itemIdx, room.name, item.name);
+  });
+
+  document.getElementById('items-done').textContent = done;
+  document.getElementById('items-total').textContent = room.items.length;
+  document.getElementById('items-progress').textContent = done + '/' + room.items.length;
+}
+
+function mkAssign(label, current, ri, ii) {
+  var sel = current === label ? ' selected' : '';
+  return '<div class="assign-btn' + sel + '" onclick="assignTo(' + ri + ',' + ii + ',\'' + label + '\')">' + label + '</div>';
+}
+
+function loadMediaForItem(ri, itemIdx, roomName, itemName) {
+  if (!SESSION_ID) return;
+  var prefix = SESSION_ID + '|' + roomName + '|' + itemName + '|';
+  var photoContainer = document.getElementById('photos-' + ri + '-' + itemIdx);
+  var audioContainer = document.getElementById('audios-' + ri + '-' + itemIdx);
+  var photoBtnEl = document.getElementById('pbtn-' + ri + '-' + itemIdx);
+  var micBtnEl = document.getElementById('mic-' + ri + '-' + itemIdx);
+
+  dbGetAll('photos').then(function(allPhotos) {
+    var myPhotos = allPhotos.filter(function(p) { return p.id.indexOf(prefix + 'photo|') === 0; })
+      .sort(function(a,b) { return a.idx - b.idx; });
+    if (photoContainer && myPhotos.length > 0) {
+      photoContainer.innerHTML = '';
+      if (photoBtnEl) photoBtnEl.classList.add('has-photo');
+      // Update walkData flag
+      if (walkData[roomName] && walkData[roomName][itemName]) walkData[roomName][itemName]._hasPhotos = true;
+      myPhotos.forEach(function(p) {
+        var url = URL.createObjectURL(p.blob);
+        var wrapper = document.createElement('div');
+        wrapper.className = 'media-wrapper';
+        var img = document.createElement('img');
+        img.className = 'photo-thumb';
+        img.src = url;
+        var del = document.createElement('button');
+        del.className = 'delete-media';
+        del.innerHTML = '&times;';
+        del.onclick = (function(photoId, roomN, itemN) {
+          return function(e) {
+            e.stopPropagation();
+            dbDelete('photos', photoId).then(function() {
+              renderItems();
+            });
+          };
+        })(p.id, roomName, itemName);
+        wrapper.appendChild(img);
+        wrapper.appendChild(del);
+        photoContainer.appendChild(wrapper);
+      });
+    }
+  }).catch(function(){});
+
+  dbGetAll('audio').then(function(allAudio) {
+    var myAudio = allAudio.filter(function(a) { return a.id.indexOf(prefix + 'audio|') === 0; })
+      .sort(function(a,b) { return a.idx - b.idx; });
+    if (audioContainer && myAudio.length > 0) {
+      audioContainer.innerHTML = '';
+      if (micBtnEl) { micBtnEl.classList.remove('recording'); micBtnEl.classList.add('has-audio'); }
+      if (walkData[roomName] && walkData[roomName][itemName]) walkData[roomName][itemName]._hasAudio = true;
+      var d = walkData[roomName] && walkData[roomName][itemName];
+      myAudio.forEach(function(a, i) {
+        var url = URL.createObjectURL(a.blob);
+        var wrapper = document.createElement('div');
+        wrapper.className = 'audio-wrapper';
+        var audio = document.createElement('audio');
+        audio.controls = true;
+        audio.src = url;
+        var del = document.createElement('button');
+        del.className = 'audio-delete';
+        del.textContent = 'Delete';
+        del.onclick = (function(audioId, roomN, itemN) {
+          return function(e) {
+            e.stopPropagation();
+            dbDelete('audio', audioId).then(function() {
+              // Also clear transcript
+              if (walkData[roomN] && walkData[roomN][itemN] && walkData[roomN][itemN].transcripts) {
+                walkData[roomN][itemN].transcripts.splice(i, 1);
+                saveSession();
+              }
+              renderItems();
+            });
+          };
+        })(a.id, roomName, itemName);
+        wrapper.appendChild(audio);
+        wrapper.appendChild(del);
+        // Show transcript
+        var transcripts = d && d.transcripts;
+        if (transcripts && transcripts[i]) {
+          var tDiv = document.createElement('div');
+          tDiv.className = 'audio-transcript';
+          tDiv.textContent = '"' + transcripts[i] + '"';
+          wrapper.appendChild(tDiv);
+        }
+        audioContainer.appendChild(wrapper);
+      });
+    }
+  }).catch(function(){});
+}
+
+// ============================================================
+// ITEM ACTIONS
+// ============================================================
+function markPass(ri, ii) {
+  var room = rooms[ri], item = room.items[ii];
+  if (!walkData[room.name]) walkData[room.name] = {};
+  if (!walkData[room.name][item.name]) walkData[room.name][item.name] = { status: null, condition: '', comments: '', assignedTo: '', transcripts: [] };
+  var d = walkData[room.name][item.name];
+  d.status = d.status === 'pass' ? null : 'pass';
+  if (d.status === 'pass') d.condition = 'Acceptable';
+  saveSession();
+  renderItems();
+}
+
+function markFlag(ri, ii) {
+  var room = rooms[ri], item = room.items[ii];
+  if (!walkData[room.name]) walkData[room.name] = {};
+  if (!walkData[room.name][item.name]) walkData[room.name][item.name] = { status: null, condition: '', comments: '', assignedTo: '', transcripts: [] };
+  var d = walkData[room.name][item.name];
+  var wasFlagged = d.status === 'flag';
+  d.status = wasFlagged ? null : 'flag';
+  saveSession();
+  renderItems();
+  if (!wasFlagged) {
+    setTimeout(function() {
+      var el = document.getElementById('flag-' + ri + '-' + ii);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 50);
+  }
+}
+
+function updateCondition(ri, ii, val) {
+  var room = rooms[ri];
+  if (!walkData[room.name] || !walkData[room.name][room.items[ii].name]) return;
+  walkData[room.name][room.items[ii].name].condition = val;
+  saveSession();
+}
+
+function updateComments(ri, ii, val) {
+  var room = rooms[ri];
+  if (!walkData[room.name] || !walkData[room.name][room.items[ii].name]) return;
+  walkData[room.name][room.items[ii].name].comments = val;
+  saveSession();
+}
+
+function assignTo(ri, ii, who) {
+  var room = rooms[ri];
+  if (!walkData[room.name] || !walkData[room.name][room.items[ii].name]) return;
+  var d = walkData[room.name][room.items[ii].name];
+  d.assignedTo = d.assignedTo === who ? '' : who;
+  saveSession();
+  renderItems();
+}
+
+function passAllRemaining() {
+  var room = rooms[currentRoomIdx];
+  room.items.forEach(function(item) {
+    if (!walkData[room.name]) walkData[room.name] = {};
+    if (!walkData[room.name][item.name]) walkData[room.name][item.name] = { status: null, condition: '', comments: '', assignedTo: '', transcripts: [] };
+    var d = walkData[room.name][item.name];
+    if (!d.status) { d.status = 'pass'; d.condition = 'Acceptable'; }
+  });
+  saveSession();
+  renderItems();
+}
+
+function prevRoom() { if (currentRoomIdx > 0) { currentRoomIdx--; renderItems(); window.scrollTo(0,0); } }
+function nextRoom() { if (currentRoomIdx < rooms.length-1) { currentRoomIdx++; renderItems(); window.scrollTo(0,0); } }
+
+// ============================================================
+// ADD ITEM
+// ============================================================
+function addNewItem() {
+  var itemName = prompt('Add new item to ' + rooms[currentRoomIdx].name + ':');
+  if (!itemName || !itemName.trim()) return;
+  itemName = itemName.trim();
+  var room = rooms[currentRoomIdx];
+  if (room.items.some(function(it) { return it.name.toLowerCase() === itemName.toLowerCase(); })) {
+    alert('Item "' + itemName + '" already exists in this room.');
+    return;
+  }
+  room.items.push({ name: itemName, isNew: true });
+  if (!walkData[room.name]) walkData[room.name] = {};
+  walkData[room.name][itemName] = { status: null, condition: '', comments: '', assignedTo: '', transcripts: [] };
+  saveSession();
+  renderItems();
+  setTimeout(function() {
+    var el = document.getElementById('item-' + currentRoomIdx + '-' + (room.items.length-1));
+    if (el) { el.style.outline = '3px solid #C9A84C'; el.scrollIntoView({ behavior:'smooth', block:'center' }); setTimeout(function() { el.style.outline=''; }, 3000); }
+  }, 100);
+}
+
+// ============================================================
+// PHOTO CAPTURE — stored as blob in IndexedDB
+// ============================================================
+function compressToBlob(file, callback) {
+  var img = new Image();
+  var url = URL.createObjectURL(file);
+  img.onload = function() {
+    URL.revokeObjectURL(url);
+    var canvas = document.createElement('canvas');
+    var MAX_DIM = 1200; // internal reference photos — small is fine
+    var w = img.width, h = img.height;
+    if (w > MAX_DIM || h > MAX_DIM) {
+      if (w > h) { h = Math.round(h * MAX_DIM / w); w = MAX_DIM; }
+      else { w = Math.round(w * MAX_DIM / h); h = MAX_DIM; }
+    }
+    canvas.width = w; canvas.height = h;
+    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+    canvas.toBlob(function(blob) { callback(blob); }, 'image/jpeg', 0.65);
+  };
+  img.onerror = function() { URL.revokeObjectURL(url); callback(file); };
+  img.src = url;
+}
+
+function getNextPhotoIdx(roomName, itemName) {
+  return dbGetAll('photos').then(function(photos) {
+    var prefix = SESSION_ID + '|' + roomName + '|' + itemName + '|photo|';
+    var existing = photos.filter(function(p) { return p.id.indexOf(prefix) === 0; });
+    return existing.length;
+  });
+}
+
+function getNextAudioIdx(roomName, itemName) {
+  return dbGetAll('audio').then(function(clips) {
+    var prefix = SESSION_ID + '|' + roomName + '|' + itemName + '|audio|';
+    var existing = clips.filter(function(a) { return a.id.indexOf(prefix) === 0; });
+    return existing.length;
+  });
+}
+
+function takePhoto(ri, ii) {
+  var input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.capture = 'environment';
+  input.onchange = function(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    compressToBlob(file, function(blob) {
+      var room = rooms[ri], item = room.items[ii];
+      getNextPhotoIdx(room.name, item.name).then(function(idx) {
+        var key = makePhotoKey(SESSION_ID, room.name, item.name, idx);
+        return dbSave('photos', { id: key, sessionId: SESSION_ID, room: room.name, item: item.name, idx: idx, blob: blob, savedAt: Date.now() });
+      }).then(function() {
+        if (!walkData[room.name]) walkData[room.name] = {};
+        if (!walkData[room.name][item.name]) walkData[room.name][item.name] = { status: null, condition: '', comments: '', assignedTo: '', transcripts: [] };
+        walkData[room.name][item.name]._hasPhotos = true;
+        markPendingSync();
+        saveSession();
+        renderItems();
+        showToast('Photo saved');
+      }).catch(function(err) {
+        showToast('Photo save failed — storage error');
+        console.error(err);
+      });
+    });
+  };
+  input.click();
+}
+
+// ============================================================
+// VOICE RECORDING — blob stored in IndexedDB
+// ============================================================
+function getSupportedMimeType() {
+  if (typeof MediaRecorder === 'undefined') return '';
+  var types = ['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus','audio/mp4'];
+  for (var i = 0; i < types.length; i++) {
+    if (MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(types[i])) return types[i];
+  }
+  return '';
+}
+
+function toggleRecord(ri, ii) {
+  var micBtn = document.getElementById('mic-' + ri + '-' + ii);
+  var room = rooms[ri], item = room.items[ii];
+  if (!walkData[room.name]) walkData[room.name] = {};
+  if (!walkData[room.name][item.name]) walkData[room.name][item.name] = { status: null, condition: '', comments: '', assignedTo: '', transcripts: [] };
+  var d = walkData[room.name][item.name];
+  var targetKey = ri + '-' + ii;
+
+  if (activeRecorder && activeRecorderTarget === targetKey) {
+    activeRecorder.stop();
+    if (activeRecognition) { try { activeRecognition.stop(); } catch(ex) {} activeRecognition = null; }
+    if (micBtn) micBtn.classList.remove('recording');
+    var tEl = document.getElementById('transcript-' + ri + '-' + ii);
+    if (tEl) tEl.classList.remove('active');
+    activeRecorder = null;
+    activeRecorderTarget = null;
+    return;
+  }
+
+  // Stop any other recording
+  if (activeRecorder) {
+    activeRecorder.stop();
+    if (activeRecognition) { try { activeRecognition.stop(); } catch(ex) {} activeRecognition = null; }
+    var prevMic = document.querySelector('.btn-mic.recording');
+    if (prevMic) prevMic.classList.remove('recording');
+    var prevTr = document.querySelector('.live-transcript.active');
+    if (prevTr) prevTr.classList.remove('active');
+    activeRecorder = null;
+    activeRecorderTarget = null;
+  }
+
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream) {
+    var chunks = [];
+    var mimeType = getSupportedMimeType();
+    var recOpts = { audioBitsPerSecond: 32000 }; // low bitrate — voice notes only
+    if (mimeType) recOpts.mimeType = mimeType;
+    var recorder = new MediaRecorder(stream, recOpts);
+    var liveText = '';
+    var tEl = document.getElementById('transcript-' + ri + '-' + ii);
+
+    var SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRec) {
+      var recog = new SpeechRec();
+      recog.continuous = true;
+      recog.interimResults = true;
+      recog.lang = 'en-US';
+      recog.onresult = function(e) {
+        var interim = '';
+        for (var i = e.resultIndex; i < e.results.length; i++) {
+          if (e.results[i].isFinal) liveText += e.results[i][0].transcript + ' ';
+          else interim += e.results[i][0].transcript;
+        }
+        if (tEl) { tEl.textContent = (liveText + interim).trim(); tEl.classList.add('active'); }
+      };
+      recog.onerror = function() {};
+      try { recog.start(); activeRecognition = recog; } catch(ex) {}
+    }
+
+    recorder.ondataavailable = function(e) { if (e.data && e.data.size > 0) chunks.push(e.data); };
+    recorder.onstop = function() {
+      stream.getTracks().forEach(function(t) { t.stop(); });
+      var finalMime = (mimeType || 'audio/webm').split(';')[0];
+      var blob = new Blob(chunks, { type: finalMime });
+      getNextAudioIdx(room.name, item.name).then(function(idx) {
+        var key = makeAudioKey(SESSION_ID, room.name, item.name, idx);
+        return dbSave('audio', { id: key, sessionId: SESSION_ID, room: room.name, item: item.name, idx: idx, blob: blob, savedAt: Date.now() }).then(function() {
+          return idx;
+        });
+      }).then(function(idx) {
+        if (!d.transcripts) d.transcripts = [];
+        d.transcripts[idx] = liveText.trim();
+        d._hasAudio = true;
+        markPendingSync();
+        saveSession();
+        renderItems();
+        showToast(liveText.trim() ? 'Voice note saved with transcript' : 'Voice note saved');
+      }).catch(function(err) {
+        showToast('Audio save failed');
+        console.error(err);
+      });
+    };
+
+    recorder.start();
+    activeRecorder = recorder;
+    activeRecorderTarget = targetKey;
+    if (micBtn) micBtn.classList.add('recording');
+  }).catch(function() {
+    showToast('Microphone access denied');
+  });
+}
+
+// ============================================================
+// SUMMARY
+// ============================================================
+function showSummary() {
+  if (!currentProperty) return;
+  document.getElementById('summary-property').textContent = currentProperty.name + ' — ' + currentProperty.address;
+  document.getElementById('submit-result-container').innerHTML = '';
+
+  var container = document.getElementById('summary-content');
+  container.innerHTML = '';
+  var flagged = [];
+  var totalPassed = 0, totalFlagged = 0, totalItems = 0;
+
+  rooms.forEach(function(room) {
+    room.items.forEach(function(item) {
+      totalItems++;
+      var d = walkData[room.name] && walkData[room.name][item.name];
+      if (d && d.status === 'pass') totalPassed++;
+      if (d && d.status === 'flag') {
+        totalFlagged++;
+        flagged.push({ room: room.name, item: item.name, condition: d.condition, comments: d.comments, assignedTo: d.assignedTo });
+      }
+    });
+  });
+
+  if (totalItems === 0) {
+    container.innerHTML = '<div class="all-clear"><div class="check" style="font-size:36px;color:#C7C1BA;">&#128196;</div><p>No items recorded yet.<br>Go back and add items to rooms.</p></div>';
+  } else if (flagged.length === 0) {
+    container.innerHTML = '<div class="all-clear"><div class="check">&#10003;</div><p>All items passed. Property is in good condition.</p></div>';
+  } else {
+    var groups = {};
+    flagged.forEach(function(f) {
+      var key = f.assignedTo || 'Unassigned';
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(f);
+    });
+    var keys = Object.keys(groups).sort(function(a,b) { if (a === 'Unassigned') return 1; if (b === 'Unassigned') return -1; return a.localeCompare(b); });
+    keys.forEach(function(group) {
+      var sec = document.createElement('div');
+      sec.className = 'summary-group';
+      sec.innerHTML = '<h3>' + escHtml(group) + ' (' + groups[group].length + ')</h3>';
+      groups[group].forEach(function(f) {
+        var el = document.createElement('div');
+        el.className = 'summary-item';
+        el.innerHTML =
+          '<div class="si-room">' + escHtml(f.room) + '</div>' +
+          '<div class="si-name">' + escHtml(f.item) + '</div>' +
+          (f.condition ? '<div class="si-note">Condition: ' + escHtml(f.condition) + '</div>' : '') +
+          (f.comments ? '<div class="si-note">' + escHtml(f.comments) + '</div>' : '') +
+          '<div class="si-assign">&#8594; ' + escHtml(f.assignedTo || 'Not assigned') + '</div>';
+        sec.appendChild(el);
+      });
+      container.appendChild(sec);
+    });
+  }
+
+  var unchecked = totalItems - totalPassed - totalFlagged;
+  document.getElementById('summary-stats').innerHTML =
+    '<span>' + totalPassed + '</span> passed &middot; <span>' + totalFlagged + '</span> flagged' +
+    (unchecked > 0 ? ' &middot; <span style="color:#E91E63;">' + unchecked + ' left</span>' : '');
+
+  var saveBtn = document.getElementById('btn-save');
+  if (unchecked > 0 || totalItems === 0) {
+    saveBtn.textContent = unchecked > 0 ? unchecked + ' Remaining' : 'Add Items First';
+    saveBtn.style.background = '#C7C1BA';
+    saveBtn.disabled = true;
+  } else {
+    saveBtn.textContent = 'Submit';
+    saveBtn.style.background = '#C9A84C';
+    saveBtn.disabled = false;
+  }
+
+  showScreen('summary');
+}
+
+// ============================================================
+// SUBMIT
+// ============================================================
+function buildPayload(photos, audioClips) {
+  var payload = {
+    property: currentProperty.id,
+    propertyName: currentProperty.name,
+    propertyAddress: currentProperty.address,
+    date: new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' }),
+    submittedAt: new Date().toISOString(),
+    items: []
+  };
+
+  // Index photos/audio by room|item
+  var photoMap = {};
+  photos.forEach(function(p) {
+    var key = p.room + '|' + p.item;
+    if (!photoMap[key]) photoMap[key] = [];
+    photoMap[key].push(p);
+  });
+  var audioMap = {};
+  audioClips.forEach(function(a) {
+    var key = a.room + '|' + a.item;
+    if (!audioMap[key]) audioMap[key] = [];
+    audioMap[key].push(a);
+  });
+
+  rooms.forEach(function(room) {
+    room.items.forEach(function(item) {
+      var d = walkData[room.name] && walkData[room.name][item.name];
+      if (!d || !d.status) return;
+      var key = room.name + '|' + item.name;
+      var myPhotos = (photoMap[key] || []).sort(function(a,b) { return a.idx-b.idx; });
+      var myAudio = (audioMap[key] || []).sort(function(a,b) { return a.idx-b.idx; });
+
+      // Convert blobs to base64 for submission
+      payload.items.push({
+        room: room.name,
+        item: item.name,
+        status: d.status,
+        condition: d.condition || (d.status === 'pass' ? 'Acceptable' : ''),
+        comments: d.comments || '',
+        assignedTo: d.assignedTo || '',
+        isNew: item.isNew || false,
+        photos: myPhotos.map(function(p) { return p._b64 || ''; }),
+        audioClips: myAudio.map(function(a) { return a._b64 || ''; }),
+        transcripts: d.transcripts || []
+      });
+    });
+  });
+
+  return payload;
+}
+
+function blobToBase64(blob) {
+  return new Promise(function(resolve) {
+    var reader = new FileReader();
+    reader.onload = function(e) { resolve(e.target.result); };
+    reader.readAsDataURL(blob);
+  });
+}
+
+function submitWalkthrough() {
+  var incomplete = [];
+  rooms.forEach(function(room, ri) {
+    room.items.forEach(function(item, ii) {
+      var d = walkData[room.name] && walkData[room.name][item.name];
+      if (!d || !d.status) incomplete.push({ room: room.name, roomIdx: ri, item: item.name, itemIdx: ii });
+    });
+  });
+  if (incomplete.length > 0) {
+    var roomCounts = {};
+    incomplete.forEach(function(inc) { if (!roomCounts[inc.room]) roomCounts[inc.room] = { count:0, roomIdx:inc.roomIdx }; roomCounts[inc.room].count++; });
+    var lines = ['INCOMPLETE: ' + incomplete.length + ' items unchecked:\n'];
+    Object.keys(roomCounts).forEach(function(r) { lines.push('  ' + r + ': ' + roomCounts[r].count); });
+    lines.push('\nTap OK to go to first incomplete item.');
+    if (confirm(lines.join('\n'))) {
+      var first = incomplete[0];
+      currentRoomIdx = first.roomIdx;
+      renderItems();
+      showScreen('items');
+      setTimeout(function() {
+        var el = document.getElementById('item-' + first.roomIdx + '-' + first.itemIdx);
+        if (el) { el.style.outline = '3px solid #E8A735'; el.scrollIntoView({behavior:'smooth',block:'center'}); setTimeout(function(){el.style.outline='';},3000); }
+      }, 200);
+    }
+    return;
+  }
+
+  var btn = document.getElementById('btn-save');
+  btn.textContent = 'Preparing...';
+  btn.disabled = true;
+  updateSyncUI('syncing', 'Syncing...');
+
+  // Load all media from IndexedDB, convert to base64
+  Promise.all([
+    dbGetByIndex('photos', 'sessionId', SESSION_ID),
+    dbGetByIndex('audio', 'sessionId', SESSION_ID)
+  ]).then(function(results) {
+    var photos = results[0], audioClips = results[1];
+    btn.textContent = 'Uploading...';
+    var total = photos.length + audioClips.length;
+    var done = 0;
+
+    function updateProgress() { done++; btn.textContent = 'Uploading ' + done + '/' + total + '...'; }
+
+    var photoPromises = photos.map(function(p) {
+      return blobToBase64(p.blob).then(function(b64) { p._b64 = b64; updateProgress(); return p; });
+    });
+    var audioPromises = audioClips.map(function(a) {
+      return blobToBase64(a.blob).then(function(b64) { a._b64 = b64; updateProgress(); return a; });
+    });
+
+    return Promise.all([Promise.all(photoPromises), Promise.all(audioPromises)]);
+  }).then(function(results) {
+    var payload = buildPayload(results[0], results[1]);
+    btn.textContent = 'Submitting...';
+    return fetch(SUBMIT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  }).then(function(r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(function() {
+    btn.textContent = 'Submitted';
+    pendingSync = false;
+    updateSyncUI('synced', 'Synced');
+    // Mark session as synced
+    dbGet('sessions', SESSION_ID).then(function(s) {
+      if (s) { s.synced = true; dbSave('sessions', s); }
+    });
+    showSubmitResult(true, 'Walkthrough submitted. ' + currentProperty.name + ' — all data sent to server.');
+    stopAutoSave();
+  }).catch(function(err) {
+    var offline = !navigator.onLine;
+    btn.textContent = 'Retry Submit';
+    btn.disabled = false;
+    pendingSync = true;
+    updateSyncUI('pending', 'Pending');
+    var msg = offline
+      ? 'No internet connection. Data is stored on your device. Submit again when online.'
+      : 'Server unreachable. Data is stored on your device. Use Export Package as a fallback, or retry when the server is available.';
+    showSubmitResult(false, msg);
+    console.warn('Submit error:', err.message);
+  });
+}
+
+function showSubmitResult(success, message) {
+  var container = document.getElementById('submit-result-container');
+  var div = document.createElement('div');
+  div.className = 'submit-result ' + (success ? 'success' : 'error');
+  div.textContent = message;
+  container.innerHTML = '';
+  container.appendChild(div);
+}
+
+// ============================================================
+// EXPORT PACKAGE (ZIP fallback)
+// Uses JSZip loaded from CDN (inline fallback if unavailable)
+// ============================================================
+function exportPackage() {
+  var exportBtn = document.getElementById('btn-export');
+  exportBtn.textContent = 'Building...';
+  exportBtn.disabled = true;
+
+  // Load JSZip dynamically
+  loadJSZip().then(function(JSZip) {
+    var zip = new JSZip();
+
+    // Build JSON data
+    Promise.all([
+      dbGetByIndex('photos', 'sessionId', SESSION_ID),
+      dbGetByIndex('audio', 'sessionId', SESSION_ID)
+    ]).then(function(results) {
+      var photos = results[0], audioClips = results[1];
+
+      // JSON summary
+      var jsonData = {
+        property: currentProperty.id,
+        propertyName: currentProperty.name,
+        propertyAddress: currentProperty.address,
+        exportedAt: new Date().toISOString(),
+        date: new Date().toLocaleDateString('en-CA', {timeZone:'America/New_York'}),
+        items: []
+      };
+
+      rooms.forEach(function(room) {
+        room.items.forEach(function(item) {
+          var d = walkData[room.name] && walkData[room.name][item.name];
+          if (d && d.status) {
+            jsonData.items.push({
+              room: room.name, item: item.name,
+              status: d.status,
+              condition: d.condition || (d.status === 'pass' ? 'Acceptable' : ''),
+              comments: d.comments || '',
+              assignedTo: d.assignedTo || '',
+              isNew: item.isNew || false,
+              transcripts: d.transcripts || []
+            });
+          }
+        });
+      });
+
+      zip.file('walkthrough-data.json', JSON.stringify(jsonData, null, 2));
+
+      // Add photos
+      var photosFolder = zip.folder('photos');
+      var photoPromises = photos.map(function(p, i) {
+        var fname = (p.room + '-' + p.item).replace(/[^a-zA-Z0-9\-]/g,'-') + '-' + i + '.jpg';
+        return p.blob.arrayBuffer().then(function(buf) {
+          photosFolder.file(fname, buf);
+        });
+      });
+
+      // Add audio
+      var audioFolder = zip.folder('audio');
+      var audioPromises = audioClips.map(function(a, i) {
+        var ext = (a.blob.type || 'audio/webm').split('/')[1].split(';')[0] || 'webm';
+        var fname = (a.room + '-' + a.item).replace(/[^a-zA-Z0-9\-]/g,'-') + '-' + i + '.' + ext;
+        return a.blob.arrayBuffer().then(function(buf) {
+          audioFolder.file(fname, buf);
+        });
+      });
+
+      exportBtn.textContent = 'Zipping...';
+
+      Promise.all(photoPromises.concat(audioPromises)).then(function() {
+        return zip.generateAsync({ type: 'blob' });
+      }).then(function(blob) {
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        var propSlug = currentProperty.id;
+        var dateStr = new Date().toLocaleDateString('en-CA', {timeZone:'America/New_York'});
+        a.download = 'qc-walkthrough-' + propSlug + '-' + dateStr + '.zip';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        exportBtn.textContent = 'Export';
+        exportBtn.disabled = false;
+        showToast('Package downloaded');
+      });
+    });
+  }).catch(function(err) {
+    exportBtn.textContent = 'Export';
+    exportBtn.disabled = false;
+    showToast('Export failed — try again');
+    console.error('Export error:', err);
+  });
+}
+
+function loadJSZip() {
+  if (window.JSZip) return Promise.resolve(window.JSZip);
+  return new Promise(function(resolve, reject) {
+    var script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+    script.onload = function() { resolve(window.JSZip); };
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
+// ============================================================
+// AUTO-SAVE + BACKGROUND SYNC
+// ============================================================
+function startAutoSave() {
+  stopAutoSave();
+  autoSaveInterval = setInterval(function() {
+    if (currentProperty) { saveSession(); triggerSync(); }
+  }, 15000);
+}
+
+function stopAutoSave() {
+  if (autoSaveInterval) { clearInterval(autoSaveInterval); autoSaveInterval = null; }
+}
+
+function markPendingSync() {
+  pendingSync = true;
+  updateSyncUI('pending', 'Pending');
+}
+
+function triggerSync() {
+  if (!pendingSync || syncInProgress || !currentProperty) return;
+  if (!navigator.onLine) return;
+  syncInProgress = true;
+  updateSyncUI('syncing', 'Syncing...');
+
+  // Lightweight sync — send walkData only (no media blobs) to keep alive
+  var lightPayload = {
+    property: currentProperty.id,
+    propertyName: currentProperty.name,
+    propertyAddress: currentProperty.address,
+    date: new Date().toLocaleDateString('en-CA', {timeZone:'America/New_York'}),
+    autoSave: true,
+    items: []
+  };
+  rooms.forEach(function(room) {
+    room.items.forEach(function(item) {
+      var d = walkData[room.name] && walkData[room.name][item.name];
+      if (d && d.status) {
+        lightPayload.items.push({ room: room.name, item: item.name, status: d.status, condition: d.condition||'', comments: d.comments||'', assignedTo: d.assignedTo||'' });
+      }
+    });
+  });
+
+  fetch(SUBMIT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(lightPayload)
+  }).then(function(r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    pendingSync = false;
+    syncInProgress = false;
+    updateSyncUI('synced', 'Synced');
+  }).catch(function() {
+    syncInProgress = false;
+    updateSyncUI('pending', 'Pending');
+  });
+}
+
+function updateSyncFromDB() {
+  // Just show synced by default if no active session
+  if (!currentProperty) { updateSyncUI('synced', 'Synced'); }
+}
+
+// Retry sync when coming back online
+window.addEventListener('online', function() {
+  if (pendingSync) triggerSync();
+});
+
+// Save when backgrounded
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'hidden' && currentProperty) {
+    saveSession();
+  }
+});
+
+// Warn before unload
+window.addEventListener('beforeunload', function(e) {
+  if (!currentProperty) return;
+  var hasData = false;
+  rooms.forEach(function(room) {
+    room.items.forEach(function(item) {
+      var d = walkData[room.name] && walkData[room.name][item.name];
+      if (d && d.status) hasData = true;
+    });
+  });
+  if (hasData) { e.preventDefault(); e.returnValue = 'Active walkthrough in progress. Data is stored on your device.'; }
+});
+
+// ============================================================
+// SAVE FOR LATER
+// ============================================================
+function saveForLater() {
+  saveSession();
+  var total = 0, checked = 0;
+  rooms.forEach(function(room) {
+    room.items.forEach(function(item) {
+      total++;
+      var d = walkData[room.name] && walkData[room.name][item.name];
+      if (d && d.status) checked++;
+    });
+  });
+  var pct = total > 0 ? Math.round(checked / total * 100) : 0;
+  showToast('Saved — ' + checked + '/' + total + ' (' + pct + '%)');
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function getCfEmail() {
+  try {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+      var c = cookies[i].trim();
+      if (c.startsWith('CF_Authorization=')) {
+        var token = c.substring('CF_Authorization='.length);
+        var payload = token.split('.')[1];
+        var padded = payload.replace(/-/g, '+').replace(/_/g, '/');
+        while (padded.length % 4) padded += '=';
+        var decoded = JSON.parse(atob(padded));
+        return decoded.email || null;
+      }
+    }
+  } catch (e) {}
+  return null;
+}
+
+function emailQcSummary() {
+  var cfEmail = getCfEmail();
+  if (!cfEmail) { showToast('Could not detect your email from Cloudflare login'); return; }
+  var btn = document.getElementById('btn-email-qc');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  var summaryEl = document.getElementById('summary-content');
+  var summaryHtml = summaryEl ? summaryEl.innerHTML : '<p>No summary.</p>';
+  var propName = currentProperty ? currentProperty.name : 'Unknown Property';
+
+  // Configure your walkthrough email endpoint (e.g., https://tpjg-fleet.netlify.app/api/walkthrough/email)
+  fetch('https://tpjg-fleet.netlify.app/api/walkthrough/email', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      recipient: cfEmail,
+      address: propName,
+      date: new Date().toISOString().slice(0, 10),
+      summary_html: '<h3>Property Walkthrough — ' + propName + '</h3>' + summaryHtml,
+      note_count: items ? items.length : 0,
+      photo_count: 0
+    })
+  }).then(function(res) {
+    if (res.ok) {
+      showToast('Emailed to ' + cfEmail);
+      btn.textContent = 'Emailed ✓';
+      setTimeout(function() { btn.innerHTML = '&#9993; Email'; btn.disabled = false; }, 3000);
+    } else {
+      throw new Error('Server error');
+    }
+  }).catch(function(e) {
+    showToast('Email failed: ' + e.message);
+    btn.innerHTML = '&#9993; Email';
+    btn.disabled = false;
+  });
+}
+
+dbOpen().then(function() {
+  initProperties();
+  // Show CF email on email button
+  var cfEmail = getCfEmail();
+  if (cfEmail) {
+    var btnE = document.getElementById('btn-email-qc');
+    if (btnE) btnE.innerHTML = '&#9993; ' + cfEmail.split('@')[0];
+  }
+}).catch(function() {
+  // IndexedDB not available (rare) — still init
+  showToast('Storage warning — limited offline support');
+  initProperties();
+});
+</script>
+</body>
+</html>

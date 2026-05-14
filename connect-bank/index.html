@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect Bank Account | TPJG Fleet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Alice&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Karla', sans-serif;
+      background: #1B2A4A;
+      color: #FFF8F0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      border-radius: 16px;
+      padding: 40px 32px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      font-family: 'Alice', serif;
+      font-size: 28px;
+      color: #C9A84C;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: rgba(255, 248, 240, 0.6);
+      margin-bottom: 32px;
+    }
+
+    h1 {
+      font-family: 'Alice', serif;
+      font-size: 22px;
+      font-weight: 400;
+      margin-bottom: 12px;
+      color: #FFF8F0;
+    }
+
+    .description {
+      font-size: 15px;
+      color: rgba(255, 248, 240, 0.75);
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .connect-btn {
+      display: inline-block;
+      background: #C9A84C;
+      color: #1B2A4A;
+      font-family: 'Karla', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      padding: 16px 48px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+      letter-spacing: 0.5px;
+    }
+
+    .connect-btn:hover {
+      background: #D4B65E;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(201, 168, 76, 0.3);
+    }
+
+    .connect-btn:active {
+      transform: translateY(0);
+    }
+
+    .connect-btn:disabled {
+      background: rgba(201, 168, 76, 0.4);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .status {
+      margin-top: 24px;
+      font-size: 14px;
+      color: rgba(255, 248, 240, 0.6);
+    }
+
+    .success-box {
+      display: none;
+      margin-top: 24px;
+      background: rgba(76, 175, 80, 0.15);
+      border: 1px solid rgba(76, 175, 80, 0.4);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: left;
+    }
+
+    .success-box h2 {
+      font-family: 'Alice', serif;
+      font-size: 18px;
+      color: #66BB6A;
+      margin-bottom: 12px;
+    }
+
+    .success-box p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: rgba(255, 248, 240, 0.8);
+      margin-bottom: 12px;
+    }
+
+    .token-display {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(201, 168, 76, 0.3);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-family: monospace;
+      font-size: 12px;
+      color: #C9A84C;
+      word-break: break-all;
+      margin: 12px 0;
+      user-select: all;
+    }
+
+    .copy-btn {
+      display: inline-block;
+      background: rgba(201, 168, 76, 0.2);
+      color: #C9A84C;
+      border: 1px solid rgba(201, 168, 76, 0.4);
+      border-radius: 6px;
+      padding: 8px 20px;
+      font-family: 'Karla', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(201, 168, 76, 0.3);
+    }
+
+    .error-box {
+      display: none;
+      margin-top: 24px;
+      background: rgba(244, 67, 54, 0.15);
+      border: 1px solid rgba(244, 67, 54, 0.4);
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .error-box h2 {
+      font-family: 'Alice', serif;
+      font-size: 18px;
+      color: #EF5350;
+      margin-bottom: 8px;
+    }
+
+    .error-box p {
+      font-size: 14px;
+      color: rgba(255, 248, 240, 0.8);
+    }
+
+    .secure-note {
+      margin-top: 24px;
+      font-size: 12px;
+      color: rgba(255, 248, 240, 0.4);
+    }
+
+    .secure-note svg {
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="logo">TPJG Fleet</div>
+    <div class="subtitle">Financial Operations</div>
+
+    <h1>Connect Your Bank Account</h1>
+    <p class="description">
+      Securely link your Bank of America account to enable automatic transaction tracking for the fleet.
+    </p>
+
+    <button class="connect-btn" id="connectBtn" onclick="openPlaidLink()">
+      Connect Bank Account
+    </button>
+
+    <div class="status" id="status"></div>
+
+    <div class="success-box" id="successBox">
+      <h2>Connected Successfully</h2>
+      <p>Your bank account has been linked. Send this code to Nexus via Telegram:</p>
+      <div class="token-display" id="tokenDisplay"></div>
+      <button class="copy-btn" onclick="copyToken()">Copy Code</button>
+      <p style="margin-top: 12px; font-size: 13px; color: rgba(255,248,240,0.5);">
+        Open Telegram and send this code to Nexus. It will be used once to finalize the connection.
+      </p>
+    </div>
+
+    <div class="error-box" id="errorBox">
+      <h2>Connection Issue</h2>
+      <p id="errorMsg"></p>
+    </div>
+
+    <div class="secure-note">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+      </svg>
+      Secured by Plaid. Your credentials are never shared with TPJG.
+    </div>
+  </div>
+
+  <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+  <script>
+    const LINK_TOKEN = 'link-production-d5d9f4e6-d5bc-4ec4-9141-8c773879204c';
+    let publicToken = null;
+
+    function openPlaidLink() {
+      const btn = document.getElementById('connectBtn');
+      const status = document.getElementById('status');
+
+      btn.disabled = true;
+      btn.textContent = 'Opening...';
+      status.textContent = 'Launching secure connection...';
+
+      const handler = Plaid.create({
+        token: LINK_TOKEN,
+        onSuccess: function(public_token, metadata) {
+          publicToken = public_token;
+          btn.style.display = 'none';
+          status.textContent = '';
+
+          const successBox = document.getElementById('successBox');
+          const tokenDisplay = document.getElementById('tokenDisplay');
+          successBox.style.display = 'block';
+          tokenDisplay.textContent = public_token;
+        },
+        onExit: function(err, metadata) {
+          btn.disabled = false;
+          btn.textContent = 'Connect Bank Account';
+
+          if (err) {
+            status.textContent = '';
+            const errorBox = document.getElementById('errorBox');
+            const errorMsg = document.getElementById('errorMsg');
+            errorBox.style.display = 'block';
+            errorMsg.textContent = err.display_message || 'Connection was interrupted. Please try again.';
+          } else {
+            status.textContent = 'Connection cancelled. Click to try again.';
+          }
+        },
+        onLoad: function() {
+          status.textContent = '';
+        },
+        onEvent: function(eventName, metadata) {
+          console.log('Plaid event:', eventName);
+        }
+      });
+
+      handler.open();
+    }
+
+    function copyToken() {
+      if (publicToken) {
+        navigator.clipboard.writeText(publicToken).then(function() {
+          const btn = document.querySelector('.copy-btn');
+          btn.textContent = 'Copied!';
+          setTimeout(function() { btn.textContent = 'Copy Code'; }, 2000);
+        }).catch(function() {
+          // Fallback for mobile
+          const el = document.getElementById('tokenDisplay');
+          const range = document.createRange();
+          range.selectNodeContents(el);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        });
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,194 @@
+{
+  "generated": "2026-05-02",
+  "source": "ReferralMaker CRM (Buffini & Company)",
+  "data_freshness": "Contact list: 2026-04-30 | Activities: 2026-05-02 | Groups: 2026-05-02 (live API)",
+  "summary": {
+    "total_unique_contacts": 1272,
+    "contacts_with_phone": 1245,
+    "contacts_with_email": 1220,
+    "contacts_without_phone": 27,
+    "contacts_without_email": 52
+  },
+  "sort_breakdown": {
+    "A+": 43,
+    "A": 728,
+    "B": 289,
+    "C": 210,
+    "D": 2,
+    "Unknown": 0
+  },
+  "group_membership_counts": {
+    "Sort A": 725,
+    "Client": 354,
+    "Business": 205,
+    "Prospect-Sellers": 196,
+    "Sort B": 186,
+    "BNI": 169,
+    "Agents": 122,
+    "NEW VIP IOV": 101,
+    "Preferred Partners": 89,
+    "Prospect-Buyers": 73,
+    "VIP": 72,
+    "Client CY": 47,
+    "Agent/Buffini": 47,
+    "Estate": 38,
+    "Tenants": 35,
+    "Prospect-Investor": 29,
+    "Coop": 12,
+    "Agent Geo-Remote": 7,
+    "Advocates": 5,
+    "Business/New": 5,
+    "Family/Close-Friends": 4,
+    "Influencers": 1,
+    "Agent Geo-Local": 1,
+    "Family/Immediate": 1
+  },
+  "total_groups_in_rm": 77,
+  "group_categories": [
+    "SEGMENT (Client, Business, Agent, Family, Estate, Coop, Other)",
+    "TARGET (Prospect-Buyers, Prospect-Sellers, Prospect-Investor, Pop By, IOV, Celebration, Sort A/B, Tenants, etc.)",
+    "SPECIALITY (Transaction/Partner, Transaction/Team, Fynanc, Medical, Builder, Language)",
+    "Z-Archive (past events: Buffini events, Pie Party, historical agent transactions)"
+  ],
+  "recent_activities_logged": {
+    "batch_1_date": "2026-04-29",
+    "batch_1_subject": "[AI] LM Invite to Happy Hour",
+    "batch_1_contacts": 33,
+    "batch_1_logged": 33,
+    "batch_2_date": "2026-04-30",
+    "batch_2_subject": "[AI] LM Invite to Happy Hour",
+    "batch_2_contacts": 14,
+    "batch_2_logged": 14,
+    "total_activities_logged": 47,
+    "activity_type": "Call (Outbound, Proactive)",
+    "ai_marker": "[AI]"
+  },
+  "contacts_created_by_ai": [
+    {
+      "name": "Hogan Reeves",
+      "guid": "a46d7088-5fd1-472d-ad10-f4ea4bb60a83",
+      "source": "Google Contacts M@TPJG",
+      "email": "hogan.reeves@Goosehead.com",
+      "sort": "B",
+      "role": "Transaction Partner (Insurance)"
+    },
+    {
+      "name": "David Watson",
+      "guid": "aa3d1d65-40f3-4650-9c60-db50973442f2",
+      "source": "Known email (appraisal)",
+      "email": "aztechomeappraisals@gmail.com",
+      "sort": "B",
+      "role": "Transaction Partner (Appraiser)"
+    }
+  ],
+  "group_additions_by_ai": [
+    {
+      "contact": "Niyi Olumide",
+      "group": "SPECIALITY/Other/Fynanc",
+      "group_guid": "651a9f93-6318-484a-9377-f1af7badfe7d"
+    },
+    {
+      "contact": "Anthony Dinh",
+      "group": "SPECIALITY/Other/Fynanc",
+      "group_guid": "651a9f93-6318-484a-9377-f1af7badfe7d"
+    }
+  ],
+  "contact_taxonomy": {
+    "classification_pathway": [
+      "Step 1: WHERE found (Manager@=business, Joseph@=personal, RM-only=check sort/group)",
+      "Step 2: WHAT role (Lender/Title/CoAgent=Transaction Team, Inspector/Surveyor/etc=Transaction Partner)",
+      "Step 3: WHICH group (based on role+relationship)",
+      "Step 4: WHAT transactions (search last 2 years)",
+      "Step 5: WHAT sort (referral source=A min, recent txn=A, new/unproven=B)",
+      "Step 6: MAP constellation (all participants in transaction network)"
+    ],
+    "rank_system": {
+      "A+": "3+ referrals in last 24 months",
+      "A": "Prospect, past client, OR 1-2 referrals in 24 months",
+      "B": "Said yes to referring (DEFAULT for new contacts)",
+      "C": "Just met them"
+    },
+    "transaction_team": [
+      "Lender",
+      "Title Company",
+      "CoAgent"
+    ],
+    "transaction_partners": [
+      "Inspector",
+      "Surveyor",
+      "Photographer",
+      "Painter",
+      "Attorney",
+      "Appraiser",
+      "HOA",
+      "Warranty",
+      "Insurance"
+    ]
+  },
+  "intake_sop": {
+    "minimum_fields": [
+      "Name",
+      "Email",
+      "Cell"
+    ],
+    "full_fields": [
+      "Name",
+      "Email",
+      "Cell",
+      "Home Address",
+      "Work Address",
+      "Spouse"
+    ],
+    "referral_chain": [
+      "Primary Contact (referred person)",
+      "Spouse (if applicable)",
+      "ReferrER (person who referred)"
+    ],
+    "activity_types": {
+      "1": "Referral",
+      "2": "Call",
+      "3": "Note",
+      "4": "Pop-By",
+      "5": "Other",
+      "6": "Email"
+    }
+  },
+  "group_workflow": {
+    "lifecycle": [
+      "First contact: SEGMENT/Business/New + source group",
+      "Categorized: Add segment groups",
+      "Transaction starts: Add TARGET groups",
+      "Transaction closes: Move to SEGMENT/Client/Current Year/CY",
+      "Post-close: Add sort groups",
+      "Repeat: New transactions add new TARGET",
+      "ReferrER: Add SEGMENT/Agent ReferrER CY"
+    ],
+    "two_modes": {
+      "mode_1_automatic": "System-determinable from data (BNI join, referral logged, transaction closed, website lead)",
+      "mode_2_agent_input": "Context only agent knows (estate/distress, hidden parties, emotional sensitivity)"
+    }
+  },
+  "key_files": {
+    "contact_list": "/home/aiciv/memories/knowledge/rm-contacts-full.md",
+    "activity_log_batch_1": "/home/aiciv/memories/knowledge/crm-activity-log-results.md",
+    "activity_log_batch_2": "/home/aiciv/memories/knowledge/crm-activity-log-results-0430.md",
+    "missing_contacts_fix": "/home/aiciv/memories/knowledge/crm-4-missing-contacts-fix.md",
+    "transaction_states": "/home/aiciv/memories/knowledge/crm-transaction-states-key.md",
+    "intake_sop": "/home/aiciv/memories/knowledge/contact-intake-sop.md",
+    "classification_pathway": "/home/aiciv/memories/knowledge/contact-relationship-classification-pathway.md",
+    "group_workflow": "/home/aiciv/memories/knowledge/rm-group-workflow.md",
+    "api_client": "/home/aiciv/tools/referralmaker_api.py",
+    "batch_script_0429": "/home/aiciv/tools/batch_crm_activities.py",
+    "batch_script_0430": "/home/aiciv/tools/batch_crm_activities_0430.py"
+  },
+  "api_notes": {
+    "auth": "SSO via authenticate() function, session stored at SESSION_FILE",
+    "live_group_count": "77 groups confirmed via live API pull 2026-05-02",
+    "group_member_api": "get_group_members returns max 14 per call (pagination/default limit)",
+    "contact_creation": "WebForms POST (no Playwright needed) - GET AddContact, extract hidden fields, POST with __EVENTTARGET",
+    "activity_update": "SaveActivity with activityId>0 = in-place update; activityId=0 = create new",
+    "per_contact_activities": "Must visit ContactProfile.aspx?C=<guid> first, then call GetActivitiesList",
+    "group_add": "GroupInfo.aspx/addContactToGroup with {GroupGuid, ContactGuid, TZ: 'America/Chicago'}",
+    "ai_marker": "[AI] prefix on activity subjects (emoji stripped by server)"
+  }
+}

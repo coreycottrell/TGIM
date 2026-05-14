@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TPJG FLEET - SOP Contact</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Alice&family=Karla:wght@400;500;600;700&display=swap');
+
+  :root {
+    --navy: #1B2A4A;
+    --navy-dark: #0F1B33;
+    --cream: #C7C1BA;
+    --teal: #2E7D7B;
+    --gold: #C9A84C;
+    --gold-dark: #B8943F;
+    --green: #2E7D32;
+    --green-light: #E8F5E9;
+    --blue: #1565C0;
+    --blue-light: #E3F2FD;
+    --purple: #6A1B9A;
+    --purple-light: #F3E5F5;
+    --orange: #E65100;
+    --orange-light: #FFF3E0;
+    --red: #C62828;
+    --white: #FFFFFF;
+    --off-white: #FAFAFA;
+    --border: #D0D0D0;
+    --border-light: #E8E8E8;
+    --text: #263238;
+    --text-muted: #607D8B;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Karla', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text);
+    background: var(--white);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* === MODE TOGGLE === */
+  .mode-toggle {
+    text-align: right;
+    padding: 8px 20px;
+    font-size: 0.78rem;
+    font-family: 'Karla', sans-serif;
+    background: var(--off-white);
+    border-bottom: 1px solid var(--border-light);
+  }
+  .mode-toggle a {
+    color: var(--navy);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .mode-toggle a:hover { text-decoration: underline; }
+  .mode-toggle .active {
+    font-weight: 700;
+    color: var(--gold-dark);
+  }
+  .mode-toggle .sep {
+    color: var(--border);
+    margin: 0 6px;
+  }
+
+  .page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* === TITLE AREA === */
+  .title-area {
+    text-align: center;
+    padding: 48px 20px 36px;
+    background: var(--white);
+  }
+  .title-area h1 {
+    font-family: 'Alice', serif;
+    font-size: 2.6rem;
+    font-weight: 900;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+    line-height: 1.1;
+  }
+  .title-decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .title-decoration .line {
+    width: 80px;
+    height: 2px;
+    background: var(--gold);
+  }
+  .title-decoration .star {
+    color: var(--gold);
+    font-size: 1.2rem;
+  }
+  .title-area .tagline {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--teal);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  /* === SECTION HEADER BAR === */
+  .section-bar {
+    background: var(--gold);
+    color: var(--white);
+    text-align: center;
+    padding: 10px 20px;
+    font-family: 'Alice', serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 28px;
+    margin-bottom: 0;
+  }
+  .section-bar.navy-bar { background: var(--navy); }
+  .section-bar.teal-bar { background: var(--teal); }
+  .section-bar.blue-bar { background: var(--blue); }
+
+  /* === GRID LAYOUTS === */
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-top: none;
+    background: var(--white);
+  }
+  .three-col > .col {
+    padding: 20px 18px;
+    border-right: 1px solid var(--border-light);
+  }
+  .three-col > .col:last-child { border-right: none; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-top: none;
+    background: var(--white);
+  }
+  .two-col > .col {
+    padding: 20px 18px;
+    border-right: 1px solid var(--border-light);
+  }
+  .two-col > .col:last-child { border-right: none; }
+
+  .full-width {
+    border: 1px solid var(--border);
+    border-top: none;
+    background: var(--white);
+    padding: 20px 24px;
+  }
+
+  /* === ICON CIRCLE === */
+  .icon-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin: 0 auto 10px;
+    color: var(--white);
+  }
+  .icon-circle.navy { background: var(--navy); }
+  .icon-circle.blue { background: var(--blue); }
+  .icon-circle.green { background: var(--green); }
+  .icon-circle.purple { background: var(--purple); }
+  .icon-circle.teal { background: var(--teal); }
+  .icon-circle.gold { background: var(--gold); }
+  .icon-circle.orange { background: var(--orange); }
+
+  /* === COLUMN CONTENT === */
+  .col-title {
+    text-align: center;
+    font-family: 'Alice', serif;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--navy);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .col-subtitle {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .col-badge {
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .col-badge span {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+    background: var(--navy);
+    color: var(--white);
+  }
+
+  .focus-label {
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 10px 0 4px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid var(--border);
+  }
+  .focus-label.green { color: var(--green); border-color: var(--green); }
+  .focus-label.blue { color: var(--blue); border-color: var(--blue); }
+  .focus-label.purple { color: var(--purple); border-color: var(--purple); }
+  .focus-label.teal { color: var(--teal); border-color: var(--teal); }
+  .focus-label.navy { color: var(--navy); border-color: var(--navy); }
+  .focus-label.gold { color: var(--gold-dark); border-color: var(--gold); }
+  .focus-label.orange { color: var(--orange); border-color: var(--orange); }
+
+  /* === BULLET LISTS === */
+  .topic-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 8px 0;
+  }
+  .topic-list li {
+    font-size: 0.85rem;
+    padding: 3px 0;
+    padding-left: 16px;
+    position: relative;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .topic-list li::before {
+    content: "\2022";
+    position: absolute;
+    left: 2px;
+    color: var(--navy);
+    font-weight: 700;
+  }
+  .topic-note {
+    font-size: 0.78rem;
+    font-style: italic;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+
+  /* === AGENDA / NUMBERED ITEMS === */
+  .agenda-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.85rem;
+  }
+  .agenda-item:last-child { border-bottom: none; }
+  .agenda-item .num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--white);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .agenda-item .num.blue { background: var(--blue); }
+  .agenda-item .num.green { background: var(--green); }
+  .agenda-item .num.purple { background: var(--purple); }
+  .agenda-item .num.navy { background: var(--navy); }
+  .agenda-item .num.teal { background: var(--teal); }
+  .agenda-item .num.gold { background: var(--gold); }
+  .agenda-item .num.orange { background: var(--orange); }
+  .agenda-item .num.red { background: var(--red); }
+
+  .agenda-item .item-title {
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 0.88rem;
+  }
+  .agenda-item .item-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .check-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 4px 0 0;
+  }
+  .check-list li {
+    font-size: 0.8rem;
+    padding: 1px 0;
+    padding-left: 16px;
+    position: relative;
+    color: var(--text);
+  }
+  .check-list li::before {
+    content: "\2713";
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+  }
+  .check-list.green li::before { color: var(--green); }
+  .check-list.blue li::before { color: var(--blue); }
+  .check-list.navy li::before { color: var(--navy); }
+  .check-list.teal li::before { color: var(--teal); }
+
+  /* === DOT ITEMS === */
+  .dot-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-size: 0.82rem;
+  }
+  .dot-badge {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .dot-badge.green { background: var(--green); }
+  .dot-badge.blue { background: var(--blue); }
+  .dot-badge.purple { background: var(--purple); }
+  .dot-badge.orange { background: var(--orange); }
+  .dot-badge.red { background: var(--red); }
+  .dot-badge.gold { background: var(--gold); }
+  .dot-badge.navy { background: var(--navy); }
+  .dot-badge.teal { background: var(--teal); }
+
+  .dot-item strong {
+    color: var(--navy);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+  }
+  .dot-item .dot-desc {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  /* === RULE ITEMS === */
+  .rule-item {
+    margin-bottom: 12px;
+  }
+  .rule-item .rule-title {
+    font-weight: 800;
+    font-size: 0.82rem;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .rule-item .rule-title .rule-icon {
+    font-size: 1rem;
+  }
+  .rule-item .rule-desc {
+    font-size: 0.78rem;
+    font-style: italic;
+    color: var(--text-muted);
+    padding-left: 22px;
+  }
+
+  .bold-callout {
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-align: center;
+    color: var(--navy);
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 2px solid var(--gold);
+    text-transform: uppercase;
+  }
+
+  /* === TAXONOMY TABLE === */
+  .tax-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    margin-top: 10px;
+  }
+  .tax-table th {
+    background: var(--navy);
+    color: var(--white);
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .tax-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: top;
+  }
+  .tax-table tr:last-child td { border-bottom: none; }
+  .tax-table code {
+    background: var(--off-white);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 0.78rem;
+    color: var(--navy);
+    font-weight: 600;
+  }
+
+  /* === STEP FLOW === */
+  .step-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 12px 0;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+  .step-flow .step-box {
+    background: var(--navy);
+    color: var(--white);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+  }
+  .step-flow .step-arrow {
+    color: var(--gold);
+    font-weight: 900;
+  }
+
+  /* === FOOTER === */
+  .footer-bar {
+    background: var(--navy);
+    text-align: center;
+    padding: 24px 20px;
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .footer-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: var(--navy);
+    font-weight: 900;
+    margin-bottom: 4px;
+  }
+  .footer-tagline {
+    color: var(--white);
+    font-weight: 800;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .footer-sub {
+    color: rgba(255,255,255,0.6);
+    font-size: 0.72rem;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 700px) {
+    .three-col { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    .title-area h1 { font-size: 1.8rem; }
+    .col { border-right: none !important; border-bottom: 1px solid var(--border-light); }
+    .col:last-child { border-bottom: none; }
+  }
+
+  /* === PRINT === */
+  @media print {
+    body { background: white; }
+    .mode-toggle { display: none; }
+    .page { max-width: 100%; padding: 0; }
+    .section-bar, .icon-circle, .agenda-item .num, .dot-badge,
+    .footer-logo, .col-badge span, .tax-table th, .step-flow .step-box {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .three-col, .two-col { page-break-inside: avoid; }
+  }
+
+  /* === GLOBAL NAV MENU === */
+  .gnav-btn {
+    position: fixed; top: 12px; right: 12px; z-index: 9999;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #1B2A4A; border: 2px solid #C9A84C;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3); transition: transform 0.2s;
+  }
+  .gnav-btn:hover { transform: scale(1.08); }
+  .gnav-btn span {
+    display: block; width: 20px; height: 2px; background: #C9A84C;
+    position: relative; transition: 0.3s;
+  }
+  .gnav-btn span::before, .gnav-btn span::after {
+    content: ''; position: absolute; width: 20px; height: 2px; background: #C9A84C;
+    transition: 0.3s;
+  }
+  .gnav-btn span::before { top: -6px; }
+  .gnav-btn span::after { top: 6px; }
+  .gnav-btn.open span { background: transparent; }
+  .gnav-btn.open span::before { top: 0; transform: rotate(45deg); }
+  .gnav-btn.open span::after { top: 0; transform: rotate(-45deg); }
+
+  .gnav-overlay {
+    display: none; position: fixed; inset: 0; z-index: 9998;
+    background: rgba(0,0,0,0.5); backdrop-filter: blur(2px);
+  }
+  .gnav-overlay.open { display: block; }
+
+  .gnav-panel {
+    display: none; position: fixed; top: 0; right: 0; z-index: 9999;
+    width: 280px; max-width: 85vw; height: 100vh; overflow-y: auto;
+    background: #1B2A4A; box-shadow: -4px 0 24px rgba(0,0,0,0.4);
+    padding: 64px 20px 24px; font-family: 'Karla', sans-serif;
+  }
+  .gnav-panel.open { display: block; }
+
+  .gnav-section {
+    margin-bottom: 16px; border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding-bottom: 12px;
+  }
+  .gnav-section:last-child { border-bottom: none; }
+  .gnav-section-title {
+    font-family: 'Alice', serif; color: #C9A84C; font-size: 0.85rem;
+    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .gnav-section a {
+    display: block; color: #C7C1BA; text-decoration: none;
+    padding: 5px 12px; font-size: 0.82rem; border-radius: 4px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .gnav-section a:hover { background: rgba(201,168,76,0.12); color: #fff; }
+  .gnav-section a.gnav-active {
+    color: #C9A84C; font-weight: 700; background: rgba(201,168,76,0.08);
+  }
+  .gnav-section a .gnav-tag {
+    font-size: 0.65rem; opacity: 0.5; margin-left: 4px;
+  }
+
+</style>
+</head>
+<body>
+
+
+<div class="gnav-overlay" id="gnavOverlay" onclick="toggleGnav()"></div>
+<div class="gnav-panel" id="gnavPanel">
+  <div class="gnav-section">
+    <div class="gnav-section-title">Main Brief</div>
+    <a href='/'>Full Light</a>
+    <a href='/dark'>Full Dark</a>
+    <a href='/onepager'>One-Pager Light</a>
+    <a href='/onepager-dark'>One-Pager Dark</a>
+  </div>
+  <div class="gnav-section">
+    <div class="gnav-section-title">SOP Contact</div>
+    <a class='gnav-active' href='/sop-contact/'>Full Light</a>
+    <a href='/sop-contact/dark'>Full Dark</a>
+    <a href='/sop-contact/onepager'>One-Pager Light</a>
+    <a href='/sop-contact/onepager-dark'>One-Pager Dark</a>
+  </div>
+  <div class="gnav-section">
+    <div class="gnav-section-title">Pipeline</div>
+    <a href='/pipeline/'>Full Light</a>
+    <a href='/pipeline/dark'>Full Dark</a>
+    <a href='/pipeline/onepager'>One-Pager Light</a>
+    <a href='/pipeline/onepager-dark'>One-Pager Dark</a>
+  </div>
+  <div class="gnav-section">
+    <div class="gnav-section-title">Outlet Map</div>
+    <a href='/outlet/'>Full Light</a>
+    <a href='/outlet/dark'>Full Dark</a>
+    <a href='/outlet/onepager'>One-Pager Light</a>
+    <a href='/outlet/onepager-dark'>One-Pager Dark</a>
+  </div>
+  <div class="gnav-section">
+    <div class="gnav-section-title">Icosa Network</div>
+    <a href='/icosa/'>City Pages Index</a>
+  </div>
+</div>
+<button class="gnav-btn" id="gnavBtn" onclick="toggleGnav()" aria-label="Menu">
+  <span></span>
+</button>
+
+<div class="page">
+
+  <!-- ========== TITLE ========== -->
+  <div class="title-area">
+    <h1>TPJG FLEET &mdash; SOP Contact</h1>
+    <div class="title-decoration">
+      <span class="line"></span>
+      <span class="star">&#9733;</span>
+      <span class="line"></span>
+    </div>
+    <div class="tagline">The 7C Framework: Phase 1 &mdash; Contact</div>
+  </div>
+
+
+  <!-- ========== THE 7 CONTACT SOPs ========== -->
+  <div class="section-bar">The 7 Contact SOPs</div>
+  <div class="two-col">
+
+    <!-- Column 1: C01-C04 -->
+    <div class="col">
+
+      <div class="agenda-item">
+        <span class="num navy">C01</span>
+        <div>
+          <div class="item-title">Lead Capture &amp; Assignment</div>
+          <div class="item-desc"><strong>Trigger:</strong> New lead arrives (Zillow, HAR, referral, open house, cold call)</div>
+          <ul class="check-list navy" style="margin-top:4px;">
+            <li>VA-R sets up lead in CRM (ReferralMaker)</li>
+            <li>Assign to agent by territory/specialty</li>
+            <li>Initial contact within 5 minutes (speed-to-lead)</li>
+            <li>Categorize: Buyer, Seller, Tenant, Landlord</li>
+            <li>Begin appropriate nurture drip campaign</li>
+          </ul>
+          <p class="topic-note">Exception: Physician/medical leads route to DRS track</p>
+        </div>
+      </div>
+
+      <div class="agenda-item">
+        <span class="num blue">C02</span>
+        <div>
+          <div class="item-title">Open House Lead Capture</div>
+          <div class="item-desc"><strong>Trigger:</strong> Hosting an open house</div>
+          <ul class="check-list blue" style="margin-top:4px;">
+            <li>Prepare Agent Packet (property info, contacts)</li>
+            <li>Set up sign-in sheet / digital capture</li>
+            <li>Collect contact info from all attendees</li>
+            <li>Enter contacts into CRM within 24 hours</li>
+            <li>Follow up with personalized video text (BombBomb)</li>
+            <li>Add to sphere drip campaign</li>
+          </ul>
+          <p class="topic-note">Exception: Broker open house has separate template &amp; follow-up</p>
+        </div>
+      </div>
+
+      <div class="agenda-item">
+        <span class="num green">C03</span>
+        <div>
+          <div class="item-title">Sphere of Influence Outreach</div>
+          <div class="item-desc"><strong>Trigger:</strong> Daily proactive prospecting (scheduled activity)</div>
+          <ul class="check-list green" style="margin-top:4px;">
+            <li>Send 10 video text messages per day (Krista Mashore method)</li>
+            <li>Be genuine, personalize each message</li>
+            <li>DO NOT ask for business directly</li>
+            <li>Target: past clients, neighbors, businesses, former colleagues</li>
+            <li>Include special occasion messages (birthday, anniversary)</li>
+            <li>Track in CRM with appropriate tags</li>
+          </ul>
+          <p class="topic-note">No exceptions &mdash; this is a daily non-negotiable activity</p>
+        </div>
+      </div>
+
+      <div class="agenda-item">
+        <span class="num teal">C04</span>
+        <div>
+          <div class="item-title">Referral Generation &amp; Tracking</div>
+          <div class="item-desc"><strong>Trigger:</strong> Any client interaction or networking event</div>
+          <ul class="check-list teal" style="margin-top:4px;">
+            <li>Plant referral seeds naturally during service</li>
+            <li>Use &ldquo;Big 3 Dialogue&rdquo; from Buffini system</li>
+            <li>Ask: &ldquo;Do you know anyone thinking of buying or selling?&rdquo;</li>
+            <li>Track referral source in ReferralMaker</li>
+            <li>Send thank-you note card within 48 hours</li>
+            <li>Update referral agent working agreement</li>
+            <li>Log in Layer Map for referral tracking</li>
+          </ul>
+          <p class="topic-note">Exception: Referral agent splits follow Sales Agent Agreement terms</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Column 2: C05-C07 -->
+    <div class="col">
+
+      <div class="agenda-item">
+        <span class="num purple">C05</span>
+        <div>
+          <div class="item-title">Geographic Farming / Location Domination</div>
+          <div class="item-desc"><strong>Trigger:</strong> Quarterly marketing plan review</div>
+          <ul class="check-list navy" style="margin-top:4px;">
+            <li>Identify target area (subdivision, zip code)</li>
+            <li>Research area statistics (volume, turnover, median price)</li>
+            <li>Create &ldquo;Just Listed&rdquo; / &ldquo;Just Sold&rdquo; mailings</li>
+            <li>Schedule monthly postcard drops</li>
+            <li>Combine with digital ads for same geography</li>
+            <li>Track leads generated from farming vs. other sources</li>
+          </ul>
+          <p class="topic-note">Exception: Budget approval required for new farm areas</p>
+        </div>
+      </div>
+
+      <div class="agenda-item">
+        <span class="num orange">C06</span>
+        <div>
+          <div class="item-title">Call Reluctance Management</div>
+          <div class="item-desc"><strong>Trigger:</strong> Agent reports difficulty making prospecting calls</div>
+          <ul class="check-list navy" style="margin-top:4px;">
+            <li>Identify specific fear pattern (rejection, perfectionism)</li>
+            <li>Apply scripted openers (Never Split the Difference)</li>
+            <li>Practice with role-play sessions</li>
+            <li>Start with warm calls before cold calls</li>
+            <li>Track call volume daily &mdash; accountability through reporting</li>
+            <li>Weekly coaching check-in on call metrics</li>
+          </ul>
+          <p class="topic-note">Exception: Persistent reluctance may require formal coaching intervention</p>
+        </div>
+      </div>
+
+      <div class="agenda-item">
+        <span class="num red">C07</span>
+        <div>
+          <div class="item-title">Seller Pre-Qualification Script</div>
+          <div class="item-desc"><strong>Trigger:</strong> Inbound seller inquiry</div>
+          <ul class="check-list navy" style="margin-top:4px;">
+            <li>Use &ldquo;Never Split the Difference&rdquo; master script</li>
+            <li>Start by hearing the other party first</li>
+            <li>Qualify motivation, timeline, price expectations</li>
+            <li>If qualified, schedule seller consultation</li>
+            <li>Send pre-consultation materials</li>
+          </ul>
+          <p class="topic-note">Exception: Expired listing door-knock uses separate opener script</p>
+        </div>
+      </div>
+
+      <div style="margin-top:18px; padding-top:14px; border-top: 2px solid var(--gold);">
+        <div class="bold-callout" style="border-top:none; padding-top:0; margin-top:0;">
+          7 SOPs. One Phase.<br>Every lead, every day.
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ========== CONTACT TAXONOMY ========== -->
+  <div class="section-bar navy-bar">Contact Taxonomy &amp; Storage</div>
+  <div class="full-width">
+
+    <div style="text-align:center; margin-bottom:14px;">
+      <div class="icon-circle gold">&#128218;</div>
+      <div class="col-title">Relationship Types &amp; Naming</div>
+      <div class="col-subtitle">How contacts are classified, named, and stored</div>
+    </div>
+
+    <table class="tax-table">
+      <thead>
+        <tr>
+          <th>Relationship Type</th>
+          <th>Google Account</th>
+          <th>Naming Convention</th>
+          <th>CRM/RM Group</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Non-Business</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">Friends, family, neighbors</span></td>
+          <td><code>A@TPJG</code> (member)</td>
+          <td>Standard name</td>
+          <td>Sort B default</td>
+        </tr>
+        <tr>
+          <td><strong>Business / Non-Realtor</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">Vendors, contractors, lenders</span></td>
+          <td><code>M@TPJG</code> (team)</td>
+          <td><code>Lastname INDUSTRY phone</code><br><span style="font-size:0.75rem; color:var(--text-muted);">e.g., Truman ELECTRICITY 713-867-5309</span></td>
+          <td>Sort B default</td>
+        </tr>
+        <tr>
+          <td><strong>Business / Realtor</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">Other agents, brokers</span></td>
+          <td><code>M@TPJG</code> (team)</td>
+          <td><code>Lastname CITY phone</code><br><span style="font-size:0.75rem; color:var(--text-muted);">e.g., Truman HOUSTON 713-867-5309</span></td>
+          <td>Agents group + Sort B</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:18px;">
+      <div class="focus-label teal">Dual Storage Requirement</div>
+      <div class="two-col" style="border:none; margin-top:8px;">
+        <div class="col" style="border:none; padding:8px 12px;">
+          <div class="dot-item">
+            <span class="dot-badge navy"></span>
+            <div>
+              <strong>CRM / ReferralMaker</strong><br>
+              <span class="dot-desc">Source of truth. Group-based segmentation. All touches logged here.</span>
+            </div>
+          </div>
+        </div>
+        <div class="col" style="border:none; padding:8px 12px;">
+          <div class="dot-item">
+            <span class="dot-badge teal"></span>
+            <div>
+              <strong>contacts.google.com</strong><br>
+              <span class="dot-desc">Account-based (A@TPJG or M@TPJG). Twins maintain sync between both.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:14px;">
+      <div class="focus-label navy">UPSERT Logic</div>
+      <div class="step-flow">
+        <span class="step-box">Search lastname + phone/email</span>
+        <span class="step-arrow">&#8594;</span>
+        <span class="step-box">Add firstname if multiple</span>
+        <span class="step-arrow">&#8594;</span>
+        <span class="step-box">Found? UPDATE</span>
+        <span class="step-arrow">&#8594;</span>
+        <span class="step-box">Not found? INSERT</span>
+        <span class="step-arrow">&#8594;</span>
+        <span class="step-box">Duplicates? MERGE</span>
+      </div>
+      <p class="topic-note" style="text-align:center;">Minimum data: full name + email + phone + address (ideal). Partial OK when necessary.</p>
+    </div>
+
+  </div>
+
+
+  <!-- ========== DAILY ACTIVITIES ========== -->
+  <div class="section-bar teal-bar">Daily Activities &amp; Logging</div>
+  <div class="three-col">
+
+    <div class="col">
+      <div class="icon-circle green">&#128197;</div>
+      <div class="col-title">Activity Logging</div>
+      <div class="focus-label green">CRM/RM Required</div>
+      <ul class="topic-list">
+        <li>All activities logged in CRM/ReferralMaker</li>
+        <li>AI-logged activities marked with &#129302; emoji</li>
+        <li>Every touch type tracked: call, text, pop-by, note, email</li>
+        <li>Rotate touch types &mdash; never same method twice in a row</li>
+      </ul>
+    </div>
+
+    <div class="col">
+      <div class="icon-circle blue">&#128270;</div>
+      <div class="col-title">Search Chain</div>
+      <div class="focus-label blue">Finding Contacts</div>
+      <div class="step-flow" style="flex-direction:column; align-items:stretch;">
+        <div class="dot-item">
+          <span class="dot-badge navy"></span>
+          <div><strong>Step 1:</strong> Search RM by lastname</div>
+        </div>
+        <div class="dot-item">
+          <span class="dot-badge blue"></span>
+          <div><strong>Step 2:</strong> Try firstname variants</div>
+        </div>
+        <div class="dot-item">
+          <span class="dot-badge teal"></span>
+          <div><strong>Step 3:</strong> Search Gmail contacts</div>
+        </div>
+        <div class="dot-item">
+          <span class="dot-badge green"></span>
+          <div><strong>Step 4:</strong> Check BNI directory</div>
+        </div>
+        <div class="dot-item">
+          <span class="dot-badge purple"></span>
+          <div><strong>Step 5:</strong> Search contacts.google.com</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="icon-circle navy">&#128293;</div>
+      <div class="col-title">Non-Negotiables</div>
+      <div class="focus-label navy">Daily Minimums</div>
+      <div class="rule-item">
+        <div class="rule-title"><span class="rule-icon">&#128247;</span> 10 Video Texts</div>
+        <div class="rule-desc">Personalized video messages to sphere (C03)</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-title"><span class="rule-icon">&#128222;</span> Speed-to-Lead</div>
+        <div class="rule-desc">First contact within 5 minutes of new lead (C01)</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-title"><span class="rule-icon">&#128221;</span> Log Everything</div>
+        <div class="rule-desc">No touch happens without CRM documentation</div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-title"><span class="rule-icon">&#127919;</span> Referral Seeds</div>
+        <div class="rule-desc">Plant seeds in every client interaction (C04)</div>
+      </div>
+      <div class="bold-callout">Contact is the foundation.<br>Everything else follows.</div>
+    </div>
+
+  </div>
+
+
+  <!-- ========== FOOTER ========== -->
+  <div class="footer-bar">
+    <div class="footer-logo">&#9878;</div>
+    <div class="footer-tagline">Build the Machine. Trust the Process. Win Together.</div>
+    <div class="footer-sub">The Property Joes Group &bull; SOP Contact &mdash; 7C Framework Phase 1</div>
+  </div>
+
+</div>
+
+<script>
+function toggleGnav(){
+  var b=document.getElementById('gnavBtn'),p=document.getElementById('gnavPanel'),o=document.getElementById('gnavOverlay');
+  var isOpen=b.classList.contains('open');
+  b.classList.toggle('open');p.classList.toggle('open');o.classList.toggle('open');
+  if(!isOpen){document.body.style.overflow='hidden';}else{document.body.style.overflow='';}
+}
+</script>
+</body>
+</html>

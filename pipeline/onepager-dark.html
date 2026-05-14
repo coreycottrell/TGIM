@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TPJG FLEET - Transaction Pipeline (One-Pager Dark)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Alice&family=Karla:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --navy: #1B2A4A;
+    --navy-dark: #0F1B33;
+    --cream: #C7C1BA;
+    --gold: #C9A84C;
+    --gold-dark: #B8943F;
+    --green: #2E7D32;
+    --green-light: #E8F5E9;
+    --blue: #1565C0;
+    --blue-light: #E3F2FD;
+    --red: #C62828;
+    --red-light: #FFEBEE;
+    --gold-light: #FFF8E1;
+    --white: #FFFFFF;
+    --off-white: #FAFAFA;
+    --border: #D0D0D0;
+    --border-light: #E8E8E8;
+    --text: #263238;
+    --text-muted: #607D8B;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Karla', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text);
+    background: var(--white);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* === NAV BAR === */
+  .view-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--navy-dark);
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    padding: 0;
+    border-bottom: 3px solid var(--gold);
+    flex-wrap: wrap;
+  }
+  .view-nav a {
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding: 10px 14px;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+    white-space: nowrap;
+  }
+  .view-nav a:hover { color: var(--white); background: rgba(255,255,255,0.05); }
+  .view-nav a.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    background: rgba(201,168,76,0.08);
+  }
+
+  .page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* === TITLE === */
+  .title-area {
+    text-align: center;
+    padding: 40px 20px 28px;
+    background: var(--white);
+  }
+  .title-area h1 {
+    font-family: 'Alice', serif;
+    font-size: 2.2rem;
+    color: var(--navy);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+  .title-area .subtitle {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    font-weight: 500;
+  }
+
+  /* === SUMMARY CARDS === */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    padding: 0 20px 28px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .summary-card {
+    background: var(--off-white);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    padding: 16px 14px;
+    text-align: center;
+  }
+  .summary-card .value {
+    font-family: 'Alice', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.1;
+  }
+  .summary-card .label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .summary-card.blue { border-left: 4px solid var(--blue); }
+  .summary-card.green { border-left: 4px solid var(--green); }
+  .summary-card.gold-accent { border-left: 4px solid var(--gold); }
+  .summary-card.red { border-left: 4px solid var(--red); }
+
+  /* === SECTIONS === */
+  .section {
+    margin-bottom: 28px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px;
+  }
+  .section-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    font-family: 'Alice', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .section-bar.blue { background: var(--blue-light); color: var(--blue); border-left: 4px solid var(--blue); }
+  .section-bar.green { background: var(--green-light); color: var(--green); border-left: 4px solid var(--green); }
+  .section-bar.gold-bar { background: var(--gold-light); color: #8D6E00; border-left: 4px solid var(--gold); }
+  .section-bar.red { background: var(--red-light); color: var(--red); border-left: 4px solid var(--red); }
+  .section-bar .icon { font-size: 1.2rem; }
+
+  /* === TABLES === */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+  .data-table th {
+    background: var(--navy);
+    color: var(--white);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-size: 0.68rem;
+    padding: 10px 12px;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .data-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: top;
+  }
+  .data-table tr:hover { background: rgba(21,101,192,0.03); }
+  .data-table tr:last-child td { border-bottom: none; }
+
+  /* === STATUS BADGES === */
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge.active { background: var(--blue-light); color: var(--blue); }
+  .badge.closed { background: var(--green-light); color: var(--green); }
+  .badge.referral { background: var(--gold-light); color: #8D6E00; }
+  .badge.fallen { background: var(--red-light); color: var(--red); }
+
+  .type-tag {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .type-tag.buyer { background: #E3F2FD; color: #1565C0; }
+  .type-tag.seller { background: #FFF3E0; color: #E65100; }
+  .type-tag.unknown { background: #F5F5F5; color: #757575; }
+
+  /* === AGENT BREAKDOWN === */
+  .agent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  .agent-card {
+    background: var(--off-white);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .agent-card .agent-name {
+    font-family: 'Alice', serif;
+    font-size: 1.1rem;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .agent-stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 0.82rem;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .agent-stat:last-child { border-bottom: none; }
+  .agent-stat .stat-value { font-weight: 700; color: var(--navy); }
+
+  /* === REFERRAL NOTE === */
+  .ref-note {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* === FOOTER === */
+  .footer {
+    text-align: center;
+    padding: 28px 20px;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    border-top: 1px solid var(--border-light);
+    margin-top: 40px;
+  }
+
+  /* === MOBILE === */
+  @media (max-width: 768px) {
+    .title-area h1 { font-size: 1.6rem; }
+    .summary-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .summary-card .value { font-size: 1.4rem; }
+    .data-table { font-size: 0.75rem; }
+    .data-table th, .data-table td { padding: 8px 8px; }
+    .view-nav a { font-size: 0.62rem; padding: 8px 8px; letter-spacing: 0.8px; }
+    .section-bar { font-size: 0.95rem; }
+
+    /* Horizontal scroll for tables on mobile */
+    .table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .summary-grid { grid-template-columns: repeat(2, 1fr); }
+    .agent-grid { grid-template-columns: 1fr; }
+  }
+
+  /* === DARK THEME OVERRIDES === */
+  body { background: #1A1A2E; color: #E0E0E0; }
+  .title-area { background: #1A1A2E; }
+  .title-area h1 { color: var(--gold); }
+  .title-area .subtitle { color: #9E9E9E; }
+  .summary-card { background: #1E1E36; border-color: #2A2A4A; }
+  .summary-card .value { color: var(--gold); }
+  .summary-card .label { color: #9E9E9E; }
+  .data-table th { background: #0D0D1A; color: var(--gold); }
+  .data-table td { border-bottom-color: #2A2A4A; color: #D0D0D0; }
+  .data-table tr:hover { background: rgba(201,168,76,0.05); }
+  .data-table strong { color: #FFFFFF; }
+  .section-bar.blue { background: rgba(21,101,192,0.15); color: #64B5F6; border-left-color: #64B5F6; }
+  .section-bar.green { background: rgba(46,125,50,0.15); color: #81C784; border-left-color: #81C784; }
+  .section-bar.gold-bar { background: rgba(201,168,76,0.15); color: var(--gold); border-left-color: var(--gold); }
+  .section-bar.red { background: rgba(198,40,40,0.15); color: #EF9A9A; border-left-color: #EF9A9A; }
+  .type-tag.buyer { background: rgba(21,101,192,0.2); color: #90CAF9; }
+  .type-tag.seller { background: rgba(230,81,0,0.2); color: #FFCC80; }
+  .type-tag.unknown { background: rgba(117,117,117,0.2); color: #BDBDBD; }
+  .badge.referral { background: rgba(201,168,76,0.2); color: var(--gold); }
+  .agent-card { background: #1E1E36; border-color: #2A2A4A; }
+  .agent-card .agent-name { color: var(--gold); }
+  .agent-stat { border-bottom-color: #2A2A4A; color: #D0D0D0; }
+  .agent-stat .stat-value { color: #FFFFFF; }
+  .ref-note { color: #9E9E9E; }
+  .footer { color: #757575; border-top-color: #2A2A4A; }
+
+  /* === ONE-PAGER OVERRIDES === */
+  @page { size: 8.5in 11in; margin: 0.3in; }
+  body { font-size: 11px; }
+  .view-nav a { font-size: 0.58rem; padding: 6px 8px; }
+  .title-area { padding: 14px 10px 10px; }
+  .title-area h1 { font-size: 1.3rem; margin-bottom: 2px; }
+  .title-area .subtitle { font-size: 0.68rem; }
+  .summary-grid { gap: 6px; padding: 0 10px 10px; }
+  .summary-card { padding: 8px 6px; border-radius: 6px; }
+  .summary-card .value { font-size: 1.2rem; }
+  .summary-card .label { font-size: 0.55rem; margin-top: 2px; }
+  .section { margin-bottom: 10px; padding: 0 10px; }
+  .section-bar { padding: 5px 10px; font-size: 0.78rem; margin-bottom: 6px; border-radius: 5px; }
+  .section-bar .icon { font-size: 0.9rem; }
+  .data-table { font-size: 0.62rem; }
+  .data-table th { font-size: 0.52rem; padding: 4px 5px; }
+  .data-table td { padding: 3px 5px; }
+  .type-tag { font-size: 0.5rem; padding: 0px 5px; }
+  .badge { font-size: 0.5rem; padding: 1px 6px; }
+  .ref-note { font-size: 0.55rem; }
+  .agent-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .agent-card { padding: 8px; border-radius: 6px; }
+  .agent-card .agent-name { font-size: 0.72rem; margin-bottom: 4px; }
+  .agent-stat { font-size: 0.6rem; padding: 2px 0; }
+  .footer { padding: 8px 10px; font-size: 0.55rem; margin-top: 10px; }
+  @media print {
+    .view-nav { display: none; }
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+
+  /* === GLOBAL NAV MENU === */
+  .gnav-btn {
+    position: fixed; top: 12px; right: 12px; z-index: 9999;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #0d1526; border: 2px solid #C9A84C;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3); transition: transform 0.2s;
+  }
+  .gnav-btn:hover { transform: scale(1.08); }
+  .gnav-btn span {
+    display: block; width: 20px; height: 2px; background: #C9A84C;
+    position: relative; transition: 0.3s;
+  }
+  .gnav-btn span::before, .gnav-btn span::after {
+    content: ''; position: absolute; width: 20px; height: 2px; background: #C9A84C;
+    transition: 0.3s;
+  }
+  .gnav-btn span::before { top: -6px; }
+  .gnav-btn span::after { top: 6px; }
+  .gnav-btn.open span { background: transparent; }
+  .gnav-btn.open span::before { top: 0; transform: rotate(45deg); }
+  .gnav-btn.open span::after { top: 0; transform: rotate(-45deg); }
+
+  .gnav-overlay {
+    display: none; position: fixed; inset: 0; z-index: 9998;
+    background: rgba(0,0,0,0.5); backdrop-filter: blur(2px);
+  }
+  .gnav-overlay.open { display: block; }
+
+  .gnav-panel {
+    display: none; position: fixed; top: 0; right: 0; z-index: 9999;
+    width: 280px; max-width: 85vw; height: 100vh; overflow-y: auto;
+    background: #0d1526; box-shadow: -4px 0 24px rgba(0,0,0,0.4);
+    padding: 64px 20px 24px; font-family: 'Karla', sans-serif;
+  }
+  .gnav-panel.open { display: block; }
+
+  .gnav-section {
+    margin-bottom: 16px; border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding-bottom: 12px;
+  }
+  .gnav-section:last-child { border-bottom: none; }
+  .gnav-section-title {
+    font-family: 'Alice', serif; color: #C9A84C; font-size: 0.85rem;
+    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .gnav-section a {
+    display: block; color: #C7C1BA; text-decoration: none;
+    padding: 5px 12px; font-size: 0.82rem; border-radius: 4px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .gnav-section a:hover { background: rgba(201,168,76,0.12); color: #fff; }
+  .gnav-section a.gnav-active {
+    color: #C9A84C; font-weight: 700; background: rgba(201,168,76,0.08);
+  }
+  .gnav-section a .gnav-tag {
+    font-size: 0.65rem; opacity: 0.5; margin-left: 4px;
+  }
+
+</style>
+</head>
+<body>
+
+
+<div class="gnav-overlay" id="gnavOverlay" onclick="toggleGnav()"></div>
+<div class="gnav-panel" id="gnavPanel">
+  <div class="gnav-section">
+    <div class="gnav-section-title">Main Brief</div>
+    <a href='/'>Full Light</a>
+    <a href='/dark'>Full Dark</a>
+    <a href='/onepager'>One-Pager Light</a>
+    <a href='/onepager-dark'>One-Pager Dark</a>
+  </div>
+  <div class="gnav-section">
+    <div class="gnav-section-title">SOP Contact</div>
+    <a href='/sop-contact/'>Full Light</a>
+    <a href='/sop-contact/dark'>Full Dark</a>
+    <a href='/sop-contact/onepager'>One-Pager Light</a>
+    <a href='/sop-contact/onepager-dark'>One-Pager Dark</a>
+  </div>
+  <div class="gnav-section">
+    <div class="gnav-section-title">Pipeline</div>
+    <a href='/pipeline/'>Full Light</a>
+    <a href='/pipeline/dark'>Full Dark</a>
+    <a href='/pipeline/onepager'>One-Pager Light</a>
+    <a class='gnav-active' href='/pipeline/onepager-dark'>One-Pager Dark</a>
+  </div>
+  <div class="gnav-section">
+    <div class="gnav-section-title">Outlet Map</div>
+    <a href='/outlet/'>Full Light</a>
+    <a href='/outlet/dark'>Full Dark</a>
+    <a href='/outlet/onepager'>One-Pager Light</a>
+    <a href='/outlet/onepager-dark'>One-Pager Dark</a>
+  </div>
+  <div class="gnav-section">
+    <div class="gnav-section-title">Icosa Network</div>
+    <a href='/icosa/'>City Pages Index</a>
+  </div>
+</div>
+<button class="gnav-btn" id="gnavBtn" onclick="toggleGnav()" aria-label="Menu">
+  <span></span>
+</button>
+
+<div class="title-area">
+  <h1>TPJG Transaction Pipeline</h1>
+  <div class="subtitle">10 Active Deals &middot; 6 Open Referrals &middot; 12 YTD Closings &middot; Updated May 2026</div>
+</div>
+
+<!-- YTD SUMMARY -->
+<div class="summary-grid">
+  <div class="summary-card blue">
+    <div class="value">10</div>
+    <div class="label">Active Deals</div>
+  </div>
+  <div class="summary-card green">
+    <div class="value">12</div>
+    <div class="label">YTD Closings</div>
+  </div>
+  <div class="summary-card gold-accent">
+    <div class="value">6</div>
+    <div class="label">Open Referrals</div>
+  </div>
+  <div class="summary-card green">
+    <div class="value">$78.9K</div>
+    <div class="label">YTD Commission</div>
+  </div>
+</div>
+
+<!-- ACTIVE DEALS -->
+<div class="section">
+  <div class="section-bar blue"><span class="icon">&#9679;</span> Active Deals (10)</div>
+  <div class="table-wrapper">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Client</th>
+        <th>Side</th>
+        <th>Agent</th>
+        <th>Referral Source</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Julio Caballero</strong></td>
+        <td><span class="type-tag buyer">Buyer</span></td>
+        <td>JRD</td>
+        <td>Paula Rose [AGENT]</td>
+        <td class="ref-note">Repeat client from 2019</td>
+      </tr>
+      <tr>
+        <td><strong>Gareth Morton</strong></td>
+        <td><span class="type-tag buyer">Buyer</span></td>
+        <td>JRD</td>
+        <td>Unknown</td>
+        <td class="ref-note">Spouse: Christina Morton</td>
+      </tr>
+      <tr>
+        <td><strong>Amy Wendt</strong></td>
+        <td><span class="type-tag buyer">Buyer</span></td>
+        <td>JRD</td>
+        <td>Chris Wendt &lt; Diane Kink</td>
+        <td class="ref-note">Referral chain</td>
+      </tr>
+      <tr>
+        <td><strong>Tim Bearrow</strong></td>
+        <td><span class="type-tag seller">Seller</span></td>
+        <td>JRD</td>
+        <td>BNI direct (Vendor)</td>
+        <td class="ref-note">Prev: 16536 Aransas St (2021)</td>
+      </tr>
+      <tr>
+        <td><strong>Elizabeth Kusmider</strong></td>
+        <td><span class="type-tag seller">Seller</span></td>
+        <td>JRD</td>
+        <td>BNI direct (Vendor)</td>
+        <td class="ref-note">Prolific referrer</td>
+      </tr>
+      <tr>
+        <td><strong>Usman Hamayoun</strong></td>
+        <td><span class="type-tag buyer">Buyer</span></td>
+        <td>JRD</td>
+        <td>Unknown</td>
+        <td class="ref-note"></td>
+      </tr>
+      <tr>
+        <td><strong>Josh Rumfield</strong></td>
+        <td><span class="type-tag seller">Seller</span></td>
+        <td>JRD</td>
+        <td>Andrea Zasowski [AGENT]</td>
+        <td class="ref-note">3rd transaction</td>
+      </tr>
+      <tr>
+        <td><strong>Adam Bakir</strong></td>
+        <td><span class="type-tag seller">Seller</span></td>
+        <td>JRD</td>
+        <td>Direct A+ client</td>
+        <td class="ref-note">Repeat, preferred</td>
+      </tr>
+      <tr>
+        <td><strong>Niloy</strong></td>
+        <td><span class="type-tag buyer">Buyer</span></td>
+        <td>JRD</td>
+        <td>Unknown</td>
+        <td class="ref-note"></td>
+      </tr>
+      <tr>
+        <td><strong>Edward Watson</strong></td>
+        <td><span class="type-tag seller">Seller</span></td>
+        <td>JRD</td>
+        <td>Michael Gustafson (Sphere)</td>
+        <td class="ref-note">5+ referrals from Gustafson</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- OPEN REFERRALS -->
+<div class="section">
+  <div class="section-bar gold-bar"><span class="icon">&#9733;</span> Open Referrals (6)</div>
+  <div class="table-wrapper">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Client</th>
+        <th>Referred By</th>
+        <th>Agent</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Julie Poon</strong></td>
+        <td>Matthew Crouch</td>
+        <td>JRD</td>
+        <td class="ref-note"></td>
+      </tr>
+      <tr>
+        <td><strong>Ryan Vidal</strong></td>
+        <td>Julio Caballero</td>
+        <td>JRD</td>
+        <td class="ref-note">Referred by active client</td>
+      </tr>
+      <tr>
+        <td><strong>Jason Hawken</strong></td>
+        <td>Kate Johnston [AGENT]</td>
+        <td>JRD</td>
+        <td class="ref-note"></td>
+      </tr>
+      <tr>
+        <td><strong>Bill Justus</strong></td>
+        <td>Self</td>
+        <td>JRD</td>
+        <td class="ref-note"></td>
+      </tr>
+      <tr>
+        <td><strong>Mary Martinez</strong></td>
+        <td>Patti Martinez</td>
+        <td>JRD</td>
+        <td class="ref-note"></td>
+      </tr>
+      <tr>
+        <td><strong>Crystal Barron</strong></td>
+        <td>Peter Huynh (BNI)</td>
+        <td>JRD</td>
+        <td class="ref-note">Inbound Mar 2026</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- RECENT CLOSINGS (2026) -->
+<div class="section">
+  <div class="section-bar green"><span class="icon">&#10003;</span> YTD 2026 Closings (12)</div>
+  <div class="table-wrapper">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Address</th>
+        <th>Client</th>
+        <th>Side</th>
+        <th>Commission</th>
+        <th>Title Co.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Mar 31</td>
+        <td>19710 Yaupon Ranch Dr, Cypress</td>
+        <td>Maria Barbosa</td>
+        <td><span class="type-tag seller">Seller</span></td>
+        <td>--</td>
+        <td class="ref-note">--</td>
+      </tr>
+      <tr>
+        <td>Mar 17</td>
+        <td>2014 Elmgate, Houston</td>
+        <td>Zane Hoppes</td>
+        <td><span class="type-tag buyer">Buyer</span></td>
+        <td><strong>$10,015</strong></td>
+        <td class="ref-note">Capital Title</td>
+      </tr>
+      <tr>
+        <td>Mar 13</td>
+        <td>1609 Tabor, Houston</td>
+        <td>Tyler Diener</td>
+        <td><span class="type-tag seller">Seller</span></td>
+        <td><strong>$11,620</strong></td>
+        <td class="ref-note">Chicago Title</td>
+      </tr>
+      <tr>
+        <td>Mar 4</td>
+        <td>2614 Chenevert St</td>
+        <td>--</td>
+        <td><span class="type-tag unknown">--</span></td>
+        <td><strong>$10,165</strong></td>
+        <td class="ref-note">Old Republic</td>
+      </tr>
+      <tr>
+        <td>Mar 3</td>
+        <td>503 Raymond Ave</td>
+        <td>--</td>
+        <td><span class="type-tag unknown">--</span></td>
+        <td><strong>$2,117</strong></td>
+        <td class="ref-note">Old Republic</td>
+      </tr>
+      <tr>
+        <td>Feb 18</td>
+        <td>2062 Southern Landings, Arcola</td>
+        <td>Vaughn Simon</td>
+        <td><span class="type-tag buyer">Buyer</span></td>
+        <td>--</td>
+        <td class="ref-note">--</td>
+      </tr>
+      <tr>
+        <td>Feb 9</td>
+        <td>723 D Marcella St</td>
+        <td>David McMillan</td>
+        <td><span class="type-tag buyer">Buyer</span></td>
+        <td><strong>$10,015</strong></td>
+        <td class="ref-note">Vanderbilt American</td>
+      </tr>
+      <tr>
+        <td>Feb 5</td>
+        <td>2803 Fairhope, Houston</td>
+        <td>Jason Poon</td>
+        <td><span class="type-tag buyer">Buyer</span></td>
+        <td><strong>$15,478</strong></td>
+        <td class="ref-note">Texas American</td>
+      </tr>
+      <tr>
+        <td>Feb 3</td>
+        <td>723 Marcella St D, Houston</td>
+        <td>David McMillan</td>
+        <td><span class="type-tag buyer">Buyer</span></td>
+        <td><strong>$10,015</strong></td>
+        <td class="ref-note">--</td>
+      </tr>
+      <tr>
+        <td>Jan 30</td>
+        <td>223 Sparkling Water, Huffman</td>
+        <td>Sarah Smith</td>
+        <td><span class="type-tag seller">Seller</span></td>
+        <td>--</td>
+        <td class="ref-note">--</td>
+      </tr>
+      <tr>
+        <td>Jan 22</td>
+        <td>6411 Saint Placidia Dr</td>
+        <td>--</td>
+        <td><span class="type-tag unknown">--</span></td>
+        <td><strong>$1,305</strong></td>
+        <td class="ref-note">Memorial/KW</td>
+      </tr>
+      <tr>
+        <td>Jan 16</td>
+        <td>6006 Stockholm Ct</td>
+        <td>--</td>
+        <td><span class="type-tag unknown">--</span></td>
+        <td><strong>$8,125</strong></td>
+        <td class="ref-note">First American</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- AGENT BREAKDOWN -->
+<div class="section">
+  <div class="section-bar blue"><span class="icon">&#9782;</span> Per-Agent Breakdown</div>
+  <div class="agent-grid">
+    <div class="agent-card">
+      <div class="agent-name">JRD (Joseph R. Della-Rodolfa)</div>
+      <div class="agent-stat"><span>Total Closed</span><span class="stat-value">32</span></div>
+      <div class="agent-stat"><span>Active Deals</span><span class="stat-value">10</span></div>
+      <div class="agent-stat"><span>Commission (Deposited)</span><span class="stat-value">$191,541</span></div>
+      <div class="agent-stat"><span>Open Referrals</span><span class="stat-value">6</span></div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-name">KLJ (Katherine L. Johnston)</div>
+      <div class="agent-stat"><span>Total Closed</span><span class="stat-value">11</span></div>
+      <div class="agent-stat"><span>Active Deals</span><span class="stat-value">0</span></div>
+      <div class="agent-stat"><span>Commission (Deposited)</span><span class="stat-value">--</span></div>
+      <div class="agent-stat"><span>Primary Source</span><span class="stat-value">DRS Network</span></div>
+    </div>
+    <div class="agent-card">
+      <div class="agent-name">JRD (Referrals Out)</div>
+      <div class="agent-stat"><span>Total Referred Out</span><span class="stat-value">2</span></div>
+      <div class="agent-stat"><span>Ref. Fee Received</span><span class="stat-value">$740</span></div>
+      <div class="agent-stat"><span>Agent Referred To</span><span class="stat-value">Hannah Smith</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 2025 CLOSINGS -->
+<div class="section">
+  <div class="section-bar green"><span class="icon">&#10003;</span> 2025 Verified Closings (10) &middot; $113,426 Commission</div>
+  <div class="table-wrapper">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Address</th>
+        <th>Commission</th>
+        <th>Title Co.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Feb 26</td><td>1406 South Fry Rd</td><td><strong>$16,630</strong></td><td class="ref-note">Spartan Title</td></tr>
+      <tr><td>Feb 20</td><td>802 Lehman</td><td><strong>$12,423</strong></td><td class="ref-note">Platinum Title</td></tr>
+      <tr><td>Feb 6</td><td>247 W 16th St</td><td><strong>$15,046</strong></td><td class="ref-note">Fidelity/Wells Fargo</td></tr>
+      <tr><td>Feb 3</td><td>13210 R...</td><td><strong>$10,555</strong></td><td class="ref-note">Great American</td></tr>
+      <tr><td>Jan 29</td><td>11413 Velvet Field Dr</td><td><strong>$19,050</strong></td><td class="ref-note">Eastern National</td></tr>
+      <tr><td>Jan 27</td><td>16627 Yaklin</td><td><strong>$10,013</strong></td><td class="ref-note">Executive Title</td></tr>
+      <tr><td>Jan 17</td><td>5203 Camarosa Dr</td><td><strong>$11,650</strong></td><td class="ref-note">Stewart Title</td></tr>
+      <tr><td>Jan 14</td><td>3659 Main Plaza Dr</td><td><strong>$9,280</strong></td><td class="ref-note">Concierge Title</td></tr>
+      <tr><td>Jan 13</td><td>1823 Salers Way</td><td><strong>$8,040</strong></td><td class="ref-note">Memorial/KW</td></tr>
+      <tr><td>Dec 1</td><td>3898 Barton Dr (ref out)</td><td><strong>$740</strong></td><td class="ref-note">--</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- TOP REFERRAL SOURCES -->
+<div class="section">
+  <div class="section-bar gold-bar"><span class="icon">&#9733;</span> Top Referral Sources</div>
+  <div class="table-wrapper">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Source</th>
+        <th>Deals</th>
+        <th>Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Andrea Zasowski</strong></td><td>3</td><td><span class="badge referral">Agent</span></td></tr>
+      <tr><td><strong>David Doehring</strong></td><td>2+</td><td><span class="badge referral">BNI</span></td></tr>
+      <tr><td><strong>BNI Direct</strong></td><td>2</td><td><span class="badge referral">Vendor</span></td></tr>
+      <tr><td><strong>Bruce Schechter</strong></td><td>2</td><td><span class="badge referral">DRS Network</span></td></tr>
+      <tr><td><strong>Paula Rose</strong></td><td>1+</td><td><span class="badge referral">Agent</span></td></tr>
+      <tr><td><strong>Michael Gustafson</strong></td><td>1+</td><td><span class="badge referral">Sphere</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="footer">
+  TPJG Fleet Intelligence &middot; Data synthesized from bank statements, CRM, Drive files &middot; 61 transactions mapped<br>
+  Generated May 2026 &middot; Source: transaction-timeline.json
+</div>
+
+<script>
+function toggleGnav(){
+  var b=document.getElementById('gnavBtn'),p=document.getElementById('gnavPanel'),o=document.getElementById('gnavOverlay');
+  var isOpen=b.classList.contains('open');
+  b.classList.toggle('open');p.classList.toggle('open');o.classList.toggle('open');
+  if(!isOpen){document.body.style.overflow='hidden';}else{document.body.style.overflow='';}
+}
+</script>
+</body>
+</html>
